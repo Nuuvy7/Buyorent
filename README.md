@@ -1,0 +1,1 @@
+<h1>BUYORENT</h1>
