@@ -45,17 +45,17 @@ const KONDISI = [
   { label: "Minus Sedikit", condition: "used" },
 ];
 const KAMPUS = [
-  "Universitas Indonesia (Depok)",
+  "Universitas Trisakti",
   "Universitas Indonesia (Salemba)",
-  "ITB Kampus Ganesha",
-  "Unpad Jatinangor",
+  "Universitas Mercu Buana",
+  "Bina Nusantara Jakarta",
 ];
 const TITIK_COD = [
-  "Perpustakaan Pusat UI (Crystal Building)",
-  "Kantin Teknik UI (Kantek)",
-  "Balairung / Perpustakaan FIB",
-  "Kantin Dallas FISIP UI",
-  "Stasiun UI / Stasiun Pondok Cina",
+  "Perpustakaan UI Salemba",
+  "Kantin Pusat Universitas Trisakti",
+  "Gedung Utama Universitas Mercu Buana",
+  "Kantin Bina Nusantara Jakarta",
+  "Stasiun Sudirman / BNI City",
 ];
 
 const DRAFT_KEY = "buyorent_listing_draft";
@@ -473,7 +473,7 @@ export default function PasangIklanPage() {
                     id="input-title"
                     maxLength={70}
                     onChange={(e) => set("title", e.target.value)}
-                    placeholder='Contoh: "Kalkulator Casio FX-991EX ClassWiz Original FT UI"'
+                    placeholder='Contoh: "Kalkulator Casio FX-991EX ClassWiz Original UI Salemba"'
                     value={form.title}
                   />
                   <span className="text-[11px] text-slate-500">

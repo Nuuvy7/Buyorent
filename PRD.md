@@ -2,7 +2,7 @@
 
 ## Apa yang dibangun
 
-Website/platform **Buyorrent** untuk jual beli barang bekas dan sewa jasa.
+Website/platform **Buyorent** untuk jual beli barang bekas dan sewa jasa.
 
 ## Apa saja yang dibutuhkan untuk membangun
 

@@ -39,14 +39,14 @@ const REVIEWS = [
   {
     initials: "BP",
     name: "Bagas Pratama",
-    campus: "Fasilkom UI '21",
+    campus: "Binus Jakarta '21",
     text: "Komunikasi via chat ramah dan tepat waktu. Booking jasa diproses cepat, hasil sesuai ekspektasi sidang.",
     context: "Pakai Jasa Desain • 1 bulan lalu",
   },
   {
     initials: "FH",
     name: "Farhan Harahap",
-    campus: "FTUI '22",
+    campus: "Trisakti '22",
     text: "Teman seangkatan terpercaya. Nego wajar dan barang sesuai deskripsi, tidak ada yang disembunyikan.",
     context: "Beli Alat Lab • 2 bulan lalu",
   },
@@ -57,13 +57,13 @@ const HANDOVER = [
     id: "cod",
     title: "COD Kampus Bebas Ongkir",
     price: "Gratis",
-    desc: "Titik temu: Perpustakaan Pusat UI / Stasiun Pondok Cina / kantin fakultas.",
+    desc: "Titik temu: Perpustakaan UI Salemba / Stasiun Sudirman / kantin fakultas.",
   },
   {
     id: "kurir",
     title: "Kurir Instan Mahasiswa (GoSend / Grab)",
     price: "Rp 12.000",
-    desc: "Kirim aman ke area Kost Kukusan, Barek, atau Barel Depok (±30 menit tiba).",
+    desc: "Kirim aman ke area Kost Tebet, Kramat, atau Salemba (±30 menit tiba).",
   },
 ];
 
@@ -221,7 +221,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                 </div>
                 <p className="text-xs text-slate-400 leading-relaxed">
                   {isService
-                    ? "Kontak penyedia hanya terbuka setelah booking disetujui. Pembayaran mengikuti alur pesanan Buyorrent — tanpa pembayaran di muka di luar platform."
+                    ? "Kontak penyedia hanya terbuka setelah booking disetujui. Pembayaran mengikuti alur pesanan Buyorent — tanpa pembayaran di muka di luar platform."
                     : "Unit diperiksa langsung saat COD kampus. Cek fungsi dan fisik sebelum konfirmasi terima — status pesanan baru berpindah ke Selesai setelah Anda menerima barang."}
                 </p>
               </div>
@@ -517,7 +517,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                     Rekomendasi
                   </h5>
                   <p className="text-[11px] text-slate-400">
-                    Cocok untuk kebutuhan kuliah di lingkungan kampus UI Depok — khususnya mahasiswa baru yang
+                    Cocok untuk kebutuhan kuliah di lingkungan kampus UI Salemba — khususnya mahasiswa baru yang
                     butuh {isService ? "bantuan profesional dengan budget mahasiswa" : item.categoryLabel.toLowerCase()}.
                   </p>
                 </div>

@@ -1,8 +1,8 @@
 import { useSyncExternalStore } from "react";
 
 export const COD_SPOTS = [
-  { id: "kantin", name: "Kantin Gedung Baru Fasilkom UI", jam: "Jam 11:00 – 16:00 WIB" },
-  { id: "stasiun", name: "Indomaret Point Stasiun UI", jam: "Jam 17:00 – 19:30 WIB" },
+  { id: "kantin", name: "Kantin Pusat Universitas Trisakti", jam: "Jam 11:00 – 16:00 WIB" },
+  { id: "stasiun", name: "Stasiun Sudirman (Jakarta Pusat)", jam: "Jam 17:00 – 19:30 WIB" },
 ];
 
 export interface CartLine {

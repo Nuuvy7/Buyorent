@@ -6,7 +6,7 @@ Belakangan ini marak sekali pelajar SMA sederajat yang berjualan melalui Faceboo
 
 Di sisi lain, banyak pelajar dan mahasiswa yang memiliki *skill* — seperti desain, foto, les privat, servis, dan sebagainya — yang berpotensi untuk diperjualbelikan, namun tidak memiliki wadah publikasi yang tepat.
 
-Buyorrent hadir sebagai solusi dengan menyatukan kedua hal tersebut dalam satu platform jual beli barang bekas sekaligus sewa jasa. Target pengguna utamanya adalah pelajar hingga mahasiswa dan anak muda.
+Buyorent hadir sebagai solusi dengan menyatukan kedua hal tersebut dalam satu platform jual beli barang bekas sekaligus sewa jasa. Target pengguna utamanya adalah pelajar hingga mahasiswa dan anak muda.
 
 Manfaat yang diharapkan:
 

@@ -50,31 +50,31 @@ export function FilterSidebar({
                 className="w-3.5 h-3.5 rounded bg-cyber-bg border-cyber-border text-accent focus:ring-0"
                 type="checkbox"
               />
-              UI Depok
+              UI Salemba
             </span>
             <span className="text-[10px] text-accent bg-accent/10 px-1.5 py-0.5 rounded">182</span>
           </label>
           <label className="flex items-center justify-between p-2 rounded-xl bg-cyber-surface/60 border border-cyber-border/60 hover:border-slate-500 cursor-pointer">
             <span className="flex items-center gap-2 font-mono">
               <input
-                checked={selectedCampus === "itb"}
-                onChange={() => onSelectCampus(selectedCampus === "itb" ? "all" : "itb")}
+                checked={selectedCampus === "trisakti"}
+                onChange={() => onSelectCampus(selectedCampus === "trisakti" ? "all" : "trisakti")}
                 className="w-3.5 h-3.5 rounded bg-cyber-bg border-cyber-border text-accent focus:ring-0"
                 type="checkbox"
               />
-              ITB Ganesha
+              Universitas Trisakti
             </span>
             <span className="text-[10px] text-accent bg-accent/10 px-1.5 py-0.5 rounded">95</span>
           </label>
           <label className="flex items-center justify-between p-2 rounded-xl bg-cyber-surface/60 border border-cyber-border/60 hover:border-slate-500 cursor-pointer">
             <span className="flex items-center gap-2 font-mono">
               <input
-                checked={selectedCampus === "ugm"}
-                onChange={() => onSelectCampus(selectedCampus === "ugm" ? "all" : "ugm")}
+                checked={selectedCampus === "mercubana"}
+                onChange={() => onSelectCampus(selectedCampus === "mercubana" ? "all" : "mercubana")}
                 className="w-3.5 h-3.5 rounded bg-cyber-bg border-cyber-border text-accent focus:ring-0"
                 type="checkbox"
               />
-              UGM Bulaksumur
+              Universitas Mercu Buana
             </span>
             <span className="text-[10px] text-neon-amber bg-neon-amber/10 px-1.5 py-0.5 rounded">64</span>
           </label>

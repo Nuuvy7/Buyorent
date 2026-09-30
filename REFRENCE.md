@@ -49,7 +49,7 @@ tailwind.config = {
 <svg class="w-4 h-4 fill-none stroke-current stroke-2" viewbox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 </div>
 <div class="flex flex-col">
-<span class="text-base font-extrabold tracking-tight text-slate-900 leading-none">Buyorrent</span>
+<span class="text-base font-extrabold tracking-tight text-slate-900 leading-none">Buyorent</span>
 <span class="text-[9px] font-semibold tracking-wider text-emerald-700 uppercase mt-0.5">Campus Panel</span>
 </div>
 </a>
@@ -476,10 +476,10 @@ tailwind.config = {
 <button class="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-all active:scale-95 shadow-xs" onclick="toastNotice('Email panduan etika akademik telah dikirim ke seller')">
                 Kirim Email Edukasi
               </button>
-<button class="px-4 py-2 rounded-full bg-error text-white hover:opacity-90 font-label-md text-label-md transition-all active:scale-95 shadow-sm" onclick="toastNotice('Akun @jokicepat_kilat dibekukan permanen dari platform Buyorrent UI')">
+<button class="px-4 py-2 rounded-full bg-error text-white hover:opacity-90 font-label-md text-label-md transition-all active:scale-95 shadow-sm" onclick="toastNotice('Akun @jokicepat_kilat dibekukan permanen dari platform Buyorent UI')">
                 Blokir Seller
               </button>
-<button class="px-5 py-2 rounded-full bg-on-background text-surface font-label-md text-label-md transition-all hover:opacity-90 active:scale-95 shadow-sm" onclick="toastNotice('Listing dihapus permanen dari database Buyorrent')">
+<button class="px-5 py-2 rounded-full bg-on-background text-surface font-label-md text-label-md transition-all hover:opacity-90 active:scale-95 shadow-sm" onclick="toastNotice('Listing dihapus permanen dari database Buyorent')">
                 Hapus Listing &amp; Peringatan Keras
               </button>
 </div>

@@ -207,7 +207,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </h1>
               <p className="text-xs sm:text-sm text-slate-400 max-w-2xl leading-relaxed">
                 Setujui atau turunkan listing serta lihat, blokir, dan hapus akun pengguna
-                Buyorrent. Katalog hanya menampilkan listing yang tayang.
+                Buyorent. Katalog hanya menampilkan listing yang tayang.
               </p>
             </div>
             <div className="flex items-center gap-4 self-start lg:self-center">

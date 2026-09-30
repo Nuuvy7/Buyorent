@@ -28,7 +28,7 @@ const DEFAULT_ACCOUNT: AccountRecord = {
   name: "Daffa Rizky",
   email: "daffa.rizky@ui.ac.id",
   phone: "081234567800",
-  campus: "UI Depok & Salemba",
+  campus: "UI Salemba",
   role: "user",
   ktm: true,
 };
@@ -36,11 +36,11 @@ const DEFAULT_ACCOUNT: AccountRecord = {
 // Data dummy pengguna (konsisten dengan ITEMS katalog) — diganti tabel users
 // Supabase saat auth tersambung.
 const SEED_USERS: UserRecord[] = [
-  { id: "usr-1001", name: "Rizky Maulana", email: "rizky.m@ui.ac.id", phone: "081234567801", campus: "UI Depok", role: "user", ktm: true, isBlocked: false, createdAt: "12 Agu 2026" },
-  { id: "usr-1002", name: "Nadia Safira", email: "nadia.s@itb.ac.id", phone: "081234567802", campus: "ITB Bandung", role: "user", ktm: true, isBlocked: false, createdAt: "20 Agu 2026" },
+  { id: "usr-1001", name: "Rizky Maulana", email: "rizky.m@ui.ac.id", phone: "081234567801", campus: "UI Salemba", role: "user", ktm: true, isBlocked: false, createdAt: "12 Agu 2026" },
+  { id: "usr-1002", name: "Nadia Safira", email: "nadia.s@trisakti.ac.id", phone: "081234567802", campus: "Universitas Trisakti", role: "user", ktm: true, isBlocked: false, createdAt: "20 Agu 2026" },
   { id: "usr-1003", name: "Alifia Putri", email: "alifia.putri@gmail.com", phone: "081234567803", campus: "SMAN 28 Jakarta", role: "user", ktm: false, isBlocked: false, createdAt: "5 Sep 2026" },
-  { id: "usr-1004", name: "Dimas Kurniawan", email: "dimas.k@gmail.com", phone: "081234567804", campus: "UGM Yogyakarta", role: "user", ktm: true, isBlocked: true, createdAt: "11 Sep 2026" },
-  { id: "usr-1005", name: "Sultan Doven", email: "sultan.admin@ui.ac.id", phone: "081234567805", campus: "Fasilkom UI", role: "admin", ktm: true, isBlocked: false, createdAt: "1 Jul 2026" },
+  { id: "usr-1004", name: "Dimas Kurniawan", email: "dimas.k@gmail.com", phone: "081234567804", campus: "Universitas Mercu Buana", role: "user", ktm: true, isBlocked: true, createdAt: "11 Sep 2026" },
+  { id: "usr-1005", name: "Sultan Doven", email: "sultan.admin@ui.ac.id", phone: "081234567805", campus: "UI Salemba", role: "admin", ktm: true, isBlocked: false, createdAt: "1 Jul 2026" },
 ];
 
 function read<T>(key: string, fallback: T): T {

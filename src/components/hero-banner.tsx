@@ -153,9 +153,9 @@ export function HeroBanner({
                 className="bg-transparent text-xs font-mono font-semibold text-slate-100 focus:outline-none cursor-pointer pr-4"
               >
                 <option value="all" className="bg-cyber-surface text-slate-100">Semua Kampus</option>
-                <option value="ui" className="bg-cyber-surface text-slate-100">UI Depok & Salemba</option>
-                <option value="itb" className="bg-cyber-surface text-slate-100">ITB Ganesha</option>
-                <option value="ugm" className="bg-cyber-surface text-slate-100">UGM Bulaksumur</option>
+                <option value="ui" className="bg-cyber-surface text-slate-100">UI Salemba</option>
+                <option value="trisakti" className="bg-cyber-surface text-slate-100">Universitas Trisakti</option>
+                <option value="mercubana" className="bg-cyber-surface text-slate-100">Universitas Mercu Buana</option>
                 <option value="sma" className="bg-cyber-surface text-slate-100">SMA/SMK Sekitar</option>
               </select>
             </div>

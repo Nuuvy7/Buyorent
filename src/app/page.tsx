@@ -116,7 +116,7 @@ export default function CatalogExplorePage() {
               LIVE DEALS
             </span>
             <span className="truncate text-slate-400">
-              Kalkulator Casio baru dipesan di FT UI • Jasa PPT Skripsi (ITB) sisa 2 slot hari ini • Kamera Sony A7 tersewa di Salemba
+              Kalkulator Casio baru dipesan di UI Salemba • Jasa PPT Skripsi (Trisakti) sisa 2 slot hari ini • Kamera Sony A7 tersewa di Salemba
             </span>
           </div>
           <div className="hidden sm:flex items-center gap-4 shrink-0 text-slate-400">

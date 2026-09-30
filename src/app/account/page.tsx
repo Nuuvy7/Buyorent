@@ -170,7 +170,7 @@ export default function AccountPage() {
                 <input
                   className={inputClass}
                   onChange={(e) => setForm({ ...form, campus: e.target.value })}
-                  placeholder="UI Depok & Salemba"
+                  placeholder="UI Salemba"
                   type="text"
                   value={form.campus}
                 />

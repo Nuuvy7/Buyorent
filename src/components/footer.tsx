@@ -97,7 +97,7 @@ export function Footer() {
           <p>© 2025 BUYORENT INDONESIA // ALL RIGHTS RESERVED.</p>
           <div className="flex items-center gap-2">
             <span className="text-accent bg-cyber-surface border border-cyber-border px-3 py-1 rounded-full text-[10px]">
-              NODES: DEPOK • GANESHA • BULAKSUMUR • JAKARTA
+              NODES: SALEMBA • TRISAKTI • MERCUBANA • JAKARTA
             </span>
           </div>
         </div>

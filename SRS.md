@@ -2,7 +2,7 @@
 
 ## Sistem apa yang akan dibangun
 
-Website/platform **Buyorrent** untuk jual beli barang bekas dan sewa jasa.
+Website/platform **Buyorent** untuk jual beli barang bekas dan sewa jasa.
 
 ## Dengan apa sistem ini akan dibangun
 

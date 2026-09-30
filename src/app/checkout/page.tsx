@@ -313,7 +313,7 @@ export default function CheckoutPage() {
                       disabled={!!order}
                       id="co-address"
                       onChange={(e) => setAddress(e.target.value)}
-                      placeholder="Kos Melati Jl. Kukusan No. 12, Depok — atau titik COD: Perpustakaan Pusat UI"
+                      placeholder="Kos Melati Jl. Kramat Raya No. 12, Jakarta Pusat — atau titik COD: Kantin Universitas Trisakti"
                       value={address}
                     />
                     {errors.address && (

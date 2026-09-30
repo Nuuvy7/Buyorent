@@ -51,7 +51,7 @@ export function Navbar() {
               <div className="flex flex-col text-left">
                 <span className="text-[9px] font-mono text-slate-400 uppercase">Campus Hub</span>
                 <span className="text-xs font-bold text-slate-200 flex items-center gap-1 font-mono">
-                  UI DEPOK & SALEMBA
+                  UI SALEMBA
                   <ChevronDown className="w-3 h-3 text-slate-500" />
                 </span>
               </div>
@@ -145,7 +145,7 @@ export function Navbar() {
             <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border">
               <MapPin className="w-3.5 h-3.5 text-neon-orange shrink-0" />
               <span className="text-slate-400 uppercase text-[9px]">Campus Hub</span>
-              <span className="text-slate-200 font-bold ml-auto">UI DEPOK &amp; SALEMBA</span>
+              <span className="text-slate-200 font-bold ml-auto">UI SALEMBA</span>
             </div>
             <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border">
               <span className="relative flex h-2 w-2 shrink-0">
