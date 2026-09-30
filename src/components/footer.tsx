@@ -1,0 +1,107 @@
+import React from "react";
+import Link from "next/link";
+import { Shield, Sparkles, Terminal } from "lucide-react";
+
+export function Footer() {
+  return (
+    <footer className="w-full bg-cyber-bg border-t border-cyber-border py-12 font-mono text-xs">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-base font-black text-white tracking-tight flex items-center gap-1">
+                BUYORENT<span className="text-accent">.SYS</span>
+              </span>
+              <span className="bg-accent/10 text-accent border border-accent/30 text-[9px] font-bold px-2 py-0.5 rounded">
+                v2.0
+              </span>
+            </div>
+            <p className="text-slate-400 font-sans leading-relaxed text-xs">
+              Platform jual beli barang pre-loved & keahlian mahasiswa berbasis ekonomi sirkular kampus. Amanah, hemat, dan transparan.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-slate-200 uppercase tracking-widest mb-3 text-[11px] text-accent">
+              {"// JELAJAH_KATALOG"}
+            </h4>
+            <ul className="space-y-2 text-slate-400">
+              <li>
+                <Link href="/items?category=barang" className="hover:text-accent transition-colors">
+                  &gt; Semua Barang Pre-loved
+                </Link>
+              </li>
+              <li>
+                <Link href="/items?category=jasa" className="hover:text-accent transition-colors">
+                  &gt; Jasa & Freelance Mahasiswa
+                </Link>
+              </li>
+              <li>
+                <a href="#" className="hover:text-slate-200 transition-colors">
+                  &gt; Node Kampus Terdaftar
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-slate-200 transition-colors">
+                  &gt; Bursa Diktat & Modul
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-slate-200 uppercase tracking-widest mb-3 text-[11px] text-accent">
+              {"// PROTOKOL_KEAMANAN"}
+            </h4>
+            <ul className="space-y-2 text-slate-400">
+              <li>
+                <a href="#" className="hover:text-slate-200 transition-colors">
+                  &gt; Panduan COD Aman Kampus
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-slate-200 transition-colors">
+                  &gt; Verifikasi Akun Pelajar/KTM
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-slate-200 transition-colors">
+                  &gt; Pusat Bantuan & FAQ
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-slate-200 transition-colors">
+                  &gt; Kebijakan Komunitas
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-slate-200 uppercase tracking-widest mb-3 text-[11px] text-neon-amber">
+              {"// JAMINAN_PRIVASI"}
+            </h4>
+            <div className="bg-cyber-surface border border-cyber-border p-3.5 rounded-2xl">
+              <div className="flex items-center gap-1.5 text-neon-amber font-bold mb-1">
+                <Shield className="w-4 h-4 text-neon-amber" />
+                <span>Kerahasiaan Kontak Jasa</span>
+              </div>
+              <p className="text-slate-400 font-sans text-[11px] leading-relaxed">
+                Nomor kontak WA penjual jasa baru dirilis ke pembeli setelah permintaan disetujui untuk menjaga privasi.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-6 border-t border-cyber-border/70 flex flex-col md:flex-row items-center justify-between text-slate-500 gap-4 text-[11px]">
+          <p>© 2025 BUYORENT INDONESIA // ALL RIGHTS RESERVED.</p>
+          <div className="flex items-center gap-2">
+            <span className="text-accent bg-cyber-surface border border-cyber-border px-3 py-1 rounded-full text-[10px]">
+              NODES: DEPOK • GANESHA • BULAKSUMUR • JAKARTA
+            </span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}

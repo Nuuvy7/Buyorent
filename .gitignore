@@ -1,5 +1,6 @@
 # Dokumen internal
 docs/
+.hermes/
 AI_CONTEXT.md
 
 # Dependencies
