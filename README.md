@@ -29,12 +29,13 @@
 
 | Nama | Peran | GitHub |
 |------|-------|--------|
-| **Zariel Waleed Hidayat** | UI/UX Designer & Frontend Developer | [zarielwh04-cyber](https://github.com/zarielwh04-cyber) |
 | **Muhammad Jundi Al Hafidz** | Project Lead & Full Stack Developer | [nuuvy7](https://github.com/nuuvy7) |
+| **Zariel Waleed Hidayat** | UI/UX Designer & Frontend Developer | [zarielwh04-cyber](https://github.com/zarielwh04-cyber) |
+| **Fauzunnajah Attamam** | Backend Developer | [chfjuna76-sudo](https://github.com/chfjuna76-sudo) |
+| **Sultan Doven Hagi** | Frontend Developer | [Dovein18](https://github.com/Dovein18) |
 | **Muhammad Salim Umar** | Frontend Developer | - |
 | **Wildan Haibatur Rohim** | Frontend Developer | - |
-| **Sultan Doven Hagi** | Frontend Developer | - |
-| **Fauzunnajah Attamam** | Full Stack Developer | [chfjuna76-sudo](https://github.com/chfjuna76-sudo) |
+
 
 Guru pengajar: **Raihan Ibrahim Saputra**
 
