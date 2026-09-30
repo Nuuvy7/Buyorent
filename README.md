@@ -82,4 +82,3 @@ Guru pengajar: Raihan Ibrahim Saputra
 - [BRD.md](BRD.md) — Business Requirements Document
 - [PRD.md](PRD.md) — Product Requirements Document
 - [SRS.md](SRS.md) — Software Requirements Specification
-- [AI_CONTEXT.md](AI_CONTEXT.md) — Konteks lengkap untuk AI agent
