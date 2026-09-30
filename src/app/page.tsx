@@ -5,7 +5,8 @@ import gsap from "gsap";
 import { Navbar } from "@/components/navbar";
 import { HeroBanner } from "@/components/hero-banner";
 import { FilterSidebar } from "@/components/filter-sidebar";
-import { ItemCard, ItemData } from "@/components/item-card";
+import { ItemCard } from "@/components/item-card";
+import { ITEMS, getTakedowns } from "@/lib/items";
 import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,124 +20,6 @@ import {
   SearchX
 } from "lucide-react";
 
-const INITIAL_ITEMS: ItemData[] = [
-  {
-    id: "1",
-    name: "Kalkulator Ilmiah Casio FX-991EX",
-    category: "barang",
-    categoryLabel: "Alat Kuliah",
-    subLabel: "Casio FX-991EX",
-    condition: "like-new",
-    description: "Dipakai 2 semester matkul Kalkulus. Layar bening, tombol responsif 100%, bonus baterai cadangan.",
-    price: 140000,
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuDBGWQVWin4spjXjFKD6SxnAHPNgHv26kfF9qqIi0E-zo4OhYDVZrKJg9SV9M09IbvJXT7pPzXUH8XoRPwcIe0e470Txyzc-iqxJc-hZi9CBSKtZu5SYbmFDAEHqtiz2j5WhOTaQ9pDPSKzosJIlyuWTSO_2IHzUD_Sr5VnmiHdnqh5ZqevmdiOck-viXA7s9XU_b0SePJmUjNcqxdvv2mS6Qe2ZLTtSYPnbrPvrRofY1eO9C9DTPNGFQ",
-    badge: "95% Mulus",
-    location: "FT UI Depok",
-    seller: {
-      name: "Rizky M.",
-      avatarText: "R",
-      campus: "Teknik UI",
-      verified: true,
-    },
-  },
-  {
-    id: "2",
-    name: "Desain PPT Sidang & Poster Skripsi",
-    category: "jasa",
-    categoryLabel: "Freelance",
-    subLabel: "Revisi 2x",
-    description: "Layout modern, infografis data rapi siap sidang, file Canva Pro atau PPT editable.",
-    price: 35000,
-    priceUnit: "/slide",
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCSIdSKHxgj5QPvunyLR1oMzEuexatWFCxLa5tpx31qALEtd6yVxbEkj9tn9KWT1LSP7fv-ts6Rzi5MMcLeIGLayYOI5_soax9grAy4quEjoFf7s9EC1j3iGZr8yi33jlBsSzv6ZcbvsdpdoUIJXI47pwFzTsx8I1Bt3qw4BFF4S8mWJWXrVAJzUUDCUbMlORtSlA1aaxjqED-_1HPlSX9soGvf76dGInbopEopkxVwwI5Ox7ud1O1jzw",
-    badge: "Jasa Desain",
-    location: "DKV ITB",
-    rating: "4.9 • 42 Portofolio",
-    seller: {
-      name: "Nadia S.",
-      avatarText: "N",
-      campus: "DKV ITB",
-      verified: true,
-    },
-  },
-  {
-    id: "3",
-    name: "Kemeja Flanel Uniqlo Vintage",
-    category: "barang",
-    categoryLabel: "Fashion",
-    subLabel: "Size XL",
-    condition: "used",
-    description: "Warna pekat 90%, katun tebal lembut khas Uniqlo, wangi laundry siap pakai ngampus.",
-    price: 65000,
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCd6_OBrPsNEH3YdOXTni5bNxNvaLQ2qazdFX9RrocUCjjEHQYE5pPrkAEPu2SIW7iOiv3RdMfq5uYBuQaOxGqHnnXuXZdqPLtbE1Uh9Xogv18GTxuFfGSkRgqDmc02X3YnBIzkaXgM6qpDpo8m_YY9Ll7C2idEgUYeJxf3xtlaUgmBEIUGVpCBkPQkR79DWUc3VRyE_3mptD41NqwdULCMxzKybfuQTSgzKCr3V0wu8qc1x4w1wXQk9A",
-    badge: "Thrifted",
-    location: "Halte UI / Halte",
-    seller: {
-      name: "Alifia",
-      avatarText: "A",
-      campus: "SMAN 28",
-      verified: true,
-    },
-  },
-  {
-    id: "4",
-    name: "Servis & Install Ulang Laptop",
-    category: "jasa",
-    categoryLabel: "Tech Support",
-    subLabel: "Garansi 14 Hari",
-    description: "Install OS bersih, ganti pasta thermal, upgrade SSD, dan install software kuliah lengkap.",
-    price: 50000,
-    priceUnit: "/sesi",
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuD-Rk-m7P92D8sa2Zr2J3RwMhsUNau55-9AuA6mwe4yjbQu5NWkxBT95UPD5DvGszTQ80kZ9rJqwSAnpxAaI-6jRjJQ6WUqMKP-KGyI6AQUFMMpTfTZ7BmiT0HHKMK4KgExH-t57KOOIHogJDXaMm__okUQu968hs4IBNG300aEJyo9Qc92m1-OZOkThHGKZZRAVhEpCJ68dEE3nicqX07i3mjqRzCm0X74PpuLOHLikO7i-6ZbQIEjsg",
-    badge: "Teknisi Kampus",
-    location: "Siap Datang ke Kost",
-    seller: {
-      name: "Bima Tech",
-      avatarText: "B",
-      campus: "Fasilkom UI",
-      verified: true,
-    },
-  },
-  {
-    id: "5",
-    name: "Lampu Meja Belajar Aesthetic",
-    category: "barang",
-    categoryLabel: "Perlengkapan Kost",
-    subLabel: "3 Tingkat Terang",
-    condition: "like-new",
-    description: "Leher fleksibel, port USB charger HP, sensor sentuh. Dijual karena selesai kuliah & pindah kost.",
-    price: 45000,
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuAiC-OPADkgOaFC3JvOjS2f3Lze6B7gZJuhZYvP5RMS8PnI6PiBGgK3XkEk40OhEts18ncQOL4GSYuZRsbmqXyTfn98qBU8PrmPWp-Qxl0oeZJxxw8If6ZwhdrdRbghu7PSj1a1cm72YON8k37sEEGi8JBz5gUbQvpWe2F7grh8SBjL6eFFG_pu-Ak0lFW7DpiK68Eq0pwuGQLTBxVXBYE-909YLW7LdaWQm9CnjLfYQL96yFk3hBlPbw",
-    badge: "Kost Gear",
-    location: "Kukusan Depok",
-    seller: {
-      name: "Dimas K.",
-      avatarText: "D",
-      campus: "Kukusan",
-      verified: true,
-    },
-  },
-  {
-    id: "6",
-    name: "Fotografer Wisuda Paket Hemat",
-    category: "jasa",
-    categoryLabel: "Fotografi Wisuda",
-    subLabel: "Sony A7",
-    description: "Warna natural estetik, siap foto bersama keluarga/sahabat, file Google Drive di hari H.",
-    price: 150000,
-    priceUnit: "/2 jam",
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCvORGLssFRSO5CPoriG3wNBqAH4WeEhIbpAR-ER36dHnE_7DVPpb327FqqzsdBbOzUNMDhCOLeEX68hDkIaOSzUQXZmafCxOpyD3GS9KqE9FXcJWUIxQxn5IseUDBFyd5W6zMV_TwiUWhnV0zQxgjzzhsdKNtueHgljOXICvsCHKxslP_A6gCp5TN5lFbmXw1JqGik63JosiR4H6gDFcwAcXz32irRBO9eJH2ilyakp-sa4F6NGZbbtA",
-    badge: "Jasa Foto",
-    location: "Softfile + 10 Edit",
-    seller: {
-      name: "LensKreatif",
-      avatarText: "L",
-      campus: "UI Depok",
-      verified: true,
-    },
-  },
-];
-
 export default function CatalogExplorePage() {
   const [activeTab, setActiveTab] = useState<"all" | "barang" | "jasa">("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -144,17 +27,18 @@ export default function CatalogExplorePage() {
   const [budgetFilter, setBudgetFilter] = useState("any");
   const [conditionFilter, setConditionFilter] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
-  const [cartCount, setCartCount] = useState(2);
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
+  // listing yang diturunkan admin tidak boleh tampil di katalog
+  const [takedowns, setTakedowns] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    setTakedowns(getTakedowns());
+  }, []);
 
   const gridRef = useRef<HTMLDivElement>(null);
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const handleAddToCart = () => {
-    setCartCount((c) => c + 1);
   };
 
   const handleResetFilters = () => {
@@ -167,7 +51,9 @@ export default function CatalogExplorePage() {
   };
 
   const filteredItems = useMemo(() => {
-    return INITIAL_ITEMS.filter((item) => {
+    return ITEMS.filter((item) => {
+      // Moderasi admin: listing diturunkan disembunyikan dari katalog
+      if (takedowns[item.id]) return false;
       // Category filter
       if (activeTab !== "all" && item.category !== activeTab) {
         return false;
@@ -195,7 +81,7 @@ export default function CatalogExplorePage() {
       if (sortBy === "price-desc") return b.price - a.price;
       return 0;
     });
-  }, [activeTab, conditionFilter, searchQuery, budgetFilter, sortBy]);
+  }, [activeTab, conditionFilter, searchQuery, budgetFilter, sortBy, takedowns]);
 
   // GSAP stagger animation on card list updates
   useEffect(() => {
@@ -211,13 +97,14 @@ export default function CatalogExplorePage() {
     }
   }, [activeTab, conditionFilter, budgetFilter, sortBy, searchQuery]);
 
-  const barangCount = INITIAL_ITEMS.filter((i) => i.category === "barang").length;
-  const jasaCount = INITIAL_ITEMS.filter((i) => i.category === "jasa").length;
+  const baseItems = ITEMS.filter((i) => !takedowns[i.id]);
+  const barangCount = baseItems.filter((i) => i.category === "barang").length;
+  const jasaCount = baseItems.filter((i) => i.category === "jasa").length;
 
   return (
     <div className="min-h-screen bg-cyber-bg text-slate-100 flex flex-col font-sans cyber-grid">
       {/* Top Navbar */}
-      <Navbar cartCount={cartCount} />
+      <Navbar />
 
       {/* Main Content Area */}
       <main className="w-full pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col gap-8">
@@ -270,7 +157,7 @@ export default function CatalogExplorePage() {
               type="button"
             >
               <Layers className="w-3.5 h-3.5" />
-              <span>SEMUA ({INITIAL_ITEMS.length})</span>
+              <span>SEMUA ({baseItems.length})</span>
             </button>
             <button
               onClick={() => setActiveTab("barang")}
@@ -374,7 +261,6 @@ export default function CatalogExplorePage() {
                       item={item}
                       isFavorite={!!favorites[item.id]}
                       onToggleFavorite={toggleFavorite}
-                      onAddToCart={handleAddToCart}
                     />
                   ))}
                 </div>

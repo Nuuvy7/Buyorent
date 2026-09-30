@@ -2,7 +2,9 @@
 
 import React, { useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import gsap from "gsap";
+import { addToCart } from "@/lib/cart";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
@@ -41,17 +43,22 @@ interface ItemCardProps {
   item: ItemData;
   isFavorite: boolean;
   onToggleFavorite: (id: string) => void;
-  onAddToCart?: (id: string) => void;
 }
 
 export function ItemCard({
   item,
   isFavorite,
   onToggleFavorite,
-  onAddToCart,
 }: ItemCardProps) {
   const cardRef = useRef<HTMLElement>(null);
+  const router = useRouter();
   const isService = item.category === "jasa";
+
+  // tekan "masukkan ke cart" → simpan + langsung ke halaman keranjang
+  const handleAddToCart = () => {
+    addToCart(item.id);
+    router.push("/cart");
+  };
 
   const handleMouseEnter = () => {
     if (cardRef.current) {
@@ -194,24 +201,22 @@ export function ItemCard({
             </div>
 
             <div className="flex items-center gap-1.5">
-              {!isService && onAddToCart && (
-                <Button
-                  onClick={() => onAddToCart(item.id)}
-                  variant="secondary"
-                  size="icon"
-                  className="rounded-xl border-cyber-border hover:border-accent/50"
-                  title="Tambah ke Keranjang"
-                >
-                  <ShoppingCart className="w-4 h-4 text-accent" />
-                </Button>
-              )}
+              <Button
+                onClick={handleAddToCart}
+                variant="secondary"
+                size="icon"
+                className="rounded-xl border-cyber-border hover:border-accent/50"
+                title="Tambah ke Keranjang"
+              >
+                <ShoppingCart className="w-4 h-4 text-accent" />
+              </Button>
               <Button
                 asChild
                 variant="cyan"
                 size="sm"
                 className="font-mono text-xs px-3.5"
               >
-                <Link href={`/items/${item.id}`}>
+                <Link href={`/checkout?item=${item.id}`}>
                   {isService ? (
                     <span className="flex items-center gap-1">
                       <span>BOOKING</span>

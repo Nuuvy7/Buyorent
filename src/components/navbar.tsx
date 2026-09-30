@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/lib/cart";
 import { 
   Sparkles, 
   MapPin, 
@@ -17,12 +18,9 @@ import {
   X
 } from "lucide-react";
 
-interface NavbarProps {
-  cartCount: number;
-}
-
-export function Navbar({ cartCount }: NavbarProps) {
+export function Navbar() {
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const cart = useCart();
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-cyber-bg/90 backdrop-blur-xl border-b border-cyber-border">
@@ -81,9 +79,9 @@ export function Navbar({ cartCount }: NavbarProps) {
               title="Keranjang Belanja"
             >
               <ShoppingCart className="w-4 h-4 text-accent" />
-              {cartCount > 0 && (
+              {cart.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-neon-orange text-black font-mono font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center shadow-glow-orange">
-                  {cartCount}
+                  {cart.length}
                 </span>
               )}
             </Link>
@@ -98,8 +96,12 @@ export function Navbar({ cartCount }: NavbarProps) {
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-signal ring-2 ring-cyber-bg"></span>
             </button>
 
-            {/* User Profile Pill */}
-            <div className="hidden sm:flex items-center gap-2 bg-cyber-surface border border-cyber-border px-2.5 py-1.5 rounded-xl hover:border-slate-500 transition-colors cursor-pointer">
+            {/* User Profile Pill -> kelola akun */}
+            <Link
+              className="hidden sm:flex items-center gap-2 bg-cyber-surface border border-cyber-border px-2.5 py-1.5 rounded-xl hover:border-accent/50 transition-colors"
+              href="/account"
+              title="Kelola Akun"
+            >
               <div className="w-6 h-6 rounded-lg bg-accent text-black font-mono font-black text-xs flex items-center justify-center">
                 D
               </div>
@@ -109,7 +111,7 @@ export function Navbar({ cartCount }: NavbarProps) {
                   <CheckCircle2 className="w-2.5 h-2.5" /> KTM_VERIFIED
                 </span>
               </div>
-            </div>
+            </Link>
 
             {/* Post Ad CTA Button */}
             <Button
@@ -153,13 +155,17 @@ export function Navbar({ cartCount }: NavbarProps) {
               <span className="text-slate-400">NETWORK:</span>
               <span className="text-signal font-semibold">420+ DEALS CLOSED</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border">
+            <Link
+              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 transition-colors"
+              href="/account"
+            >
               <div className="w-6 h-6 rounded-lg bg-accent text-black font-black flex items-center justify-center shrink-0">D</div>
               <span className="text-slate-200 font-bold">Daffa R.</span>
               <span className="text-signal flex items-center gap-1 ml-auto">
                 <CheckCircle2 className="w-3 h-3" /> KTM_VERIFIED
               </span>
-            </div>
+              <span className="text-slate-500 text-[10px] uppercase">Akun →</span>
+            </Link>
           </div>
         )}
       </div>
