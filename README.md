@@ -33,7 +33,7 @@
 | **Zariel Waleed Hidayat** | UI/UX Designer & Frontend Developer | [zarielwh04-cyber](https://github.com/zarielwh04-cyber) |
 | **Fauzunnajah Attamam** | Backend Developer | [chfjuna76-sudo](https://github.com/chfjuna76-sudo) |
 | **Sultan Doven Hagi** | Frontend Developer | [Dovein18](https://github.com/Dovein18) |
-| **Muhammad Salim Umar** | Frontend Developer | - |
+| **Muhammad Salim Umar** | Frontend Developer | [umarrr643](https://github.com/umarrr643) |
 | **Wildan Haibatur Rohim** | Frontend Developer | - |
 
 
