@@ -6,13 +6,7 @@ import gsap from "gsap";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/toast";
-import {
-  ITEMS,
-  getTakedowns,
-  setTakedown,
-  fmtDownTime,
-  type Takedowns,
-} from "@/lib/items";
+import { fetchItems, setItemApproved, type ItemRow } from "@/lib/items";
 import { useStoreTick } from "@/lib/store";
 import type { ItemData } from "@/components/item-card";
 import {
@@ -31,7 +25,7 @@ const fmt = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 
 /* Satu kartu antrean moderasi — struktur REFRENCE.md, tanpa skor AI karangan:
    status tayang/diturunkan diambil dari store moderasi nyata. */
-function ModCard({ item, down, at }: { item: ItemData; down: boolean; at?: string }) {
+function ModCard({ item, down }: { item: ItemData; down: boolean }) {
   const isService = item.category === "jasa";
   return (
     <div className="mod-card rounded-3xl bg-cyber-card/90 border border-cyber-border p-5 sm:p-6 shadow-sm transition-all hover:shadow-md hover:border-accent/40">
@@ -103,7 +97,7 @@ function ModCard({ item, down, at }: { item: ItemData; down: boolean; at?: strin
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">
                 {down
-                  ? `Tidak tampil di katalog, pencarian, dan halaman detail publik sejak ${at ? fmtDownTime(at) : "-"} . Siap dipulihkan setelah lolos tinjauan ulang.`
+                  ? "Tidak tampil di katalog, pencarian, dan halaman detail publik. Siap dipulihkan setelah lolos tinjauan ulang."
                   : "Terlihat oleh semua pengguna di katalog utama, pencarian, dan halaman detail — siap transaksi."}
               </p>
             </div>
@@ -143,9 +137,10 @@ function ModCard({ item, down, at }: { item: ItemData; down: boolean; at?: strin
             </Button>
             {down ? (
               <Button
-                onClick={() => {
-                  setTakedown(item.id, false);
-                  toast(`"${item.name}" tayang kembali di katalog`);
+                onClick={async () => {
+                  const r = await setItemApproved(item.id, true);
+                  if (r.ok) toast(`"${item.name}" tayang kembali di katalog`);
+                  else toast(`Gagal memperbarui: ${r.error}`);
                 }}
                 size="sm"
                 variant="default"
@@ -155,9 +150,10 @@ function ModCard({ item, down, at }: { item: ItemData; down: boolean; at?: strin
             ) : (
               <Button
                 className="text-rose-600 border border-rose-500/40 hover:bg-rose-500/10 hover:border-rose-500/60 bg-transparent"
-                onClick={() => {
-                  setTakedown(item.id, true);
-                  toast(`"${item.name}" diturunkan dari katalog publik`);
+                onClick={async () => {
+                  const r = await setItemApproved(item.id, false);
+                  if (r.ok) toast(`"${item.name}" diturunkan dari katalog publik`);
+                  else toast(`Gagal memperbarui: ${r.error}`);
                 }}
                 size="sm"
                 variant="secondary"
@@ -174,12 +170,21 @@ function ModCard({ item, down, at }: { item: ItemData; down: boolean; at?: strin
 
 export default function AdminModerationPage() {
   const tick = useStoreTick();
-  const [takedowns, setTakedowns] = useState<Takedowns>({});
+  const [items, setItems] = useState<ItemRow[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const [filter, setFilter] = useState<Filter>("all");
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    setTakedowns(getTakedowns());
+    let alive = true;
+    fetchItems().then((rows) => {
+      if (!alive) return;
+      setItems(rows);
+      setLoaded(true);
+    });
+    return () => {
+      alive = false;
+    };
   }, [tick]);
 
   useEffect(() => {
@@ -193,11 +198,11 @@ export default function AdminModerationPage() {
     return () => ctx.revert();
   }, [filter, query, tick]);
 
-  const downCount = Object.keys(takedowns).length;
-  const liveCount = ITEMS.length - downCount;
+  const downCount = items.filter((i) => !i.isApproved).length;
+  const liveCount = items.length - downCount;
 
-  const list = ITEMS.filter((item) => {
-    const isDown = !!takedowns[item.id];
+  const list = items.filter((item) => {
+    const isDown = !item.isApproved;
     if (filter === "live" && isDown) return false;
     if (filter === "down" && !isDown) return false;
     if (query.trim()) {
@@ -212,13 +217,17 @@ export default function AdminModerationPage() {
     return true;
   });
 
-  const restoreAll = () => {
-    Object.keys(takedowns).forEach((id) => setTakedown(id, false));
-    toast(`${downCount} listing tayang kembali di katalog`);
+  const restoreAll = async () => {
+    const targets = items.filter((i) => !i.isApproved);
+    const results = await Promise.all(targets.map((i) => setItemApproved(i.id, true)));
+    const ok = results.filter((r) => r.ok).length;
+    const failed = results.find((r) => !r.ok);
+    if (!failed) toast(`${ok} listing tayang kembali di katalog`);
+    else toast(`${ok} dari ${results.length} listing gagal diperbarui: ${failed.error}`);
   };
 
   const pills: { key: Filter; label: string; count: number }[] = [
-    { key: "all", label: "Semua", count: ITEMS.length },
+    { key: "all", label: "Semua", count: items.length },
     { key: "live", label: "Tayang", count: liveCount },
     { key: "down", label: "Diturunkan", count: downCount },
   ];
@@ -256,7 +265,11 @@ export default function AdminModerationPage() {
       </div>
 
       {/* Antrean kartu moderasi */}
-      {list.length === 0 ? (
+      {!loaded ? (
+        <div className="rounded-3xl bg-cyber-card/90 border border-cyber-border p-12 text-center font-mono text-xs text-slate-500 uppercase tracking-widest">
+          Memuat antrean moderasi…
+        </div>
+      ) : list.length === 0 ? (
         <div className="rounded-3xl bg-cyber-card/90 border border-cyber-border p-12 flex flex-col items-center text-center gap-3">
           <SearchX className="w-10 h-10 text-slate-700" />
           <p className="text-sm font-bold text-slate-600 font-mono uppercase">
@@ -269,12 +282,7 @@ export default function AdminModerationPage() {
       ) : (
         <div className="flex flex-col gap-5">
           {list.map((item) => (
-            <ModCard
-              at={takedowns[item.id]}
-              down={!!takedowns[item.id]}
-              item={item}
-              key={item.id}
-            />
+            <ModCard down={!item.isApproved} item={item} key={item.id} />
           ))}
         </div>
       )}
@@ -282,7 +290,7 @@ export default function AdminModerationPage() {
       {/* Bar batch + jumlah baris */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-3xl bg-cyber-card/90 border border-cyber-border shadow-sm">
         <span className="font-mono text-xs text-slate-500">
-          Menampilkan {list.length} dari {ITEMS.length} listing
+          Menampilkan {list.length} dari {items.length} listing
         </span>
         <Button
           disabled={downCount === 0}

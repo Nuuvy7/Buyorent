@@ -7,7 +7,7 @@ import gsap from "gsap";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ToastHost, toast } from "@/components/toast";
-import { ITEMS, getTakedowns, type Takedowns } from "@/lib/items";
+import { fetchItems, type ItemRow } from "@/lib/items";
 import {
   getUsers,
   getAccount,
@@ -80,13 +80,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const tick = useStoreTick();
   const [account, setAccount] = useState<AccountRecord | null>(null);
-  const [takedowns, setTakedowns] = useState<Takedowns>({});
+  const [items, setItems] = useState<ItemRow[]>([]);
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [syncing, setSyncing] = useState(false);
 
   const refresh = () => {
     setAccount(getAccount());
-    setTakedowns(getTakedowns());
+    fetchItems().then(setItems);
     setUsers(getUsers());
   };
 
@@ -164,8 +164,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  const total = ITEMS.length;
-  const downCount = Object.keys(takedowns).length;
+  const total = items.length;
+  const downCount = items.filter((i) => !i.isApproved).length;
   const live = total - downCount;
   const verified = users.filter((u) => u.ktm && !u.isBlocked).length;
 
@@ -175,7 +175,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       setSyncing(false);
       refresh();
       emitStore();
-      toast("Data moderasi dimuat ulang dari penyimpanan lokal");
+      toast("Data moderasi dimuat ulang dari Supabase");
     }, 700);
   };
 
@@ -199,7 +199,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </span>
                 <span className="text-slate-700 text-xs">•</span>
                 <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest">
-                  Sumber: katalog &amp; pengguna lokal
+                  Sumber: Supabase (katalog &amp; pengguna)
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-black text-ink tracking-tight font-mono uppercase">

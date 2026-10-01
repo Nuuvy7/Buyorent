@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ItemCard } from "@/components/item-card";
 import type { ItemData } from "@/components/item-card";
-import { ITEMS } from "@/lib/items";
+import { pushLocalItem } from "@/lib/items";
 import {
   Plus,
   Package,
@@ -223,9 +223,9 @@ export default function PasangIklanPage() {
         verified: true,
       },
     };
-    // ponytail: demo lokal — unshift ke ITEMS hanya hidup selama sesi browser.
-    // Ganti dengan insert Supabase (items) + upload Storage saat auth tersambung.
-    ITEMS.unshift(item);
+    // ponytail: masih session-local — D4 mengganti ini dengan insert Supabase
+    // (items) + upload foto ke bucket listing-images.
+    pushLocalItem({ ...item, isApproved: true });
     localStorage.removeItem(DRAFT_KEY);
     setPostedId(item.id);
     window.scrollTo({ top: 0, behavior: "smooth" });

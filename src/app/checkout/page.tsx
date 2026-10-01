@@ -7,7 +7,8 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ITEMS } from "@/lib/items";
+import { fetchItems, type ItemRow } from "@/lib/items";
+import { useStoreTick } from "@/lib/store";
 import {
   COD_SPOTS,
   useCart,
@@ -97,6 +98,23 @@ export default function CheckoutPage() {
   const cartLines = useCart();
   const rootRef = useRef<HTMLDivElement>(null);
 
+  // katalog Supabase untuk resolusi item yang dipesan
+  const tick = useStoreTick();
+  const [catalog, setCatalog] = useState<ItemRow[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    fetchItems({ approvedOnly: true }).then((rows) => {
+      if (!alive) return;
+      setCatalog(rows);
+      setLoaded(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [tick]);
+
   // dibaca sekali di client — hindari useSearchParams/Suspense
   const [q, setQ] = useState<{ item: string | null; ongkir: number } | null>(null);
   const [address, setAddress] = useState("");
@@ -124,17 +142,17 @@ export default function CheckoutPage() {
 
   const entries: Entry[] =
     ordered ??
-    (!q
+    (!q || !loaded
       ? []
       : q.item
         ? (() => {
-            const it = ITEMS.find((i) => i.id === q.item);
+            const it = catalog.find((i) => i.id === q.item);
             return it ? [{ item: it }] : [];
           })()
         : cartLines
             .filter((l) => l.checked)
             .map((l) => {
-              const it = ITEMS.find((i) => i.id === l.id);
+              const it = catalog.find((i) => i.id === l.id);
               return it ? [{ item: it, line: l }] : [];
             })
             .flat());
@@ -261,7 +279,7 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left: item + form checkout */}
           <div className="lg:col-span-7 flex flex-col gap-6 pay-col">
-            {!q ? (
+            {!q || !loaded ? (
               <div className="bg-cyber-card/90 rounded-3xl border border-cyber-border p-8 text-center font-mono text-xs text-slate-500">
                 MEMUAT DATA CHECKOUT…
               </div>

@@ -1,157 +1,162 @@
 import type { ItemData } from "@/components/item-card";
 import { emitStore } from "@/lib/store";
+import { createClient } from "@/lib/supabase/client";
 
-export const ITEMS: ItemData[] = [
-  {
-    id: "1",
-    name: "Kalkulator Ilmiah Casio FX-991EX",
-    category: "barang",
-    categoryLabel: "Alat Kuliah",
-    subLabel: "Casio FX-991EX",
-    condition: "like-new",
-    description: "Dipakai 2 semester matkul Kalkulus. Layar bening, tombol responsif 100%, bonus baterai cadangan.",
-    price: 140000,
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuDBGWQVWin4spjXjFKD6SxnAHPNgHv26kfF9qqIi0E-zo4OhYDVZrKJg9SV9M09IbvJXT7pPzXUH8XoRPwcIe0e470Txyzc-iqxJc-hZi9CBSKtZu5SYbmFDAEHqtiz2j5WhOTaQ9pDPSKzosJIlyuWTSO_2IHzUD_Sr5VnmiHdnqh5ZqevmdiOck-viXA7s9XU_b0SePJmUjNcqxdvv2mS6Qe2ZLTtSYPnbrPvrRofY1eO9C9DTPNGFQ",
-    badge: "95% Mulus",
-    location: "UI Salemba",
-    seller: {
-      name: "Rizky M.",
-      avatarText: "R",
-      campus: "UI Salemba",
-      verified: true,
-    },
-  },
-  {
-    id: "2",
-    name: "Desain PPT Sidang & Poster Skripsi",
-    category: "jasa",
-    categoryLabel: "Freelance",
-    subLabel: "Revisi 2x",
-    description: "Layout modern, infografis data rapi siap sidang, file Canva Pro atau PPT editable.",
-    price: 35000,
-    priceUnit: "/slide",
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCSIdSKHxgj5QPvunyLR1oMzEuexatWFCxLa5tpx31qALEtd6yVxbEkj9tn9KWT1LSP7fv-ts6Rzi5MMcLeIGLayYOI5_soax9grAy4quEjoFf7s9EC1j3iGZr8yi33jlBsSzv6ZcbvsdpdoUIJXI47pwFzTsx8I1Bt3qw4BFF4S8mWJWXrVAJzUUDCUbMlORtSlA1aaxjqED-_1HPlSX9soGvf76dGInbopEopkxVwwI5Ox7ud1O1jzw",
-    badge: "Jasa Desain",
-    location: "DKV Binus Jakarta",
-    rating: "4.9 • 42 Portofolio",
-    seller: {
-      name: "Nadia S.",
-      avatarText: "N",
-      campus: "DKV Binus Jakarta",
-      verified: true,
-    },
-  },
-  {
-    id: "3",
-    name: "Kemeja Flanel Uniqlo Vintage",
-    category: "barang",
-    categoryLabel: "Fashion",
-    subLabel: "Size XL",
-    condition: "used",
-    description: "Warna pekat 90%, katun tebal lembut khas Uniqlo, wangi laundry siap pakai ngampus.",
-    price: 65000,
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCd6_OBrPsNEH3YdOXTni5bNxNvaLQ2qazdFX9RrocUCjjEHQYE5pPrkAEPu2SIW7iOiv3RdMfq5uYBuQaOxGqHnnXuXZdqPLtbE1Uh9Xogv18GTxuFfGSkRgqDmc02X3YnBIzkaXgM6qpDpo8m_YY9Ll7C2idEgUYeJxf3xtlaUgmBEIUGVpCBkPQkR79DWUc3VRyE_3mptD41NqwdULCMxzKybfuQTSgzKCr3V0wu8qc1x4w1wXQk9A",
-    badge: "Thrifted",
-    location: "Halte Pasar Senen",
-    seller: {
-      name: "Alifia",
-      avatarText: "A",
-      campus: "SMAN 28",
-      verified: true,
-    },
-  },
-  {
-    id: "4",
-    name: "Servis & Install Ulang Laptop",
-    category: "jasa",
-    categoryLabel: "Tech Support",
-    subLabel: "Garansi 14 Hari",
-    description: "Install OS bersih, ganti pasta thermal, upgrade SSD, dan install software kuliah lengkap.",
-    price: 50000,
-    priceUnit: "/sesi",
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuD-Rk-m7P92D8sa2Zr2J3RwMhsUNau55-9AuA6mwe4yjbQu5NWkxBT95UPD5DvGszTQ80kZ9rJqwSAnpxAaI-6jRjJQ6WUqMKP-KGyI6AQUFMMpTfTZ7BmiT0HHKMK4KgExH-t57KOOIHogJDXaMm__okUQu968hs4IBNG300aEJyo9Qc92m1-OZOkThHGKZZRAVhEpCJ68dEE3nicqX07i3mjqRzCm0X74PpuLOHLikO7i-6ZbQIEjsg",
-    badge: "Teknisi Kampus",
-    location: "Siap Datang ke Kost",
-    seller: {
-      name: "Bima Tech",
-      avatarText: "B",
-      campus: "Universitas Trisakti",
-      verified: true,
-    },
-  },
-  {
-    id: "5",
-    name: "Lampu Meja Belajar Aesthetic",
-    category: "barang",
-    categoryLabel: "Perlengkapan Kost",
-    subLabel: "3 Tingkat Terang",
-    condition: "like-new",
-    description: "Leher fleksibel, port USB charger HP, sensor sentuh. Dijual karena selesai kuliah & pindah kost.",
-    price: 45000,
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuAiC-OPADkgOaFC3JvOjS2f3Lze6B7gZJuhZYvP5RMS8PnI6PiBGgK3XkEk40OhEts18ncQOL4GSYuZRsbmqXyTfn98qBU8PrmPWp-Qxl0oeZJxxw8If6ZwhdrdRbghu7PSj1a1cm72YON8k37sEEGi8JBz5gUbQvpWe2F7grh8SBjL6eFFG_pu-Ak0lFW7DpiK68Eq0pwuGQLTBxVXBYE-909YLW7LdaWQm9CnjLfYQL96yFk3hBlPbw",
-    badge: "Kost Gear",
-    location: "Kost Tebet, Jakarta Selatan",
-    seller: {
-      name: "Dimas K.",
-      avatarText: "D",
-      campus: "Tebet",
-      verified: true,
-    },
-  },
-  {
-    id: "6",
-    name: "Fotografer Wisuda Paket Hemat",
-    category: "jasa",
-    categoryLabel: "Fotografi Wisuda",
-    subLabel: "Sony A7",
-    description: "Warna natural estetik, siap foto bersama keluarga/sahabat, file Google Drive di hari H.",
-    price: 150000,
-    priceUnit: "/2 jam",
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCvORGLssFRSO5CPoriG3wNBqAH4WeEhIbpAR-ER36dHnE_7DVPpb327FqqzsdBbOzUNMDhCOLeEX68hDkIaOSzUQXZmafCxOpyD3GS9KqE9FXcJWUIxQxn5IseUDBFyd5W6zMV_TwiUWhnV0zQxgjzzhsdKNtueHgljOXICvsCHKxslP_A6gCp5TN5lFbmXw1JqGik63JosiR4H6gDFcwAcXz32irRBO9eJH2ilyakp-sa4F6NGZbbtA",
-    badge: "Jasa Foto",
-    location: "Softfile + 10 Edit",
-    seller: {
-      name: "LensKreatif",
-      avatarText: "L",
-      campus: "UI Salemba",
-      verified: true,
-    },
-  },
-];
-
-/* Moderasi listing (PRD §8: admin menyetujui/menurunkan listing).
-   Map id → ISO waktu diturunkan; tidak ada di map = tayang.
-   ponytail: persist lokal sampai kolom is_approved items tersambung ke Supabase. */
-const TAKEDOWN_KEY = "buyorent_takedown";
-
-export type Takedowns = Record<string, string>;
-
-export function getTakedowns(): Takedowns {
-  if (typeof window === "undefined") return {};
-  try {
-    return JSON.parse(localStorage.getItem(TAKEDOWN_KEY) || "{}") as Takedowns;
-  } catch {
-    return {};
-  }
+/** Baris `items` dari Supabase + flag moderasi (dipakai panel admin). */
+export interface ItemRow extends ItemData {
+  isApproved: boolean;
 }
 
-export function setTakedown(id: string, down: boolean) {
-  const map = getTakedowns();
-  if (down) map[id] = new Date().toISOString();
-  else delete map[id];
-  try {
-    localStorage.setItem(TAKEDOWN_KEY, JSON.stringify(map));
-  } catch {
-    /* storage penuh/di-block — abaikan, state tetap di memori sesi ini */
-  }
+/* Metadata tampilan 6 listing seed. Kolom display (categoryLabel/badge/rating/
+   priceUnit) sengaja tidak ada di schema (HANDOFF Bagian 6) — daftarkan di sini
+   dengan uuid TETAP yang dipakai saat seeding (scripts/seed-items.mjs).
+   Listing baru tanpa entri memakai nilai derive di mapRow(). */
+const SEED_META: Record<
+  string,
+  Partial<Pick<ItemData, "categoryLabel" | "badge" | "rating" | "priceUnit">>
+> = {
+  "00000000-0000-4000-8000-000000000001": { categoryLabel: "Alat Kuliah", badge: "95% Mulus" },
+  "00000000-0000-4000-8000-000000000002": {
+    categoryLabel: "Freelance",
+    badge: "Jasa Desain",
+    rating: "4.9 • 42 Portofolio",
+    priceUnit: "/slide",
+  },
+  "00000000-0000-4000-8000-000000000003": { categoryLabel: "Fashion", badge: "Thrifted" },
+  "00000000-0000-4000-8000-000000000004": {
+    categoryLabel: "Tech Support",
+    badge: "Teknisi Kampus",
+    priceUnit: "/sesi",
+  },
+  "00000000-0000-4000-8000-000000000005": { categoryLabel: "Perlengkapan Kost", badge: "Kost Gear" },
+  "00000000-0000-4000-8000-000000000006": {
+    categoryLabel: "Fotografi Wisuda",
+    badge: "Jasa Foto",
+    priceUnit: "/2 jam",
+  },
+};
+
+const PLACEHOLDER = `data:image/svg+xml,${encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'><rect width='100%' height='100%' fill='%230f1624'/><text x='50%' y='50%' fill='%2338bdf8' font-family='monospace' font-size='14' text-anchor='middle'>FOTO BELUM ADA</text></svg>"
+)}`;
+
+interface ItemDbRow {
+  id: string;
+  category_id: number;
+  category?: { name: string } | null;
+  sub_category: string | null;
+  name: string;
+  description: string;
+  price: number | string;
+  condition: string | null;
+  location: string | null;
+  image_url: string | null;
+  seller_name: string;
+  seller_campus: string;
+  seller_ktm: boolean;
+  is_approved: boolean;
+}
+
+function mapRow(r: ItemDbRow): ItemRow {
+  const catName = (r.category?.name ?? (r.category_id === 2 ? "Jasa" : "Barang")).toLowerCase();
+  const category: "barang" | "jasa" = catName.includes("jasa") ? "jasa" : "barang";
+  const meta = SEED_META[r.id];
+  const badge =
+    meta?.badge ??
+    (category === "jasa"
+      ? "Jasa Baru"
+      : r.condition === "like-new"
+        ? "Like New"
+        : "Pre-loved");
+  return {
+    id: r.id,
+    name: r.name,
+    category,
+    categoryLabel: meta?.categoryLabel ?? (category === "jasa" ? "Jasa" : "Barang"),
+    subLabel: r.sub_category ?? (category === "jasa" ? "Baru Tayang" : "Pre-loved"),
+    condition: r.condition ?? undefined,
+    description: r.description,
+    price: Number(r.price),
+    priceUnit: meta?.priceUnit,
+    imageUrl: r.image_url ?? PLACEHOLDER,
+    badge,
+    location: r.location ?? "",
+    rating: meta?.rating,
+    seller: {
+      name: r.seller_name,
+      avatarText: (r.seller_name.trim()[0] ?? "?").toUpperCase(),
+      campus: r.seller_campus,
+      verified: r.seller_ktm,
+    },
+    isApproved: r.is_approved,
+  };
+}
+
+/* Listing hasil "Pasang Iklan" selama Tahap D — hidup selama sesi browser.
+   D4 mengganti ini dengan INSERT + upload foto ke bucket listing-images. */
+const sessionItems: ItemRow[] = [];
+
+export function pushLocalItem(item: ItemRow) {
+  sessionItems.unshift(item);
   emitStore();
 }
 
-export function fmtDownTime(iso: string): string {
-  return new Date(iso).toLocaleString("id-ID", {
-    day: "numeric",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+/**
+ * Ambil listing. `approvedOnly` = hanya yang tayang (katalog publik).
+ * Tanpa opsi = semua yang terlihat menurut RLS (admin/penjual melihat punyanya).
+ */
+export async function fetchItems(opts?: { approvedOnly?: boolean }): Promise<ItemRow[]> {
+  let query = createClient().from("items").select("*, category:categories(name)");
+  if (opts?.approvedOnly) query = query.eq("is_approved", true);
+  const { data, error } = await query
+    .order("created_at", { ascending: true })
+    .order("id", { ascending: true });
+  if (error) {
+    console.error("fetchItems:", error.message);
+    return [...sessionItems];
+  }
+  const rows = ((data ?? []) as unknown as ItemDbRow[]).map(mapRow);
+  return [...sessionItems, ...rows];
+}
+
+/** Satu listing by id (RLS: publik hanya melihat yang tayang; penjual/admin juga punyanya). */
+export async function fetchItem(id: string): Promise<ItemRow | null> {
+  const local = sessionItems.find((s) => s.id === id);
+  if (local) return local;
+  const { data, error } = await createClient()
+    .from("items")
+    .select("*, category:categories(name)")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) {
+    console.error("fetchItem:", error.message);
+    return null;
+  }
+  return data ? mapRow(data as unknown as ItemDbRow) : null;
+}
+
+/**
+ * Moderasi admin: tayangkan / turunkan listing (UPDATE is_approved).
+ * RLS item update = penjual atau admin; baris yang tak tersentuh RLS
+ * dilaporkan sebagai "tidak ada izin" (PostgREST tidak error, hanya 0 baris).
+ */
+export async function setItemApproved(
+  id: string,
+  approved: boolean
+): Promise<{ ok: boolean; error?: string }> {
+  const local = sessionItems.find((s) => s.id === id);
+  if (local) {
+    local.isApproved = approved;
+    emitStore();
+    return { ok: true };
+  }
+  const { data, error } = await createClient()
+    .from("items")
+    .update({ is_approved: approved })
+    .eq("id", id)
+    .select("id");
+  if (error) return { ok: false, error: error.message };
+  if (!data?.length) return { ok: false, error: "Tidak ada izin atau listing tidak ditemukan" };
+  emitStore();
+  return { ok: true };
 }
