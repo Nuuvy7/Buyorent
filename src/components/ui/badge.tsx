@@ -8,17 +8,17 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-accent/10 border-accent/50 text-accent",
+          "bg-accent/10 border-accent/50 text-ink",
         amber:
-          "bg-neon-amber/10 border-neon-amber/50 text-neon-amber",
+          "bg-neon-amber/10 border-neon-amber/50 text-ink",
         orange:
-          "bg-neon-orange/10 border-neon-orange/50 text-neon-orange",
+          "bg-neon-orange/10 border-neon-orange/50 text-ink",
         purple:
-          "bg-neon-purple/10 border-neon-purple/50 text-neon-purple",
+          "bg-neon-purple/10 border-neon-purple/50 text-ink",
         solid:
-          "bg-signal text-black border-signal font-extrabold",
+          "bg-signal text-[#ffffff] border-signal font-extrabold",
         muted:
-          "bg-cyber-surface border-cyber-border text-slate-400",
+          "bg-cyber-surface border-cyber-border text-slate-500",
       },
     },
     defaultVariants: {

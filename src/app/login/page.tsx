@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ToastHost, toast } from "@/components/toast";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,7 @@ import { ArrowRight, LogIn } from "lucide-react";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const inputClass =
-  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
+  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
 
 export default function LoginPage() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -43,11 +42,10 @@ export default function LoginPage() {
 
   return (
     <div ref={rootRef} className="min-h-screen bg-cyber-bg cyber-grid relative overflow-hidden">
-      <Navbar />
       <main className="relative z-10 max-w-md mx-auto px-6 py-24">
         <div data-acct="section" className="text-center mb-8">
-          <p className="font-mono text-cyber-cyan text-xs">{"// akses akun"}</p>
-          <h1 className="font-black text-3xl uppercase text-white mt-2">Masuk</h1>
+          <p className="font-mono text-ink text-xs">{"// akses akun"}</p>
+          <h1 className="font-black text-3xl uppercase text-ink mt-2">Masuk</h1>
         </div>
         <form
           data-acct="section"
@@ -55,7 +53,7 @@ export default function LoginPage() {
           className="rounded-3xl bg-cyber-card border border-cyber-border p-6 space-y-4"
         >
           <label className="block">
-            <span className="font-mono text-[10px] text-slate-400">EMAIL</span>
+            <span className="font-mono text-[10px] text-slate-500">EMAIL</span>
             <input
               type="email"
               placeholder="nama@kampus.ac.id"
@@ -63,10 +61,10 @@ export default function LoginPage() {
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className={inputClass}
             />
-            {errors.email && <p className="text-[11px] text-red-400 font-mono mt-1">{errors.email}</p>}
+            {errors.email && <p className="text-[11px] text-red-600 font-mono mt-1">{errors.email}</p>}
           </label>
           <label className="block">
-            <span className="font-mono text-[10px] text-slate-400">PASSWORD</span>
+            <span className="font-mono text-[10px] text-slate-500">PASSWORD</span>
             <input
               type="password"
               placeholder="Minimal 6 karakter"
@@ -74,14 +72,14 @@ export default function LoginPage() {
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className={inputClass}
             />
-            {errors.password && <p className="text-[11px] text-red-400 font-mono mt-1">{errors.password}</p>}
+            {errors.password && <p className="text-[11px] text-red-600 font-mono mt-1">{errors.password}</p>}
           </label>
           <Button type="submit" variant="cyan" className="w-full font-mono">
             Masuk <LogIn className="w-4 h-4" />
           </Button>
-          <p className="text-center font-mono text-xs text-slate-400">
+          <p className="text-center font-mono text-xs text-slate-500">
             Belum punya akun?{" "}
-            <Link href="/register" className="text-cyber-lime underline">
+            <Link href="/register" className="text-ink underline">
               Daftar <ArrowRight className="w-3 h-3 inline" />
             </Link>
           </p>

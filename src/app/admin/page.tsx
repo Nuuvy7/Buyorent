@@ -34,20 +34,20 @@ export default function AdminDashboardPage() {
           href="/admin/items"
         >
           <div className="flex items-center justify-between">
-            <div className="w-11 h-11 rounded-2xl bg-accent/10 border border-accent/30 text-accent flex items-center justify-center">
+            <div className="w-11 h-11 rounded-2xl bg-accent/10 border border-accent/30 text-ink flex items-center justify-center">
               <Store className="w-5 h-5" />
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-accent group-hover:translate-x-1 transition-all" />
+            <ArrowRight className="w-4 h-4 text-slate-700 group-hover:text-ink group-hover:translate-x-1 transition-all" />
           </div>
           <div>
-            <h2 className="text-sm font-black text-white font-mono uppercase tracking-tight">
+            <h2 className="text-sm font-black text-ink font-mono uppercase tracking-tight">
               Moderasi Listing
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 mt-1">
               {ITEMS.length} listing di katalog • {downCount} saat ini diturunkan
             </p>
           </div>
-          <span className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-widest text-accent">
+          <span className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-widest text-ink">
             <ShieldCheck className="w-3.5 h-3.5" /> Buka Antrean Moderasi
           </span>
         </Link>
@@ -57,20 +57,20 @@ export default function AdminDashboardPage() {
           href="/admin/users"
         >
           <div className="flex items-center justify-between">
-            <div className="w-11 h-11 rounded-2xl bg-accent/10 border border-accent/30 text-accent flex items-center justify-center">
+            <div className="w-11 h-11 rounded-2xl bg-accent/10 border border-accent/30 text-ink flex items-center justify-center">
               <Users className="w-5 h-5" />
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-accent group-hover:translate-x-1 transition-all" />
+            <ArrowRight className="w-4 h-4 text-slate-700 group-hover:text-ink group-hover:translate-x-1 transition-all" />
           </div>
           <div>
-            <h2 className="text-sm font-black text-white font-mono uppercase tracking-tight">
+            <h2 className="text-sm font-black text-ink font-mono uppercase tracking-tight">
               Kelola Pengguna
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 mt-1">
               {users.length} akun terdaftar • {blocked} diblokir
             </p>
           </div>
-          <span className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-widest text-accent">
+          <span className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-widest text-ink">
             <Users className="w-3.5 h-3.5" /> Lihat, Blokir &amp; Hapus Akun
           </span>
         </Link>
@@ -78,14 +78,14 @@ export default function AdminDashboardPage() {
 
       {/* Aktivitas moderasi terakhir */}
       <section className="rounded-3xl bg-cyber-card/90 border border-cyber-border p-6 shadow-sm">
-        <h3 className="text-xs font-black text-white font-mono uppercase tracking-widest flex items-center gap-2 mb-5">
-          <History className="w-4 h-4 text-accent" />
+        <h3 className="text-xs font-black text-ink font-mono uppercase tracking-widest flex items-center gap-2 mb-5">
+          <History className="w-4 h-4 text-ink" />
           Aktivitas Moderasi Terakhir
         </h3>
         {downEntries.length === 0 ? (
           <div className="flex flex-col items-center text-center gap-3 py-8">
             <ShieldCheck className="w-8 h-8 text-signal" />
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               Belum ada listing yang diturunkan — seluruh katalog tayang.
             </p>
           </div>
@@ -97,8 +97,8 @@ export default function AdminDashboardPage() {
                 key={item.id}
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <AlertTriangle className="w-4 h-4 text-neon-orange shrink-0" />
-                  <span className="text-xs text-slate-200 font-semibold truncate max-w-[220px] sm:max-w-sm">
+                  <AlertTriangle className="w-4 h-4 text-ink shrink-0" />
+                  <span className="text-xs text-slate-700 font-semibold truncate max-w-[220px] sm:max-w-sm">
                     {item.name}
                   </span>
                   <span className="text-[10px] font-mono text-slate-500 shrink-0">
@@ -106,7 +106,7 @@ export default function AdminDashboardPage() {
                   </span>
                 </div>
                 <Link
-                  className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent hover:underline shrink-0"
+                  className="font-mono text-[10px] font-bold uppercase tracking-widest text-ink hover:underline shrink-0"
                   href="/admin/items"
                 >
                   Tinjau →

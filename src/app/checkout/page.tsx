@@ -30,7 +30,7 @@ import {
 const fmt = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 
 const inputClass =
-  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors disabled:opacity-60";
+  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2 text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors disabled:opacity-60";
 
 const inputClassArea = inputClass + " min-h-[72px] resize-none leading-relaxed";
 
@@ -74,7 +74,7 @@ function ItemRow({ entry }: { entry: Entry }) {
             {isService ? "Penyedia" : "Penjual"}: {item.seller.name}
           </span>
         </div>
-        <p className="text-xs font-bold text-white truncate mt-1">{item.name}</p>
+        <p className="text-xs font-bold text-ink truncate mt-1">{item.name}</p>
         {spot && (
           <p className="text-[10px] text-slate-500 truncate">
             COD: {spot.name}
@@ -85,9 +85,9 @@ function ItemRow({ entry }: { entry: Entry }) {
           <p className="text-[10px] text-slate-500 truncate">Menunggu ACC penyedia jasa</p>
         )}
       </div>
-      <span className="font-mono text-xs font-bold text-white shrink-0">
+      <span className="font-mono text-xs font-bold text-ink shrink-0">
         {fmt(item.price)}
-        {item.priceUnit && <span className="text-[10px] font-normal text-slate-400">{item.priceUnit}</span>}
+        {item.priceUnit && <span className="text-[10px] font-normal text-slate-500">{item.priceUnit}</span>}
       </span>
     </div>
   );
@@ -219,40 +219,40 @@ export default function CheckoutPage() {
           <div className="flex items-center gap-3">
             <Link
               aria-label="Kembali"
-              className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-cyber-surface border border-cyber-border text-slate-400 hover:text-white hover:border-accent/50 transition-all shrink-0"
+              className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-cyber-surface border border-cyber-border text-slate-500 hover:text-ink hover:border-accent/50 transition-all shrink-0"
               href="/"
             >
               <ArrowLeft className="w-4 h-4" />
             </Link>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
+                <h1 className="text-lg sm:text-xl font-extrabold text-ink tracking-tight">
                   Pembayaran &amp; Checkout
                 </h1>
                 <Badge variant="default">Transfer Manual</Badge>
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
                 Tanpa payment gateway — transfer manual ke penjual, status tercatat{" "}
-                <span className="text-slate-300">Menunggu pembayaran → Diproses → Selesai</span>.
+                <span className="text-slate-600">Menunggu pembayaran → Diproses → Selesai</span>.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2 text-xs font-mono shrink-0">
-            <span className="w-6 h-6 rounded-full bg-cyber-surface border border-cyber-border text-slate-400 flex items-center justify-center">
+            <span className="w-6 h-6 rounded-full bg-cyber-surface border border-cyber-border text-slate-500 flex items-center justify-center">
               1
             </span>
-            <span className="text-slate-400">Pilih Item</span>
-            <ChevronRight className="w-3 h-3 text-slate-600" />
+            <span className="text-slate-500">Pilih Item</span>
+            <ChevronRight className="w-3 h-3 text-slate-700" />
             <span
               className={`w-6 h-6 rounded-full flex items-center justify-center ${
                 order
-                  ? "bg-signal text-black font-bold"
+                  ? "bg-signal text-[#ffffff] font-bold"
                   : "bg-accent text-black font-bold"
               }`}
             >
               2
             </span>
-            <span className={order ? "text-signal font-semibold" : "text-white font-semibold"}>
+            <span className={order ? "text-signal font-semibold" : "text-ink font-semibold"}>
               Checkout &amp; Transfer Manual
             </span>
           </div>
@@ -268,7 +268,7 @@ export default function CheckoutPage() {
             ) : entries.length === 0 ? (
               <div className="bg-cyber-card/90 rounded-3xl border border-cyber-border p-10 flex flex-col items-center text-center gap-4">
                 <div>
-                  <h2 className="text-sm font-mono font-black text-white uppercase tracking-widest">
+                  <h2 className="text-sm font-mono font-black text-ink uppercase tracking-widest">
                     Tidak Ada Item
                   </h2>
                   <p className="text-xs text-slate-500 mt-2 max-w-sm">
@@ -287,7 +287,7 @@ export default function CheckoutPage() {
                 {/* Item dipesan */}
                 <div className="bg-cyber-card/90 rounded-3xl border border-cyber-border p-5 shadow-sm">
                   <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wide">
+                    <h3 className="text-sm font-bold text-ink font-mono uppercase tracking-wide">
                       Item Dipesan ({entries.length})
                     </h3>
                     <span className="text-[10px] font-mono text-slate-500">
@@ -301,11 +301,11 @@ export default function CheckoutPage() {
 
                 {/* Form checkout: alamat + no HP (AI_CONTEXT §6.5) */}
                 <div className="bg-cyber-card/90 rounded-3xl border border-cyber-border p-5 flex flex-col gap-4 shadow-sm">
-                  <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wide">
+                  <h3 className="text-sm font-bold text-ink font-mono uppercase tracking-wide">
                     Data Pengiriman &amp; Kontak
                   </h3>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-200" htmlFor="co-address">
+                    <label className="text-xs font-bold text-slate-700" htmlFor="co-address">
                       Alamat / Titik Serah Terima
                     </label>
                     <textarea
@@ -317,11 +317,11 @@ export default function CheckoutPage() {
                       value={address}
                     />
                     {errors.address && (
-                      <p className="text-[11px] text-rose-400">{errors.address}</p>
+                      <p className="text-[11px] text-rose-600">{errors.address}</p>
                     )}
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-200" htmlFor="co-phone">
+                    <label className="text-xs font-bold text-slate-700" htmlFor="co-phone">
                       No. HP / WhatsApp
                     </label>
                     <input
@@ -334,7 +334,7 @@ export default function CheckoutPage() {
                       type="tel"
                       value={phone}
                     />
-                    {errors.phone && <p className="text-[11px] text-rose-400">{errors.phone}</p>}
+                    {errors.phone && <p className="text-[11px] text-rose-600">{errors.phone}</p>}
                     <p className="text-[11px] text-slate-500">
                       Dipakai penjual menghubungi kamu untuk janji temu/kirim. Data tidak
                       dipublikasikan.
@@ -345,15 +345,15 @@ export default function CheckoutPage() {
                 {/* Catatan jasa (PRD §7) */}
                 {hasJasa && (
                   <div className="rounded-3xl bg-accent/5 border border-accent/25 p-5 flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/40 text-accent flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/40 text-ink flex items-center justify-center shrink-0">
                       <Truck className="w-5 h-5" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-bold text-white">
+                      <h3 className="text-sm font-bold text-ink">
                         {jasa} Jasa dalam pesanan — butuh ACC penyedia
                       </h3>
-                      <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                        Pesanan jasa masuk dengan status <b className="text-slate-200">Menunggu
+                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                        Pesanan jasa masuk dengan status <b className="text-slate-700">Menunggu
                         persetujuan</b>. Kontak penyedia (HP/WA) baru terbuka setelah penyedia
                         menyetujui pesananmu.
                       </p>
@@ -367,21 +367,21 @@ export default function CheckoutPage() {
           {/* Right: ringkasan + pembayaran */}
           <aside className="lg:col-span-5 flex flex-col gap-6 lg:sticky lg:top-28 lg:self-start pay-col">
             <div className="bg-cyber-card/90 rounded-3xl p-5 border border-cyber-border flex flex-col gap-4">
-              <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wide">
+              <h3 className="text-sm font-bold text-ink font-mono uppercase tracking-wide">
                 Ringkasan Transaksi
               </h3>
               <div className="flex flex-col gap-2 text-xs">
-                <div className="flex justify-between text-slate-400">
+                <div className="flex justify-between text-slate-500">
                   <span>
                     Subtotal Item ({barang} Barang, {jasa} Jasa)
                   </span>
-                  <span className="font-semibold text-slate-200">{fmt(subtotal)}</span>
+                  <span className="font-semibold text-slate-700">{fmt(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-slate-400">
+                <div className="flex justify-between text-slate-500">
                   <span>
                     Metode Penyerahan — {ongkir > 0 ? "Ekspedisi Reguler" : "COD Kampus Aman"}
                   </span>
-                  <span className={ongkir === 0 ? "text-signal font-semibold" : "text-slate-200"}>
+                  <span className={ongkir === 0 ? "text-signal font-semibold" : "text-slate-700"}>
                     {ongkir === 0 ? "Rp 0 (Bebas Ongkir)" : fmt(ongkir)}
                   </span>
                 </div>
@@ -389,7 +389,7 @@ export default function CheckoutPage() {
               <div className="pt-3 border-t border-cyber-border flex items-end justify-between gap-2">
                 <div>
                   <span className="text-xs text-slate-500">Total Pembayaran</span>
-                  <p className="text-xl font-mono font-black text-white leading-tight">
+                  <p className="text-xl font-mono font-black text-ink leading-tight">
                     {fmt(total)}
                   </p>
                 </div>
@@ -399,7 +399,7 @@ export default function CheckoutPage() {
               {/* Instruksi transfer manual */}
               <div className="p-4 bg-cyber-surface/60 rounded-2xl border border-cyber-border/60 flex flex-col gap-3">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-bold text-slate-200">
+                  <span className="text-xs font-bold text-slate-700">
                     Transfer Manual ke Penjual
                   </span>
                   <span className="text-[10px] font-mono font-bold text-signal">
@@ -411,12 +411,12 @@ export default function CheckoutPage() {
                     <span className="text-[10px] text-slate-500 uppercase tracking-wider block">
                       Nominal Tepat
                     </span>
-                    <span className="font-mono font-bold text-white text-base tracking-wide">
+                    <span className="font-mono font-bold text-ink text-base tracking-wide">
                       {fmt(total)}
                     </span>
                   </div>
                   <button
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyber-surface border border-cyber-border hover:border-accent/50 text-slate-300 hover:text-white font-mono text-[11px] font-bold uppercase transition-colors active:scale-95 shrink-0"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyber-surface border border-cyber-border hover:border-accent/50 text-slate-600 hover:text-ink font-mono text-[11px] font-bold uppercase transition-colors active:scale-95 shrink-0"
                     onClick={copyTotal}
                     type="button"
                   >
@@ -424,21 +424,21 @@ export default function CheckoutPage() {
                     {copied ? "Tersalin" : "Salin"}
                   </button>
                 </div>
-                <ol className="flex flex-col gap-1.5 text-[11px] text-slate-400 list-decimal list-inside leading-relaxed">
+                <ol className="flex flex-col gap-1.5 text-[11px] text-slate-500 list-decimal list-inside leading-relaxed">
                   <li>
                     Buat pesanan — status tercatat{" "}
-                    <b className="text-slate-200">Menunggu pembayaran</b>.
+                    <b className="text-slate-700">Menunggu pembayaran</b>.
                   </li>
                   <li>
                     Transfer sesuai nominal ke rekening penjual yang disampaikan lewat chat pesanan.
                   </li>
                   <li>
                     Unggah bukti transfer — penjual menandai lunas →{" "}
-                    <b className="text-slate-200">Diproses</b>, lalu{" "}
-                    <b className="text-slate-200">Selesai</b> setelah serah terima.
+                    <b className="text-slate-700">Diproses</b>, lalu{" "}
+                    <b className="text-slate-700">Selesai</b> setelah serah terima.
                   </li>
                 </ol>
-                <p className="flex items-start gap-1.5 text-[11px] text-neon-orange leading-relaxed">
+                <p className="flex items-start gap-1.5 text-[11px] text-ink leading-relaxed">
                   <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                   Jangan transfer ke rekening lain di luar kesepakatan pesanan, dan pastikan pesanan
                   sudah tercatat sebelum mengirim dana.
@@ -451,11 +451,11 @@ export default function CheckoutPage() {
                   <span className="font-mono text-xs font-bold text-signal flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4" /> PESANAN DIBUAT — {order.id}
                   </span>
-                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                  <p className="text-[11px] text-slate-600 leading-relaxed">
                     Status: <b className="text-signal">MENUNGGU PEMBAYARAN</b>. Transfer manual
                     dulu, lalu unggah bukti bayar supaya penjual bisa memverifikasi.
                   </p>
-                  <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-cyber-surface border border-accent/50 text-accent font-mono text-[11px] font-bold uppercase tracking-wider cursor-pointer hover:bg-accent/10 transition-colors self-start">
+                  <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-cyber-surface border border-accent/50 text-ink font-mono text-[11px] font-bold uppercase tracking-wider cursor-pointer hover:bg-accent/10 transition-colors self-start">
                     <Upload className="w-4 h-4" />
                     {order.paymentProof ? "Ganti Bukti Transfer" : "Unggah Bukti Transfer"}
                     <input

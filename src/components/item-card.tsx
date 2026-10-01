@@ -118,7 +118,7 @@ export function ItemCard({
         <button
           onClick={() => onToggleFavorite(item.id)}
           className={`absolute top-3 right-3 w-8 h-8 rounded-xl bg-cyber-bg/80 backdrop-blur-md border border-cyber-border flex items-center justify-center transition-colors ${
-            isFavorite ? "text-rose-500 border-rose-500/50" : "text-slate-400 hover:text-white"
+            isFavorite ? "text-rose-600 border-rose-500/50" : "text-slate-500 hover:text-ink"
           }`}
           title="Simpan ke favorit"
           type="button"
@@ -128,13 +128,13 @@ export function ItemCard({
 
         {/* Location & Rating sticker */}
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[11px] font-mono">
-          <span className="bg-cyber-surface/90 border border-cyber-border/80 text-slate-300 px-2 py-0.5 rounded-lg flex items-center gap-1">
-            <MapPin className="w-3 h-3 text-neon-orange" />
+          <span className="bg-cyber-surface/90 border border-cyber-border/80 text-slate-600 px-2 py-0.5 rounded-lg flex items-center gap-1">
+            <MapPin className="w-3 h-3 text-ink" />
             {item.location}
           </span>
           {item.rating && (
-            <span className="bg-accent/15 border border-accent/40 text-accent px-2 py-0.5 rounded-lg flex items-center gap-1">
-              <Star className="w-3 h-3 fill-accent text-accent" />
+            <span className="bg-accent/15 border border-accent/40 text-ink px-2 py-0.5 rounded-lg flex items-center gap-1">
+              <Star className="w-3 h-3 fill-accent text-ink" />
               {item.rating}
             </span>
           )}
@@ -146,7 +146,7 @@ export function ItemCard({
         <div>
           {/* Category & Tag pills */}
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] font-mono font-black tracking-widest uppercase text-accent">
+            <span className="text-[10px] font-mono font-black tracking-widest uppercase text-ink">
               {"// "}{item.categoryLabel}
             </span>
             <Badge variant="muted" className="text-[10px] font-mono">
@@ -156,14 +156,14 @@ export function ItemCard({
 
           {/* Item Title */}
           <Link href={`/items/${item.id}`} className="group/link block">
-            <h3 className="text-sm font-bold text-white line-clamp-1 group-hover/link:text-accent transition-colors flex items-center justify-between">
+            <h3 className="text-sm font-bold text-ink line-clamp-1 group-hover/link:text-ink transition-colors flex items-center justify-between">
               <span>{item.name}</span>
-              <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover/link:opacity-100 transition-opacity text-accent shrink-0" />
+              <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover/link:opacity-100 transition-opacity text-ink shrink-0" />
             </h3>
           </Link>
 
           {/* Item Description */}
-          <p className="text-xs text-slate-400 line-clamp-2 mt-1.5 leading-relaxed font-sans">
+          <p className="text-xs text-slate-500 line-clamp-2 mt-1.5 leading-relaxed font-sans">
             {item.description}
           </p>
         </div>
@@ -173,15 +173,15 @@ export function ItemCard({
           {/* Seller Profile row */}
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-mono font-bold bg-accent/20 text-accent border border-accent/40">
+              <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-mono font-bold bg-accent/20 text-ink border border-accent/40">
                 {item.seller.avatarText}
               </div>
-              <span className="font-semibold text-slate-200">{item.seller.name}</span>
+              <span className="font-semibold text-slate-700">{item.seller.name}</span>
               {item.seller.verified && (
                 <CheckCircle2 className="w-3.5 h-3.5 text-signal" />
               )}
             </div>
-            <span className="text-[11px] font-mono text-slate-400">{item.seller.campus}</span>
+            <span className="text-[11px] font-mono text-slate-500">{item.seller.campus}</span>
           </div>
 
           {/* Pricing & CTA */}
@@ -190,10 +190,10 @@ export function ItemCard({
               <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider block">
                 {isService ? "TARIF MULAI" : "HARGA PAS"}
               </span>
-              <span className="text-base font-mono font-black text-white">
+              <span className="text-base font-mono font-black text-ink">
                 Rp {item.price.toLocaleString("id-ID")}
                 {item.priceUnit && (
-                  <span className="text-xs font-normal text-slate-400 font-mono">
+                  <span className="text-xs font-normal text-slate-500 font-mono">
                     {item.priceUnit}
                   </span>
                 )}
@@ -208,7 +208,7 @@ export function ItemCard({
                 className="rounded-xl border-cyber-border hover:border-accent/50"
                 title="Tambah ke Keranjang"
               >
-                <ShoppingCart className="w-4 h-4 text-accent" />
+                <ShoppingCart className="w-4 h-4 text-ink" />
               </Button>
               <Button
                 asChild

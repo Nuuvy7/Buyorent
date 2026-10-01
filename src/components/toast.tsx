@@ -34,7 +34,7 @@ export function ToastHost() {
       }`}
       role="status"
     >
-      <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-cyber-card border border-accent/40 shadow-glow text-xs font-mono text-slate-100 max-w-[320px]">
+      <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-cyber-card border border-accent/40 shadow-glow text-xs font-mono text-ink max-w-[320px]">
         <span className="w-2 h-2 rounded-full bg-signal shrink-0" />
         <span>{msg}</span>
       </div>

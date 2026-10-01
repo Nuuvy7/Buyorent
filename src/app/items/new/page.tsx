@@ -64,7 +64,7 @@ const PLACEHOLDER = `data:image/svg+xml,${encodeURIComponent(
 )}`;
 
   const selectClass =
-  "w-full appearance-none bg-cyber-surface border border-cyber-border rounded-xl px-4 py-3 pr-10 text-xs text-slate-100 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors cursor-pointer";
+  "w-full appearance-none bg-cyber-surface border border-cyber-border rounded-xl px-4 py-3 pr-10 text-xs text-ink focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors cursor-pointer";
 
 const Select = ({
   value,
@@ -261,42 +261,42 @@ export default function PasangIklanPage() {
         {n}
       </span>
       <div>
-        <h2 className="text-base font-bold text-white">{title}</h2>
+        <h2 className="text-base font-bold text-ink">{title}</h2>
         <p className="text-xs text-slate-500">{sub}</p>
       </div>
     </div>
   );
 
   const err = (key: string) =>
-    errors[key] && <p className="text-[11px] text-rose-400 font-mono">{errors[key]}</p>;
+    errors[key] && <p className="text-[11px] text-rose-600 font-mono">{errors[key]}</p>;
 
   return (
-    <div className="min-h-screen bg-cyber-bg text-slate-100 flex flex-col font-sans cyber-grid">
+    <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
       <Navbar />
 
       <main className="w-full pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col gap-8">
         {/* Header stepper */}
         <section className="pt-6 pb-6 border-b border-cyber-border flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/40 text-accent font-mono text-[10px] font-bold uppercase tracking-wider mb-3">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/40 text-ink font-mono text-[10px] font-bold uppercase tracking-wider mb-3">
               <Plus className="w-3.5 h-3.5" />
               Portal Pasang Iklan Mahasiswa
             </span>
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-ink">
               Jual Barang Pre-loved atau Tawarkan Skill & Jasamu
             </h1>
-            <p className="text-sm text-slate-400 mt-1.5">
+            <p className="text-sm text-slate-500 mt-1.5">
               Putar kembali barang kuliah yang tak terpakai atau monetisasi keahlianmu. 100% bebas biaya komisi
               antarmahasiswa kampus.
             </p>
           </div>
           <div className="flex items-center gap-3 bg-cyber-card border border-cyber-border px-4 py-2.5 rounded-2xl shrink-0 font-mono">
-            <span className="w-8 h-8 rounded-full bg-accent/15 border border-accent/40 text-accent flex items-center justify-center text-xs font-bold">
+            <span className="w-8 h-8 rounded-full bg-accent/15 border border-accent/40 text-ink flex items-center justify-center text-xs font-bold">
               1
             </span>
             <div className="flex flex-col text-left">
               <span className="text-[10px] uppercase tracking-wider text-slate-500">Tahap Publikasi</span>
-              <span className="text-xs font-semibold text-white">
+              <span className="text-xs font-semibold text-ink">
                 {draftSaved ? "Draft Otomatis Tersimpan" : "Draft Belum Tersimpan"}
               </span>
             </div>
@@ -310,8 +310,8 @@ export default function PasangIklanPage() {
             <div className="w-16 h-16 rounded-2xl bg-signal/15 border border-signal/40 text-signal flex items-center justify-center mb-4">
               <Check className="w-8 h-8" />
             </div>
-            <h2 className="text-xl font-black text-white font-mono uppercase">Listing Tayang</h2>
-            <p className="text-sm text-slate-400 mt-2 max-w-md">
+            <h2 className="text-xl font-black text-ink font-mono uppercase">Listing Tayang</h2>
+            <p className="text-sm text-slate-500 mt-2 max-w-md">
               &quot;{form.title.trim()}&quot; sudah masuk katalog kampus dan bisa ditemukan lewat search & filter
               sekarang juga.
             </p>
@@ -364,13 +364,13 @@ export default function PasangIklanPage() {
                         </span>
                         <span
                           className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${
-                            active ? "bg-accent text-black shadow-glow" : "bg-cyber-bg text-slate-400 border border-cyber-border"
+                            active ? "bg-accent text-black shadow-glow" : "bg-cyber-bg text-slate-500 border border-cyber-border"
                           }`}
                         >
                           <Icon className="w-5 h-5" />
                         </span>
                         <span>
-                          <span className="font-bold text-white block text-sm">{title}</span>
+                          <span className="font-bold text-ink block text-sm">{title}</span>
                           <p className="text-xs text-slate-500 mt-1">{desc}</p>
                         </span>
                       </button>
@@ -396,11 +396,11 @@ export default function PasangIklanPage() {
                     addFiles(e.dataTransfer.files);
                   }}
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-cyber-card text-slate-400 border border-cyber-border flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+                  <div className="w-14 h-14 rounded-2xl bg-cyber-card text-slate-500 border border-cyber-border flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
                     <Upload className="w-7 h-7" />
                   </div>
-                  <span className="text-sm text-slate-300 font-semibold">
-                    Tarik & lepas foto di sini, atau <span className="text-accent underline underline-offset-4">jelajahi file</span>
+                  <span className="text-sm text-slate-600 font-semibold">
+                    Tarik & lepas foto di sini, atau <span className="text-ink underline underline-offset-4">jelajahi file</span>
                   </span>
                   <p className="text-xs text-slate-500 mt-1">Format JPG, PNG, atau WEBP hingga 10MB per foto.</p>
                   <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 mt-4 text-[11px] text-slate-500 font-mono">
@@ -429,13 +429,13 @@ export default function PasangIklanPage() {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img alt={p.name} className="w-full h-full object-cover" src={p.url} />
                       {i === 0 && (
-                        <span className="absolute top-1.5 left-1.5 text-[10px] bg-cyber-bg/90 text-accent px-1.5 py-0.5 rounded backdrop-blur-sm font-mono">
+                        <span className="absolute top-1.5 left-1.5 text-[10px] bg-cyber-bg/90 text-ink px-1.5 py-0.5 rounded backdrop-blur-sm font-mono">
                           Sampul
                         </span>
                       )}
                       <button
                         aria-label="Hapus foto"
-                        className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-black/60 text-[#ffffff] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                         onClick={() => setPhotos((ps) => ps.filter((x) => x.url !== p.url))}
                         type="button"
                       >
@@ -445,7 +445,7 @@ export default function PasangIklanPage() {
                   ))}
                   {Array.from({ length: 5 - photos.length }).map((_, i) => (
                     <button
-                      className="rounded-xl aspect-square bg-cyber-surface/60 border border-cyber-border flex flex-col items-center justify-center text-slate-500 hover:text-accent hover:border-accent/50 transition-colors cursor-pointer"
+                      className="rounded-xl aspect-square bg-cyber-surface/60 border border-cyber-border flex flex-col items-center justify-center text-slate-500 hover:text-ink hover:border-accent/50 transition-colors cursor-pointer"
                       key={`slot-${i}`}
                       onClick={() => fileRef.current?.click()}
                       type="button"
@@ -464,7 +464,7 @@ export default function PasangIklanPage() {
 
                 <div className="flex flex-col gap-1.5">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider" htmlFor="input-title">
+                    <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider" htmlFor="input-title">
                       Judul Barang / Jasa
                     </label>
                     <span className="text-[11px] text-slate-500 font-mono">{form.title.length} / 70 Karakter</span>
@@ -484,19 +484,19 @@ export default function PasangIklanPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider">Kategori</label>
+                    <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider">Kategori</label>
                     <Select onChange={(v) => set("kategori", v)} options={kategoriList} value={form.kategori} />
                   </div>
                   {!isService && (
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider">Kondisi Barang</label>
+                      <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider">Kondisi Barang</label>
                       <div className="flex items-center gap-2 pt-0.5">
                         {KONDISI.map((k, i) => (
                           <button
                             className={`flex-1 py-3 px-2 rounded-xl text-[11px] font-mono transition-all text-center ${
                               form.kondisi === i
                                 ? "bg-accent text-black font-bold shadow-glow"
-                                : "bg-cyber-surface border border-cyber-border text-slate-400 font-semibold hover:border-slate-500"
+                                : "bg-cyber-surface border border-cyber-border text-slate-500 font-semibold hover:border-slate-500"
                             }`}
                             key={k.label}
                             onClick={() => set("kondisi", i)}
@@ -511,13 +511,13 @@ export default function PasangIklanPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider" htmlFor="input-price">
+                  <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider" htmlFor="input-price">
                     {isService ? "Tarif Jasa Mahasiswa (Rp)" : "Harga Jual Mahasiswa (Rp)"}
                   </label>
                   <div className="flex items-center bg-cyber-surface border border-cyber-border rounded-xl px-4 focus-within:border-accent focus-within:ring-1 focus-within:ring-accent transition-colors">
                     <span className="text-lg font-bold text-slate-500 mr-2 font-mono">Rp</span>
                     <input
-                      className="w-full bg-transparent py-3 text-white text-lg font-bold focus:outline-none font-mono"
+                      className="w-full bg-transparent py-3 text-ink text-lg font-bold focus:outline-none font-mono"
                       id="input-price"
                       min={0}
                       onChange={(e) => set("price", e.target.value.replace(/[^\d]/g, ""))}
@@ -531,11 +531,11 @@ export default function PasangIklanPage() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider" htmlFor="input-desc">
+                  <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider" htmlFor="input-desc">
                     Deskripsi Lengkap & Catatan Khusus
                   </label>
                   <textarea
-                    className="w-full min-h-[110px] bg-cyber-surface border border-cyber-border rounded-xl p-4 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
+                    className="w-full min-h-[110px] bg-cyber-surface border border-cyber-border rounded-xl p-4 text-xs text-ink placeholder:text-slate-500 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
                     id="input-desc"
                     maxLength={1000}
                     onChange={(e) => set("desc", e.target.value)}
@@ -563,12 +563,12 @@ export default function PasangIklanPage() {
                 )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider">Kampus Terdaftar</label>
+                    <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider">Kampus Terdaftar</label>
                     <Select onChange={(v) => set("kampus", v)} options={KAMPUS} value={form.kampus} />
                   </div>
                   {!isService && (
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider">
+                      <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider">
                         Rekomendasi Titik Temu COD
                       </label>
                       <Select onChange={(v) => set("titik", v)} options={TITIK_COD} value={form.titik} />
@@ -578,13 +578,13 @@ export default function PasangIklanPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider" htmlFor="input-wa">
+                    <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider" htmlFor="input-wa">
                       Nomor WhatsApp Aktif
                     </label>
                     <div className="flex items-center bg-cyber-surface border border-cyber-border rounded-xl px-4 focus-within:border-accent focus-within:ring-1 focus-within:ring-accent transition-colors">
                       <span className="text-xs text-slate-500 mr-2 font-mono">+62</span>
                       <input
-                        className="w-full bg-transparent py-3 text-slate-100 text-xs focus:outline-none font-mono"
+                        className="w-full bg-transparent py-3 text-ink text-xs focus:outline-none font-mono"
                         id="input-wa"
                         onChange={(e) => set("wa", e.target.value)}
                         placeholder="812-9844-3211"
@@ -600,7 +600,7 @@ export default function PasangIklanPage() {
                     {err("wa")}
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider">
+                    <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider">
                       Pilihan Terima Pembayaran
                     </label>
                     <div className="flex flex-col gap-2 pt-0.5">
@@ -616,12 +616,12 @@ export default function PasangIklanPage() {
                         >
                           <input
                             checked={form[key]}
-                            className="w-4 h-4 accent-sky-400"
+                            className="w-4 h-4 accent-[#14213d]"
                             onChange={(e) => set(key, e.target.checked)}
                             type="checkbox"
                           />
                           <span className="flex flex-col text-left">
-                            <span className="text-[11px] font-bold text-slate-200">{title}</span>
+                            <span className="text-[11px] font-bold text-slate-700">{title}</span>
                             <span className="text-[10px] text-slate-500">{desc}</span>
                           </span>
                         </label>
@@ -665,42 +665,42 @@ export default function PasangIklanPage() {
 
               {/* Community guidelines */}
               <div className="bg-cyber-surface rounded-3xl p-6 flex flex-col gap-4 border border-cyber-border">
-                <div className="flex items-center gap-2.5 text-white text-sm font-bold font-mono uppercase">
-                  <ShieldCheck className="w-5 h-5 text-accent" />
+                <div className="flex items-center gap-2.5 text-ink text-sm font-bold font-mono uppercase">
+                  <ShieldCheck className="w-5 h-5 text-ink" />
                   Standar Etika Komunitas Kampus
                 </div>
-                <ul className="space-y-3 text-xs text-slate-400">
+                <ul className="space-y-3 text-xs text-slate-500">
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-signal shrink-0 mt-0.5" />
                     <span>
-                      <strong className="text-slate-200">Anti-Joki Tugas & Skripsi:</strong> dilarang menawarkan
+                      <strong className="text-slate-700">Anti-Joki Tugas & Skripsi:</strong> dilarang menawarkan
                       pengerjaan tugas akademik. Pelanggaran berakibat pencabutan akses KTM.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-signal shrink-0 mt-0.5" />
                     <span>
-                      <strong className="text-slate-200">Barang Ilegal & Bajakan:</strong> software crack, barang
+                      <strong className="text-slate-700">Barang Ilegal & Bajakan:</strong> software crack, barang
                       tanpa izin, atau produk ilegal dilarang tayang.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-signal shrink-0 mt-0.5" />
                     <span>
-                      <strong className="text-slate-200">Verifikasi Mahasiswa:</strong> identitas KTM aktif
+                      <strong className="text-slate-700">Verifikasi Mahasiswa:</strong> identitas KTM aktif
                       melindungi setiap transaksi di platform.
                     </span>
                   </li>
                 </ul>
                 <div className="pt-3 border-t border-cyber-border flex items-center justify-between text-[11px] text-slate-500 font-mono">
                   <span>Butuh bantuan tim moderasi?</span>
-                  <span className="text-accent hover:underline font-semibold cursor-pointer">Pusat Bantuan</span>
+                  <span className="text-ink hover:underline font-semibold cursor-pointer">Pusat Bantuan</span>
                 </div>
               </div>
 
               <div className="bg-cyber-card/90 rounded-3xl p-5 border border-cyber-border flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-neon-orange shrink-0 mt-0.5" />
-                <p className="text-[11px] text-slate-400 leading-relaxed">
+                <MapPin className="w-4 h-4 text-ink shrink-0 mt-0.5" />
+                <p className="text-[11px] text-slate-500 leading-relaxed">
                   {isService
                     ? "Untuk jasa: pesanan masuk dengan status Menunggu Persetujuan Penjual — kontak Anda baru terbuka setelah Anda menyetujui booking."
                     : "Setelah tayang, pembeli menambahkan ke keranjang dan checkout. Pembayaran dilakukan transfer manual langsung ke Anda, lalu Anda tandai lunas."}
