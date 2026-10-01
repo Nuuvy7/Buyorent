@@ -174,6 +174,10 @@ create policy "orders: update terkait" on public.orders
     buyer_id = auth.uid() or public.is_admin()
     or public.is_order_seller(public.orders.id)
   );
+-- kompensasi checkout (D5): kalau insert order_items gagal, pembeli menghapus
+-- order kosong yang tadi dibuatnya
+create policy "orders: pembeli hapus" on public.orders
+  for delete using (buyer_id = auth.uid() or public.is_admin());
 
 create policy "order_items: terkait order" on public.order_items
   for select using (

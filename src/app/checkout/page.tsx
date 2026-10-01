@@ -15,7 +15,7 @@ import {
   removeChecked,
   type CartLine,
 } from "@/lib/cart";
-import type { ItemData } from "@/components/item-card";
+import { createClient } from "@/lib/supabase/client";
 import {
   AlertTriangle,
   ArrowLeft,
@@ -36,7 +36,7 @@ const inputClass =
 const inputClassArea = inputClass + " min-h-[72px] resize-none leading-relaxed";
 
 interface Entry {
-  item: ItemData;
+  item: ItemRow;
   line?: CartLine;
 }
 
@@ -123,6 +123,9 @@ export default function CheckoutPage() {
   const [ordered, setOrdered] = useState<Entry[] | null>(null);
   const [order, setOrder] = useState<OrderRecord | null>(null);
   const [copied, setCopied] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [orderError, setOrderError] = useState<string | null>(null);
+  const [proofError, setProofError] = useState<string | null>(null);
 
   useEffect(() => {
     const p = new URLSearchParams(window.location.search);
@@ -174,47 +177,128 @@ export default function CheckoutPage() {
     return Object.keys(e).length === 0;
   };
 
-  const createOrder = () => {
-    if (!entries.length || !validate()) return;
-    const record: OrderRecord = {
-      id: `ORD-${Date.now().toString(36).toUpperCase()}`,
-      total,
-      status: "Menunggu pembayaran",
-      createdAt: new Date().toISOString(),
-      address: address.trim(),
-      phone: phone.trim(),
-      paymentProof: null,
-      items: entries.map((e) => ({
-        id: e.item.id,
-        name: e.item.name,
-        price: e.item.price, // snapshot harga saat checkout (AI_CONTEXT §8.7)
-        isService: e.item.category === "jasa",
-        serviceApproved: e.item.category === "jasa" ? false : null,
-      })),
-    };
-    // ponytail: disimpan lokal; ganti ke Supabase orders/order_items saat auth tersambung
+  // Tahap D5: INSERT orders → INSERT order_items → kosongkan cart.
+  // Kalau order_items gagal: kompensasi — hapus order yang tadi dibuat
+  // (policy "orders: pembeli hapus" — supabase/setup-admin.sql).
+  const createOrder = async () => {
+    if (creating || !entries.length || !validate()) return;
+    setCreating(true);
+    setOrderError(null);
     try {
-      const prev = JSON.parse(localStorage.getItem("buyorent_orders") || "[]");
-      localStorage.setItem("buyorent_orders", JSON.stringify([record, ...prev]));
-    } catch {}
-    if (!q?.item) removeChecked(); // keranjang dikosongkan setelah checkout
-    setOrdered(entries);
-    setOrder(record);
+      const supabase = createClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        setOrderError("Sesi berakhir — silakan masuk kembali.");
+        return;
+      }
+
+      // 1. INSERT orders
+      const { data: ordRow, error: ordErr } = await supabase
+        .from("orders")
+        .insert({
+          buyer_id: session.user.id,
+          total_price: total,
+          shipping_fee: ongkir,
+          status: "pending",
+          address: address.trim(),
+          phone: phone.trim(),
+        })
+        .select("id")
+        .single();
+      if (ordErr || !ordRow) {
+        setOrderError(`Gagal membuat pesanan: ${ordErr?.message ?? "respons kosong"}`);
+        return;
+      }
+
+      // 2. INSERT order_items (harga snapshot — AI_CONTEXT §8.7)
+      const { error: itErr } = await supabase.from("order_items").insert(
+        entries.map((e) => {
+          const isService = e.item.category === "jasa";
+          return {
+            order_id: ordRow.id,
+            item_id: e.item.id,
+            seller_id: e.item.sellerId,
+            quantity: 1,
+            price: e.item.price,
+            is_service: isService,
+            service_approved: isService ? false : null,
+            note: e.line?.brief || e.line?.note || null,
+          };
+        })
+      );
+      if (itErr) {
+        // kompensasi: buang order kosong supaya tak meninggalkan pesanan tanpa item
+        const { data: delRows } = await supabase
+          .from("orders")
+          .delete()
+          .eq("id", ordRow.id)
+          .select("id");
+        setOrderError(
+          delRows?.length
+            ? `Gagal menyimpan item pesanan (${itErr.message}) — pesanan dibatalkan, coba lagi.`
+            : `Gagal menyimpan item pesanan (${itErr.message}). Order ${ordRow.id} tersimpan tanpa item — laporkan ke admin.`
+        );
+        return;
+      }
+
+      // 3. kosongkan cart (baris terpilih) — memori lokal + baris server (D2)
+      if (!q?.item) removeChecked();
+
+      setOrder({
+        id: ordRow.id,
+        total,
+        status: "Menunggu pembayaran",
+        createdAt: new Date().toISOString(),
+        address: address.trim(),
+        phone: phone.trim(),
+        paymentProof: null,
+        items: entries.map((e) => ({
+          id: e.item.id,
+          name: e.item.name,
+          price: e.item.price, // snapshot harga saat checkout (AI_CONTEXT §8.7)
+          isService: e.item.category === "jasa",
+          serviceApproved: e.item.category === "jasa" ? false : null,
+        })),
+      });
+      setOrdered(entries);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } finally {
+      setCreating(false);
+    }
   };
 
-  const attachProof = (file: File | null) => {
+  // Upload bukti ke bucket payment-proofs (privat) → simpan path di orders.payment_proof
+  const attachProof = async (file: File | null) => {
     if (!file || !order) return;
-    const updated = { ...order, paymentProof: file.name };
-    try {
-      const all = JSON.parse(localStorage.getItem("buyorent_orders") || "[]");
-      localStorage.setItem(
-        "buyorent_orders",
-        JSON.stringify(
-          all.map((o: OrderRecord) => (o.id === order.id ? { ...o, paymentProof: file.name } : o))
-        )
-      );
-    } catch {}
-    setOrder(updated);
+    setProofError(null);
+    const supabase = createClient();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      setProofError("Sesi berakhir — silakan masuk kembali.");
+      return;
+    }
+    const safeName = file.name.replace(/[^\w.-]+/g, "_").slice(-60) || "bukti.jpg";
+    const path = `${session.user.id}/${order.id}/${Date.now()}-${safeName}`;
+    const up = await supabase.storage
+      .from("payment-proofs")
+      .upload(path, file, { contentType: file.type });
+    if (up.error) {
+      setProofError(`Gagal unggah bukti: ${up.error.message}`);
+      return;
+    }
+    const { error: updErr } = await supabase
+      .from("orders")
+      .update({ payment_proof: up.data.path })
+      .eq("id", order.id);
+    if (updErr) {
+      setProofError(`Bukti terunggah tapi gagal tercatat: ${updErr.message}`);
+      return;
+    }
+    setOrder({ ...order, paymentProof: up.data.path });
   };
 
   const copyTotal = async () => {
@@ -467,7 +551,8 @@ export default function CheckoutPage() {
               {order ? (
                 <div className="rounded-2xl border border-signal/40 bg-signal/10 p-4 flex flex-col gap-2.5">
                   <span className="font-mono text-xs font-bold text-signal flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4" /> PESANAN DIBUAT — {order.id}
+                    <CheckCircle2 className="w-4 h-4" /> PESANAN DIBUAT — #
+                    {order.id.slice(0, 8).toUpperCase()}
                   </span>
                   <p className="text-[11px] text-slate-600 leading-relaxed">
                     Status: <b className="text-signal">MENUNGGU PEMBAYARAN</b>. Transfer manual
@@ -485,8 +570,12 @@ export default function CheckoutPage() {
                   </label>
                   {order.paymentProof && (
                     <span className="font-mono text-[11px] text-signal">
-                      ✓ BUKTI TERCATAT: {order.paymentProof} — menunggu verifikasi penjual.
+                      ✓ BUKTI TERCATAT: {order.paymentProof.split("/").pop()} — menunggu verifikasi
+                      penjual.
                     </span>
+                  )}
+                  {proofError && (
+                    <span className="font-mono text-[11px] text-rose-600">{proofError}</span>
                   )}
                   <p className="text-[11px] text-slate-500 leading-relaxed">
                     {jasa > 0 &&
@@ -501,16 +590,19 @@ export default function CheckoutPage() {
                 </div>
               ) : (
                 <>
+                  {orderError && (
+                    <p className="font-mono text-[11px] text-rose-600 text-center">{orderError}</p>
+                  )}
                   <Button
                     className="w-full whitespace-normal"
-                    disabled={entries.length === 0}
+                    disabled={entries.length === 0 || creating}
                     onClick={createOrder}
                     size="lg"
                     variant="default"
                   >
                     <span className="flex items-center gap-2 font-mono">
-                      BUAT PESANAN &amp; LANJUT TRANSFER MANUAL
-                      <ArrowRight className="w-4 h-4" />
+                      {creating ? "MENYIMPAN PESANAN..." : "BUAT PESANAN & LANJUT TRANSFER MANUAL"}
+                      {!creating && <ArrowRight className="w-4 h-4" />}
                     </span>
                   </Button>
                   {entries.length > 0 && (

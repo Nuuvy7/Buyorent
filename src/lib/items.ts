@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/client";
 /** Baris `items` dari Supabase + flag moderasi (dipakai panel admin). */
 export interface ItemRow extends ItemData {
   isApproved: boolean;
+  /** uuid penjual — dibutuhkan checkout (order_items.seller_id, Tahap D5). */
+  sellerId: string;
 }
 
 /* Metadata tampilan 6 listing seed. Kolom display (categoryLabel/badge/rating/
@@ -44,6 +46,7 @@ interface ItemDbRow {
   id: string;
   category_id: number;
   category?: { name: string } | null;
+  seller_id: string;
   sub_category: string | null;
   name: string;
   description: string;
@@ -82,6 +85,7 @@ function mapRow(r: ItemDbRow): ItemRow {
         : "Pre-loved";
   return {
     id: r.id,
+    sellerId: r.seller_id,
     name: r.name,
     category,
     categoryLabel,

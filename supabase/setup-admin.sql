@@ -13,3 +13,10 @@ where email = 'GANTI_DENGAN_EMAIL_KAMU';
 drop policy if exists "users: hapus admin" on public.users;
 create policy "users: hapus admin" on public.users
   for delete using (public.is_admin());
+
+-- 3) Izinkan pembeli menghapus order kosong miliknya sendiri — kompensasi
+--    checkout Tahap D5 (insert order_items gagal → order dibuang).
+--    (Jalankan ulang skrip ini kalau sudah pernah dijalankan sebelumnya.)
+drop policy if exists "orders: pembeli hapus" on public.orders;
+create policy "orders: pembeli hapus" on public.orders
+  for delete using (buyer_id = auth.uid() or public.is_admin());
