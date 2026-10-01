@@ -9,6 +9,7 @@ import { ToastHost, toast } from "@/components/toast";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import { saveAccount } from "@/lib/users";
+import { flushGuestCart } from "@/lib/cart";
 import { ArrowRight, UserPlus } from "lucide-react";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -82,6 +83,7 @@ export default function RegisterPage() {
       role: "user",
       ktm: false,
     });
+    void flushGuestCart(); // tulis buffer cart tamu ke server (Tahap D2)
     toast("Pendaftaran berhasil — selamat datang di Buyorent!");
     router.push("/");
     router.refresh();

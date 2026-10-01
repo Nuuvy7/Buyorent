@@ -9,6 +9,7 @@ import { ToastHost, toast } from "@/components/toast";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import { saveAccount } from "@/lib/users";
+import { flushGuestCart } from "@/lib/cart";
 import { ArrowRight, LogIn, ShieldAlert } from "lucide-react";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -92,6 +93,7 @@ export default function LoginPage() {
       role: profile?.role === "admin" ? "admin" : "user",
       ktm: profile?.ktm ?? false,
     });
+    void flushGuestCart(); // tulis buffer cart tamu ke server (Tahap D2)
     toast("Berhasil masuk — selamat datang kembali");
     router.push("/");
     router.refresh();

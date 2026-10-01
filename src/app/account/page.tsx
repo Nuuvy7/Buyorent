@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ToastHost, toast } from "@/components/toast";
 import { getAccount, saveAccount, clearAccount, type AccountRecord } from "@/lib/users";
+import { resetCart } from "@/lib/cart";
 import { createClient } from "@/lib/supabase/client";
 import {
   ArrowRight,
@@ -85,6 +86,7 @@ export default function AccountPage() {
   const handleLogout = async () => {
     await createClient().auth.signOut();
     clearAccount();
+    resetCart(); // state cart lokal — user berikutnya mulai bersih (Tahap D2)
     toast("Anda telah keluar dari akun");
     router.push("/");
     router.refresh();
