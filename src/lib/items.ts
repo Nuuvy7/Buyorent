@@ -68,12 +68,24 @@ function mapRow(r: ItemDbRow): ItemRow {
       : r.condition === "like-new"
         ? "Like New"
         : "Pre-loved");
+  // Listing baru (D4): sub_category menyimpan pilihan KATEGORI form Pasang
+  // Iklan → tampil sebagai label kategori (ikut pencarian home). Listing seed
+  // memakai sub_category sebagai detail varian (Cakupan) — kasus meta dulu.
+  const categoryLabel =
+    meta?.categoryLabel ?? r.sub_category ?? (category === "jasa" ? "Jasa" : "Barang");
+  const subLabel = meta
+    ? r.sub_category ?? (category === "jasa" ? "Baru Tayang" : "Pre-loved")
+    : category === "jasa"
+      ? "Baru Tayang"
+      : r.condition === "like-new"
+        ? "Like New"
+        : "Pre-loved";
   return {
     id: r.id,
     name: r.name,
     category,
-    categoryLabel: meta?.categoryLabel ?? (category === "jasa" ? "Jasa" : "Barang"),
-    subLabel: r.sub_category ?? (category === "jasa" ? "Baru Tayang" : "Pre-loved"),
+    categoryLabel,
+    subLabel,
     condition: r.condition ?? undefined,
     description: r.description,
     price: Number(r.price),
@@ -92,15 +104,6 @@ function mapRow(r: ItemDbRow): ItemRow {
   };
 }
 
-/* Listing hasil "Pasang Iklan" selama Tahap D — hidup selama sesi browser.
-   D4 mengganti ini dengan INSERT + upload foto ke bucket listing-images. */
-const sessionItems: ItemRow[] = [];
-
-export function pushLocalItem(item: ItemRow) {
-  sessionItems.unshift(item);
-  emitStore();
-}
-
 /**
  * Ambil listing. `approvedOnly` = hanya yang tayang (katalog publik).
  * Tanpa opsi = semua yang terlihat menurut RLS (admin/penjual melihat punyanya).
@@ -113,16 +116,13 @@ export async function fetchItems(opts?: { approvedOnly?: boolean }): Promise<Ite
     .order("id", { ascending: true });
   if (error) {
     console.error("fetchItems:", error.message);
-    return [...sessionItems];
+    return [];
   }
-  const rows = ((data ?? []) as unknown as ItemDbRow[]).map(mapRow);
-  return [...sessionItems, ...rows];
+  return ((data ?? []) as unknown as ItemDbRow[]).map(mapRow);
 }
 
 /** Satu listing by id (RLS: publik hanya melihat yang tayang; penjual/admin juga punyanya). */
 export async function fetchItem(id: string): Promise<ItemRow | null> {
-  const local = sessionItems.find((s) => s.id === id);
-  if (local) return local;
   const { data, error } = await createClient()
     .from("items")
     .select("*, category:categories(name)")
@@ -144,12 +144,6 @@ export async function setItemApproved(
   id: string,
   approved: boolean
 ): Promise<{ ok: boolean; error?: string }> {
-  const local = sessionItems.find((s) => s.id === id);
-  if (local) {
-    local.isApproved = approved;
-    emitStore();
-    return { ok: true };
-  }
   const { data, error } = await createClient()
     .from("items")
     .update({ is_approved: approved })

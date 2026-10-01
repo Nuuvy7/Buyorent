@@ -10,7 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ItemCard } from "@/components/item-card";
 import type { ItemData } from "@/components/item-card";
-import { pushLocalItem } from "@/lib/items";
+import { createClient } from "@/lib/supabase/client";
+import { getAccount } from "@/lib/users";
 import {
   Plus,
   Package,
@@ -21,7 +22,6 @@ import {
   ChevronDown,
   MapPin,
   ShieldCheck,
-  Save,
   Send,
   ImageOff,
 } from "lucide-react";
@@ -58,7 +58,6 @@ const TITIK_COD = [
   "Stasiun Sudirman / BNI City",
 ];
 
-const DRAFT_KEY = "buyorent_listing_draft";
 const PLACEHOLDER = `data:image/svg+xml,${encodeURIComponent(
   "<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'><rect width='100%' height='100%' fill='%230f1624'/><text x='50%' y='50%' fill='%2338bdf8' font-family='monospace' font-size='14' text-anchor='middle'>FOTO BELUM ADA</text></svg>"
 )}`;
@@ -115,19 +114,10 @@ const EMPTY: Draft = {
   bayarTransfer: true,
 };
 
-function loadDraft(): Draft {
-  try {
-    const raw = localStorage.getItem(DRAFT_KEY);
-    if (raw) return { ...EMPTY, ...JSON.parse(raw) };
-  } catch {
-    /* draft rusak — pakai default */
-  }
-  return EMPTY;
-}
-
 interface Photo {
   url: string;
   name: string;
+  file: File;
 }
 
 export default function PasangIklanPage() {
@@ -135,7 +125,7 @@ export default function PasangIklanPage() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [postedId, setPostedId] = useState<string | null>(null);
-  const [draftSaved, setDraftSaved] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
@@ -153,24 +143,6 @@ export default function PasangIklanPage() {
     return () => ctx.revert();
   }, []);
 
-  // run pertama = restore draft; run berikutnya = autosave.
-  // Guard ref: StrictMode menjalankan efek dobel — tanpa guard, autosave
-  // menimpa storage dengan form kosong selesai restore sempat membacanya.
-  const booted = useRef(false);
-  useEffect(() => {
-    if (!booted.current) {
-      booted.current = true;
-      setForm(loadDraft());
-      return;
-    }
-    try {
-      localStorage.setItem(DRAFT_KEY, JSON.stringify(form));
-      setDraftSaved(true);
-    } catch {
-      /* storage penuh/di-block — draft hilang, form tetap jalan */
-    }
-  }, [form]);
-
   const set = <K extends keyof Draft>(key: K, value: Draft[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
 
@@ -186,7 +158,7 @@ export default function PasangIklanPage() {
     const ok = list
       .filter((f) => f.type.startsWith("image/") && f.size <= 10 * 1024 * 1024)
       .slice(0, 5 - photos.length)
-      .map((f) => ({ url: URL.createObjectURL(f), name: f.name }));
+      .map((f) => ({ url: URL.createObjectURL(f), name: f.name, file: f }));
     setPhotos((p) => [...p, ...ok].slice(0, 5));
   };
 
@@ -201,34 +173,73 @@ export default function PasangIklanPage() {
     return Object.keys(e).length === 0;
   };
 
-  const submit = () => {
-    if (!validate()) return;
-    const item: ItemData = {
-      id: `local-${Date.now()}`,
-      name: form.title.trim(),
-      category: form.type,
-      categoryLabel: form.kategori,
-      subLabel: isService ? "Baru Tayang" : KONDISI[form.kondisi].label,
-      ...(isService ? {} : { condition: KONDISI[form.kondisi].condition }),
-      description: form.desc.trim(),
-      price: priceNum,
-      ...(isService ? { priceUnit: "/sesi" } : {}),
-      imageUrl: photos[0].url,
-      badge: isService ? "Jasa Baru" : KONDISI[form.kondisi].label,
-      location: isService ? form.kampus : form.titik,
-      seller: {
-        name: "Daffa R.",
-        avatarText: "D",
-        campus: form.kampus,
-        verified: true,
-      },
-    };
-    // ponytail: masih session-local — D4 mengganti ini dengan insert Supabase
-    // (items) + upload foto ke bucket listing-images.
-    pushLocalItem({ ...item, isApproved: true });
-    localStorage.removeItem(DRAFT_KEY);
-    setPostedId(item.id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  // Tahap D4: upload foto pertama ke bucket listing-images → INSERT items
+  // (RLS insert: seller_id = auth.uid; moderasi pasca-tayang via admin).
+  const submit = async () => {
+    if (submitting || !validate()) return;
+    setSubmitting(true);
+    try {
+      const supabase = createClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        setErrors({ submit: "Sesi berakhir — silakan masuk kembali." });
+        return;
+      }
+
+      // 1. upload foto pertama (kolom items.image_url hanya muat satu foto)
+      const photo = photos[0];
+      const ext =
+        (photo.name.split(".").pop() ?? "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+      const path = `${session.user.id}/${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2, 8)}.${ext}`;
+      const up = await supabase.storage
+        .from("listing-images")
+        .upload(path, photo.file, { contentType: photo.file.type });
+      if (up.error) {
+        setErrors({ submit: `Gagal unggah foto: ${up.error.message}` });
+        return;
+      }
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("listing-images").getPublicUrl(up.data.path);
+
+      // 2. profil penjual dari tabel users (nama & status KTM asli)
+      const acc = await getAccount();
+
+      // 3. insert baris items (categories: 1 = Barang, 2 = Jasa)
+      const { data: row, error } = await supabase
+        .from("items")
+        .insert({
+          seller_id: session.user.id,
+          category_id: isService ? 2 : 1,
+          sub_category: form.kategori,
+          name: form.title.trim(),
+          description: form.desc.trim(),
+          price: priceNum,
+          condition: isService ? null : KONDISI[form.kondisi].condition,
+          location: isService ? form.kampus : form.titik,
+          image_url: publicUrl,
+          seller_name: acc?.name || session.user.email || "Mahasiswa",
+          seller_campus: form.kampus,
+          seller_ktm: acc?.ktm ?? false,
+          is_approved: true,
+        })
+        .select("id")
+        .single();
+      if (error || !row) {
+        setErrors({
+          submit: `Gagal menerbitkan listing: ${error?.message ?? "respons kosong"}`,
+        });
+        return;
+      }
+      setPostedId(row.id);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const resetAll = () => {
@@ -296,9 +307,7 @@ export default function PasangIklanPage() {
             </span>
             <div className="flex flex-col text-left">
               <span className="text-[10px] uppercase tracking-wider text-slate-500">Tahap Publikasi</span>
-              <span className="text-xs font-semibold text-ink">
-                {draftSaved ? "Draft Otomatis Tersimpan" : "Draft Belum Tersimpan"}
-              </span>
+              <span className="text-xs font-semibold text-ink">Siap Tayang Langsung</span>
             </div>
             <span className="w-2 h-2 rounded-full bg-signal animate-pulse ml-2" />
           </div>
@@ -632,18 +641,20 @@ export default function PasangIklanPage() {
               </div>
 
               {/* Action bar */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-2">
-                <Button
-                  className="font-mono"
-                  onClick={() => setDraftSaved(true)}
-                  size="lg"
-                  variant="secondary"
-                >
-                  <Save className="w-4 h-4" /> SIMPAN SEBAGAI DRAFT
-                </Button>
-                <Button className="font-mono" onClick={submit} size="lg" variant="default">
-                  <Send className="w-4 h-4" /> TAYANGKAN LISTING (GRATIS)
-                </Button>
+              <div className="flex flex-col gap-3 pt-2">
+                {err("submit")}
+                <div className="flex sm:justify-end">
+                  <Button
+                    className="font-mono w-full sm:w-auto"
+                    disabled={submitting}
+                    onClick={submit}
+                    size="lg"
+                    variant="default"
+                  >
+                    <Send className="w-4 h-4" />{" "}
+                    {submitting ? "MENERBITKAN..." : "TAYANGKAN LISTING (GRATIS)"}
+                  </Button>
+                </div>
               </div>
             </div>
 
