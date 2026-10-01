@@ -9,7 +9,7 @@ import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ItemCard } from "@/components/item-card";
-import { ITEMS, getTakedowns } from "@/lib/items";
+import { fetchItems, fetchItem, type ItemRow } from "@/lib/items";
 import { addToCart } from "@/lib/cart";
 import {
   Home,
@@ -68,15 +68,27 @@ const HANDOVER = [
 ];
 
 export default function ItemDetailPage({ params }: { params: { id: string } }) {
-  const item = ITEMS.find((i) => i.id === params.id);
   const router = useRouter();
   const [favorite, setFavorite] = useState(false);
   const [handover, setHandover] = useState("cod");
   const [activeTab, setActiveTab] = useState<"spec" | "history" | "reviews">("spec");
-  const [isDown, setIsDown] = useState(false);
+  const [item, setItem] = useState<ItemRow | null>(null);
+  const [allItems, setAllItems] = useState<ItemRow[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setIsDown(!!getTakedowns()[params.id]);
+    let alive = true;
+    Promise.all([fetchItem(params.id), fetchItems({ approvedOnly: true })]).then(
+      ([found, catalog]) => {
+        if (!alive) return;
+        setItem(found);
+        setAllItems(catalog);
+        setLoaded(true);
+      }
+    );
+    return () => {
+      alive = false;
+    };
   }, [params.id]);
 
   // BELI / BOOKING → langsung halaman pembayaran; + KERANJANG → keranjang dulu
@@ -94,7 +106,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
   const rightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!leftRef.current || !rightRef.current) return;
+    if (!loaded || !leftRef.current || !rightRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         [leftRef.current, rightRef.current],
@@ -103,14 +115,28 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
       );
     });
     return () => ctx.revert();
-  }, []);
+  }, [loaded]);
 
+  if (!loaded) {
+    return (
+      <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
+        <Navbar />
+        <main className="w-full pt-32 pb-20 max-w-7xl mx-auto px-4 flex-1 font-mono text-xs text-slate-500 uppercase tracking-widest text-center">
+          Memuat listing…
+        </main>
+        <Footer />
+      </div>
+    );
+  }
   if (!item) return notFound();
 
   const isService = item.category === "jasa";
+  // Listing tayang/diturunkan ada di flag RLS — yang non-tayang hanya terlihat
+  // penjual/admin, jadi banner "Diturunkan Admin" hanya mungkin untuk mereka.
+  const isDown = !item.isApproved;
   const related = [
-    ...ITEMS.filter((i) => i.category === item.category && i.id !== item.id),
-    ...ITEMS.filter((i) => i.category !== item.category && i.id !== item.id),
+    ...allItems.filter((i) => i.category === item.category && i.id !== item.id),
+    ...allItems.filter((i) => i.category !== item.category && i.id !== item.id),
   ].slice(0, 4);
 
   // ponytail: derive health % from condition string; move to real DB fields when Supabase items land

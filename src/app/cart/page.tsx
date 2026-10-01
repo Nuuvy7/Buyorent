@@ -8,7 +8,8 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ITEMS } from "@/lib/items";
+import { fetchItems, type ItemRow } from "@/lib/items";
+import { useStoreTick } from "@/lib/store";
 import {
   COD_SPOTS,
   useCart,
@@ -58,11 +59,7 @@ const inputClass =
   "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2 text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
 
 /* Satu baris item di keranjang: checkbox penjual, foto + stiker, sub-panel COD/brief */
-function LineCard({ line }: { line: CartLine }) {
-  const item = ITEMS.find((i) => i.id === line.id);
-  // ponytail: item hasil pasang iklan (local-*) hilang dari ITEMS setelah reload
-  // sebelum Supabase tersambung — barisnya dilewati, tidak dihitung total.
-  if (!item) return null;
+function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
   const isService = item.category === "jasa";
 
   return (
@@ -201,9 +198,26 @@ export default function CartPage() {
   const [delivery, setDelivery] = useState<"cod" | "kurir">("cod");
   const rootRef = useRef<HTMLDivElement>(null);
 
+  // katalog Supabase untuk resolusi baris keranjang (tick = muat ulang setelah aksi lain)
+  const tick = useStoreTick();
+  const [catalog, setCatalog] = useState<ItemRow[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    fetchItems({ approvedOnly: true }).then((rows) => {
+      if (!alive) return;
+      setCatalog(rows);
+      setLoaded(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [tick]);
+
   const rows = lines
-    .map((l) => ({ line: l, item: ITEMS.find((i) => i.id === l.id) }))
-    .filter((r): r is { line: CartLine; item: (typeof ITEMS)[number] } => !!r.item);
+    .map((l) => ({ line: l, item: catalog.find((i) => i.id === l.id) }))
+    .filter((r): r is { line: CartLine; item: ItemRow } => !!r.item);
   const sel = rows.filter((r) => r.line.checked);
   const barang = sel.filter((r) => r.item.category === "barang").length;
   const jasa = sel.length - barang;
@@ -275,7 +289,11 @@ export default function CartPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left: item & persiapan serah terima */}
           <div className="lg:col-span-7 flex flex-col gap-6 cart-col">
-            {rows.length === 0 ? (
+            {!loaded ? (
+              <div className="bg-cyber-card/90 rounded-3xl border border-cyber-border p-10 text-center font-mono text-xs text-slate-500 uppercase tracking-widest">
+                Memuat keranjang…
+              </div>
+            ) : rows.length === 0 ? (
               <div className="bg-cyber-card/90 rounded-3xl border border-cyber-border p-10 flex flex-col items-center text-center gap-4">
                 <div className="w-14 h-14 rounded-2xl bg-cyber-surface border border-cyber-border flex items-center justify-center">
                   <ShoppingCart className="w-6 h-6 text-slate-500" />
@@ -322,7 +340,7 @@ export default function CartPage() {
                 </div>
 
                 {rows.map((r) => (
-                  <LineCard key={r.line.id} line={r.line} />
+                  <LineCard item={r.item} key={r.line.id} line={r.line} />
                 ))}
 
                 {/* Circular economy */}

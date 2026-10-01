@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/toast";
 import {
   getUsers,
-  saveUsers,
   getAccount,
+  setUserBlocked,
+  deleteUser,
   type AccountRecord,
   type UserRecord,
 } from "@/lib/users";
@@ -35,8 +36,8 @@ export default function AdminUsersPage() {
   const [expanded, setExpanded] = useState<string | null>(null);
 
   const refresh = () => {
-    setUsers(getUsers());
-    setSelf(getAccount());
+    void getUsers().then(setUsers);
+    void getAccount().then(setSelf);
   };
 
   useEffect(() => {
@@ -60,7 +61,11 @@ export default function AdminUsersPage() {
       }
     : null;
 
-  const merged = [...(selfRow ? [selfRow] : []), ...users];
+  // getUsers (RLS) ikut mengembalikan baris sendiri — buang duplikatnya.
+  const merged = [
+    ...(selfRow ? [selfRow] : []),
+    ...users.filter((u) => !self || u.email !== self.email),
+  ];
 
   const rows = merged.filter((u) => {
     if (filter === "active" && u.isBlocked) return false;
@@ -72,9 +77,13 @@ export default function AdminUsersPage() {
     return true;
   });
 
-  const toggleBlock = (u: UserRecord) => {
+  const toggleBlock = async (u: UserRecord) => {
     if (u.id === "self") return;
-    saveUsers(users.map((x) => (x.id === u.id ? { ...x, isBlocked: !x.isBlocked } : x)));
+    const r = await setUserBlocked(u.id, !u.isBlocked);
+    if (!r.ok) {
+      toast(`Gagal memperbarui: ${r.error}`);
+      return;
+    }
     toast(
       u.isBlocked
         ? `Blokir ${u.name} dicabut — akun bisa login kembali`
@@ -82,13 +91,17 @@ export default function AdminUsersPage() {
     );
   };
 
-  const removeUser = (u: UserRecord) => {
+  const removeUser = async (u: UserRecord) => {
     if (u.id === "self") return;
     const ok = window.confirm(
       `Hapus permanen akun ${u.name} (${u.email})?\n\nTindakan ini tidak bisa dibatalkan.`
     );
     if (!ok) return;
-    saveUsers(users.filter((x) => x.id !== u.id));
+    const r = await deleteUser(u.id);
+    if (!r.ok) {
+      toast(`Gagal menghapus: ${r.error}`);
+      return;
+    }
     toast(`Akun ${u.name} dihapus permanen`);
   };
 

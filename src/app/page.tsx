@@ -6,7 +6,8 @@ import { Navbar } from "@/components/navbar";
 import { HeroBanner } from "@/components/hero-banner";
 import { FilterSidebar } from "@/components/filter-sidebar";
 import { ItemCard } from "@/components/item-card";
-import { ITEMS, getTakedowns } from "@/lib/items";
+import { fetchItems, type ItemRow } from "@/lib/items";
+import { useStoreTick } from "@/lib/store";
 import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,12 +29,22 @@ export default function CatalogExplorePage() {
   const [conditionFilter, setConditionFilter] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
-  // listing yang diturunkan admin tidak boleh tampil di katalog
-  const [takedowns, setTakedowns] = useState<Record<string, string>>({});
+  // katalog dari Supabase (hanya listing tayang); tick = muat ulang setelah aksi di halaman lain
+  const tick = useStoreTick();
+  const [items, setItems] = useState<ItemRow[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setTakedowns(getTakedowns());
-  }, []);
+    let alive = true;
+    fetchItems({ approvedOnly: true }).then((rows) => {
+      if (!alive) return;
+      setItems(rows);
+      setLoaded(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [tick]);
 
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -51,9 +62,7 @@ export default function CatalogExplorePage() {
   };
 
   const filteredItems = useMemo(() => {
-    return ITEMS.filter((item) => {
-      // Moderasi admin: listing diturunkan disembunyikan dari katalog
-      if (takedowns[item.id]) return false;
+    return items.filter((item) => {
       // Category filter
       if (activeTab !== "all" && item.category !== activeTab) {
         return false;
@@ -81,7 +90,7 @@ export default function CatalogExplorePage() {
       if (sortBy === "price-desc") return b.price - a.price;
       return 0;
     });
-  }, [activeTab, conditionFilter, searchQuery, budgetFilter, sortBy, takedowns]);
+  }, [items, activeTab, conditionFilter, searchQuery, budgetFilter, sortBy]);
 
   // GSAP stagger animation on card list updates
   useEffect(() => {
@@ -97,7 +106,7 @@ export default function CatalogExplorePage() {
     }
   }, [activeTab, conditionFilter, budgetFilter, sortBy, searchQuery]);
 
-  const baseItems = ITEMS.filter((i) => !takedowns[i.id]);
+  const baseItems = items;
   const barangCount = baseItems.filter((i) => i.category === "barang").length;
   const jasaCount = baseItems.filter((i) => i.category === "jasa").length;
 
@@ -235,7 +244,11 @@ export default function CatalogExplorePage() {
 
             {/* Item Card Grid with Ref */}
             <div ref={gridRef}>
-              {filteredItems.length === 0 ? (
+              {!loaded ? (
+                <div className="bg-cyber-card/60 rounded-3xl p-16 text-center border border-cyber-border font-mono text-xs text-slate-500 uppercase tracking-widest">
+                  Memuat katalog kampus…
+                </div>
+              ) : filteredItems.length === 0 ? (
                 <div className="bg-cyber-card/60 rounded-3xl p-16 text-center border border-cyber-border flex flex-col items-center justify-center font-mono">
                   <SearchX className="w-12 h-12 text-slate-700 mb-3" />
                   <p className="text-sm font-bold text-slate-600 uppercase">

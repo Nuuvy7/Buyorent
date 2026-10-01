@@ -2,25 +2,22 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ITEMS, getTakedowns, fmtDownTime, type Takedowns } from "@/lib/items";
+import { fetchItems, type ItemRow } from "@/lib/items";
 import { getUsers, type UserRecord } from "@/lib/users";
 import { useStoreTick } from "@/lib/store";
 import { ArrowRight, Store, Users, History, ShieldCheck, AlertTriangle } from "lucide-react";
 
 export default function AdminDashboardPage() {
   const tick = useStoreTick();
-  const [takedowns, setTakedowns] = useState<Takedowns>({});
+  const [items, setItems] = useState<ItemRow[]>([]);
   const [users, setUsers] = useState<UserRecord[]>([]);
 
   useEffect(() => {
-    setTakedowns(getTakedowns());
-    setUsers(getUsers());
+    fetchItems().then(setItems);
+    void getUsers().then(setUsers);
   }, [tick]);
 
-  const downEntries = Object.entries(takedowns)
-    .map(([id, at]) => ({ item: ITEMS.find((i) => i.id === id), at }))
-    .filter((e): e is { item: (typeof ITEMS)[number]; at: string } => !!e.item)
-    .sort((a, b) => b.at.localeCompare(a.at));
+  const downEntries = items.filter((i) => !i.isApproved);
 
   const downCount = downEntries.length;
   const blocked = users.filter((u) => u.isBlocked).length;
@@ -44,7 +41,7 @@ export default function AdminDashboardPage() {
               Moderasi Listing
             </h2>
             <p className="text-xs text-slate-500 mt-1">
-              {ITEMS.length} listing di katalog • {downCount} saat ini diturunkan
+              {items.length} listing di katalog • {downCount} saat ini diturunkan
             </p>
           </div>
           <span className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-widest text-ink">
@@ -91,7 +88,7 @@ export default function AdminDashboardPage() {
           </div>
         ) : (
           <ul className="flex flex-col gap-3">
-            {downEntries.map(({ item, at }) => (
+            {downEntries.map((item) => (
               <li
                 className="flex flex-wrap items-center justify-between gap-3 bg-cyber-surface border border-cyber-border rounded-xl px-4 py-3"
                 key={item.id}
@@ -102,7 +99,7 @@ export default function AdminDashboardPage() {
                     {item.name}
                   </span>
                   <span className="text-[10px] font-mono text-slate-500 shrink-0">
-                    Diturunkan {fmtDownTime(at)}
+                    Diturunkan admin
                   </span>
                 </div>
                 <Link

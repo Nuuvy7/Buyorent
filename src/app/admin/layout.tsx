@@ -7,11 +7,10 @@ import gsap from "gsap";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ToastHost, toast } from "@/components/toast";
-import { ITEMS, getTakedowns, type Takedowns } from "@/lib/items";
+import { fetchItems, type ItemRow } from "@/lib/items";
 import {
   getUsers,
   getAccount,
-  saveAccount,
   type AccountRecord,
   type UserRecord,
 } from "@/lib/users";
@@ -80,14 +79,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const tick = useStoreTick();
   const [account, setAccount] = useState<AccountRecord | null>(null);
-  const [takedowns, setTakedowns] = useState<Takedowns>({});
+  const [items, setItems] = useState<ItemRow[]>([]);
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [syncing, setSyncing] = useState(false);
+  const [accLoaded, setAccLoaded] = useState(false);
 
   const refresh = () => {
-    setAccount(getAccount());
-    setTakedowns(getTakedowns());
-    setUsers(getUsers());
+    void getAccount().then((acc) => {
+      setAccount(acc);
+      setAccLoaded(true);
+    });
+    fetchItems().then(setItems);
+    void getUsers().then(setUsers);
   };
 
   useEffect(() => {
@@ -106,9 +109,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return () => ctx.revert();
   }, []);
 
-  // Role gate (AI_CONTEXT §4): moderasi & kelola user = admin saja.
-  // ponytail: gate localStorage sebagai demo — ganti cek session Supabase saat auth aktif.
-  if (account && account.role !== "admin") {
+  if (!accLoaded) {
+    // render pertama: profil masih dimuat dari tabel users — shell kosong
+    return (
+      <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
+        <Navbar />
+        <main className="flex-1" />
+        <Footer />
+      </div>
+    );
+  }
+
+  // Role gate (HANDOFF §5): moderasi & kelola user = admin saja, role dari
+  // tabel users. Promosi admin via supabase/setup-admin.sql (Tahap D3).
+  if (!account || account.role !== "admin") {
     return (
       <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
         <Navbar />
@@ -122,22 +136,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </h1>
             <p className="text-xs text-slate-500 leading-relaxed max-w-md">
               Halaman moderasi listing dan kelola pengguna hanya untuk akun dengan role{" "}
-              <span className="text-ink font-bold">admin</span>. Aktifkan Mode Admin di
-              halaman Kelola Akun untuk melihat panel ini (demo sebelum Supabase auth
-              tersambung).
+              <span className="text-ink font-bold">admin</span>. Tim pengelola mempromosikan
+              akun lewat skrip{" "}
+              <span className="text-ink font-bold">supabase/setup-admin.sql</span> di SQL
+              Editor Supabase, lalu muat ulang halaman ini.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mt-2">
-              <button
-                className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-signal text-[#ffffff] font-mono text-xs font-extrabold uppercase tracking-wider shadow-glow-signal active:scale-[0.98] transition-transform"
-                onClick={() => {
-                  saveAccount({ ...account, role: "admin" });
-                  refresh();
-                  toast("Mode Admin aktif — panel moderasi terbuka");
-                }}
-                type="button"
-              >
-                Aktifkan Mode Admin (Demo)
-              </button>
               <Link
                 className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-cyber-surface border border-cyber-border text-slate-600 hover:text-ink hover:border-slate-500 font-mono text-xs text-center uppercase tracking-wider transition-colors"
                 href="/account"
@@ -153,19 +157,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  if (!account) {
-    // render pertama (SSR + hydrasi) belum baca localStorage — tampilkan shell kosong
-    return (
-      <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
-        <Navbar />
-        <main className="flex-1" />
-        <Footer />
-      </div>
-    );
-  }
-
-  const total = ITEMS.length;
-  const downCount = Object.keys(takedowns).length;
+  const total = items.length;
+  const downCount = items.filter((i) => !i.isApproved).length;
   const live = total - downCount;
   const verified = users.filter((u) => u.ktm && !u.isBlocked).length;
 
@@ -175,7 +168,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       setSyncing(false);
       refresh();
       emitStore();
-      toast("Data moderasi dimuat ulang dari penyimpanan lokal");
+      toast("Data moderasi dimuat ulang dari Supabase");
     }, 700);
   };
 
@@ -199,7 +192,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </span>
                 <span className="text-slate-700 text-xs">•</span>
                 <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest">
-                  Sumber: katalog &amp; pengguna lokal
+                  Sumber: Supabase (katalog &amp; pengguna)
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-black text-ink tracking-tight font-mono uppercase">

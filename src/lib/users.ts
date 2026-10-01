@@ -1,4 +1,10 @@
 import { emitStore } from "@/lib/store";
+import { createClient } from "@/lib/supabase/client";
+
+// Sumber data profil & pengguna = tabel users Supabase (Tahap D3).
+// Jembatan localStorage lama sudah dihapus total (nol key tersisa di Tahap D).
+// Role: pembacaan dari kolom role — promosi admin hanya lewat SQL
+// (supabase/setup-admin.sql), karena RLS WITH CHECK memblokir promosi diri.
 
 export interface AccountRecord {
   name: string;
@@ -21,70 +27,160 @@ export interface UserRecord {
   createdAt: string;
 }
 
-const ACCOUNT_KEY = "buyorent_account";
-const USERS_KEY = "buyorent_users";
-
-const DEFAULT_ACCOUNT: AccountRecord = {
-  name: "Daffa Rizky",
-  email: "daffa.rizky@ui.ac.id",
-  phone: "081234567800",
-  campus: "UI Salemba",
-  role: "user",
-  ktm: true,
-};
-
-// Data dummy pengguna (konsisten dengan ITEMS katalog) — diganti tabel users
-// Supabase saat auth tersambung.
-const SEED_USERS: UserRecord[] = [
-  { id: "usr-1001", name: "Rizky Maulana", email: "rizky.m@ui.ac.id", phone: "081234567801", campus: "UI Salemba", role: "user", ktm: true, isBlocked: false, createdAt: "12 Agu 2026" },
-  { id: "usr-1002", name: "Nadia Safira", email: "nadia.s@trisakti.ac.id", phone: "081234567802", campus: "Universitas Trisakti", role: "user", ktm: true, isBlocked: false, createdAt: "20 Agu 2026" },
-  { id: "usr-1003", name: "Alifia Putri", email: "alifia.putri@gmail.com", phone: "081234567803", campus: "SMAN 28 Jakarta", role: "user", ktm: false, isBlocked: false, createdAt: "5 Sep 2026" },
-  { id: "usr-1004", name: "Dimas Kurniawan", email: "dimas.k@gmail.com", phone: "081234567804", campus: "Universitas Mercu Buana", role: "user", ktm: true, isBlocked: true, createdAt: "11 Sep 2026" },
-  { id: "usr-1005", name: "Sultan Doven", email: "sultan.admin@ui.ac.id", phone: "081234567805", campus: "UI Salemba", role: "admin", ktm: true, isBlocked: false, createdAt: "1 Jul 2026" },
-];
-
-function read<T>(key: string, fallback: T): T {
-  if (typeof window === "undefined") return fallback;
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
-    return fallback;
-  }
+interface UserDbRow {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  campus: string | null;
+  ktm: boolean;
+  role: "user" | "admin";
+  is_blocked?: boolean;
+  created_at?: string;
 }
 
-export function getAccount(): AccountRecord {
-  return read<AccountRecord>(ACCOUNT_KEY, DEFAULT_ACCOUNT);
+const ACC_COLS = "name, email, phone, campus, role, ktm";
+const BULAN = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+
+function fmtDate(iso: string | undefined): string {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? "—" : `${d.getDate()} ${BULAN[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-export function saveAccount(acc: AccountRecord) {
-  try {
-    localStorage.setItem(ACCOUNT_KEY, JSON.stringify(acc));
-  } catch {
-    /* abaikan */
+function mapAcc(r: {
+  name: string;
+  email: string;
+  phone: string | null;
+  campus: string | null;
+  role: "user" | "admin";
+  ktm: boolean;
+}): AccountRecord {
+  return {
+    name: r.name ?? "",
+    email: r.email,
+    phone: r.phone ?? "",
+    campus: r.campus ?? "",
+    role: r.role === "admin" ? "admin" : "user",
+    ktm: !!r.ktm,
+  };
+}
+
+function mapUser(r: UserDbRow): UserRecord {
+  return {
+    id: r.id,
+    name: r.name ?? "",
+    email: r.email,
+    phone: r.phone ?? "",
+    campus: r.campus ?? "",
+    role: r.role === "admin" ? "admin" : "user",
+    ktm: !!r.ktm,
+    isBlocked: !!r.is_blocked,
+    createdAt: fmtDate(r.created_at),
+  };
+}
+
+// Cache profil per-uid: hindari query doang tiap mount; invalidasi lewat uid
+// berbeda (ganti sesi) atau clearAccount() saat keluar.
+let accCache: { uid: string; acc: AccountRecord } | null = null;
+
+/** Profil sesi berjalan; null bila belum login / baris belum terbentuk. */
+export async function getAccount(): Promise<AccountRecord | null> {
+  const supabase = createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session) return null;
+  if (accCache && accCache.uid === session.user.id) return accCache.acc;
+  const { data, error } = await supabase
+    .from("users")
+    .select(ACC_COLS)
+    .eq("id", session.user.id)
+    .maybeSingle();
+  if (error) {
+    console.error("getAccount:", error.message);
+    return null;
   }
+  if (!data) return null;
+  const acc = mapAcc(data as unknown as Parameters<typeof mapAcc>[0]);
+  accCache = { uid: session.user.id, acc };
+  return acc;
+}
+
+/**
+ * Simpan profil (name/email/phone/campus). Role TIDAK lewat sini — promosi
+ * admin via supabase/setup-admin.sql (RLS WITH CHECK menolak promosi diri).
+ */
+export async function saveAccount(
+  acc: AccountRecord
+): Promise<{ ok: boolean; error?: string }> {
+  const supabase = createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session) return { ok: false, error: "Tidak ada sesi — silakan masuk lagi" };
+  const { error } = await supabase
+    .from("users")
+    .update({
+      name: acc.name,
+      email: acc.email,
+      phone: acc.phone,
+      campus: acc.campus,
+    })
+    .eq("id", session.user.id);
+  if (error) return { ok: false, error: error.message };
+  accCache = { uid: session.user.id, acc: { ...acc } };
   emitStore();
+  return { ok: true };
 }
 
-// Dipakai tombol keluar (Tahap C): hapus jembatan localStorage setelah signOut.
+/** Dipakai tombol keluar: buang cache profil setelah signOut. */
 export function clearAccount() {
-  try {
-    localStorage.removeItem(ACCOUNT_KEY);
-  } catch {
-    /* abaikan */
-  }
+  accCache = null;
   emitStore();
 }
 
-export function getUsers(): UserRecord[] {
-  return read<UserRecord[]>(USERS_KEY, SEED_USERS);
+/**
+ * Daftar pengguna (panel admin). RLS: admin melihat semua — selain itu hanya
+ * baris sendiri; panel admin sudah di-gate role di layout.
+ */
+export async function getUsers(): Promise<UserRecord[]> {
+  const { data, error } = await createClient()
+    .from("users")
+    .select("id, name, email, phone, campus, ktm, role, is_blocked, created_at")
+    .order("created_at", { ascending: true });
+  if (error) {
+    console.error("getUsers:", error.message);
+    return [];
+  }
+  return ((data ?? []) as unknown as UserDbRow[]).map(mapUser);
 }
 
-export function saveUsers(users: UserRecord[]) {
-  try {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  } catch {
-    /* abaikan */
-  }
+/** Blokir / buka blokir akun (admin — RLS update sendiri atau admin). */
+export async function setUserBlocked(
+  id: string,
+  blocked: boolean
+): Promise<{ ok: boolean; error?: string }> {
+  const { data, error } = await createClient()
+    .from("users")
+    .update({ is_blocked: blocked })
+    .eq("id", id)
+    .select("id");
+  if (error) return { ok: false, error: error.message };
+  if (!data?.length) return { ok: false, error: "Tidak ada izin (butuh role admin)" };
   emitStore();
+  return { ok: true };
+}
+
+/** Hapus permanen akun (butuh policy "users: hapus admin" — setup-admin.sql). */
+export async function deleteUser(id: string): Promise<{ ok: boolean; error?: string }> {
+  const { data, error } = await createClient()
+    .from("users")
+    .delete()
+    .eq("id", id)
+    .select("id");
+  if (error) return { ok: false, error: error.message };
+  if (!data?.length) return { ok: false, error: "Tidak ada izin (butuh role admin)" };
+  emitStore();
+  return { ok: true };
 }
