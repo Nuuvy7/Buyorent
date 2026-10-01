@@ -2,6 +2,7 @@
 docs/
 .hermes/
 AI_CONTEXT.md
+HANDOFF.md
 
 # Dependencies
 node_modules/
