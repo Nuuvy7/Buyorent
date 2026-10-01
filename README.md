@@ -82,7 +82,7 @@ Buyorent menyatukan jual beli barang bekas sekaligus sewa jasa dalam satu platfo
 - *Palet Light Mode Coolors* — navy `#14213d` teks/border, oranye `#fca311` aksen, putih & abu permukaan
 - *Responsive + Hamburger* — menu compact saat layar sempit, tanpa overflow di 360–390px
 - *Toast Notifikasi* — umpan balik aksi moderasi/kelola akun ala dashboard
-- *Gate Role Admin* — halaman admin terbatas untuk role `admin` (peran dari sesi Supabase + penyimpanan lokal)
+- *Gate Role Admin* — halaman admin terbatas untuk role `admin` (role asli dari tabel `users`, dicek via sesi Supabase)
 - *Badge Keranjang Live* — jumlah keranjang dari store bersama di semua halaman
 
 ---
@@ -99,7 +99,7 @@ UI Library   : React 18
 Styling      : Tailwind CSS + komponen ala shadcn/ui (cva)
 Animation    : GSAP 3
 Icons        : Lucide React
-State        : useSyncExternalStore + localStorage
+State        : Supabase (katalog, cart, users, orders) + event bus antar-halaman
 ```
 
 #### Backend (Supabase)
@@ -110,7 +110,7 @@ Auth         : Supabase Auth (email + password) — login/register + middleware 
 Database     : PostgreSQL 6 tabel + RLS via is_admin() SECURITY DEFINER (skema di supabase/schema.sql)
 Storage      : Supabase Storage (2 bucket: foto listing & bukti transfer)
 Koneksi      : Client @supabase/ssr aktif; butuh variabel NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_ANON_KEY
-Belum        : Migrasi data katalog/keranjang/pesanan dari localStorage ke tabel Supabase
+Data         : katalog, cart, profil & checkout tersambung Supabase — nol kunci localStorage tersisa (Tahap D)
 ```
 
 #### DevOps & Tools
@@ -129,7 +129,6 @@ Type Check   : TypeScript (tsc --noEmit)
 | *Tailwind CSS + cva* | Utility-first, variant tombol/badge rapi tanpa UI library berat |
 | *GSAP* | Animasi performa tinggi dengan kontrol timeline & cleanup per halaman |
 | *Supabase* | Auth, database, dan storage dalam satu layanan — cocok untuk proyek kuliah |
-| *localStorage* | Data sementara antar halaman sebelum Supabase tersambung, tanpa backend |
 
 ### Dependencies Utama
 
@@ -164,14 +163,14 @@ Type Check   : TypeScript (tsc --noEmit)
 │  └────┬────┘ └────┬────┘ └────┬─────┘ └─────┬─────┘  │
 │       └───────────┴───────────┴─────────────┘        │
 │                       │                              │
-│            localStorage (katalog & pesanan)           │
+│            klien Supabase (@supabase/ssr)             │
 └──────────────────────────────────────────────────────┘
                        │  login/register + sesi cookie
                        ▼
 ┌──────────────────────────────────────────────────────┐
 │                    SUPABASE                          │
 │  Auth & middleware aktif • PostgreSQL • RLS • Storage │
-│  (data katalog menyusul dari localStorage)           │
+│  (katalog, cart, users, orders — migrasi Tahap D)    │
 └──────────────────────────────────────────────────────┘
 ```
 
@@ -269,7 +268,9 @@ src/
 ```
 supabase/schema.sql               # Skema 6 tabel + RLS + bucket (SQL Editor)
 supabase/fix-*.sql                # Patch kebijakan RLS
+supabase/setup-admin.sql          # Buat akun admin pertama
 scripts/check-db.mjs              # Verifikasi koneksi & skema
+scripts/seed-items.mjs            # Seed listing contoh (login email/password)
 ```
 
 ---
@@ -366,7 +367,7 @@ npx tsc --noEmit # Type check
 
 1. Klik chip profil di navbar (atau baris profil di menu mobile)
 2. Perbarui nama, email, no. HP, kampus → *SIMPAN PERUBAHAN*
-3. Pindah peran *Pengguna / Admin* pada kartu Akses & Peran
+3. Peran *Pengguna / Admin* tampil sebagai info saja — perubahan role diatur tim pengelola lewat database
 
 #### Panel Admin
 
@@ -378,7 +379,7 @@ npx tsc --noEmit # Type check
 
 ## 📌 Status Proyek
 
-**Fase**: Frontend lengkap + backend Supabase tahap awal — katalog, detail, pasang iklan, keranjang, checkout, kelola akun, panel admin, serta auth Supabase (login/register/middleware/skema/RLS) sudah masuk; type-check & lint hijau. Migrasi data dari localStorage ke database menyusul.
+**Fase**: Frontend lengkap + backend Supabase tersambung — auth (login/register/middleware), katalog, keranjang, profil, dan checkout (orders + order_items + upload foto/bukti) baca-tulis ke database; nol kunci `localStorage` tersisa. Type-check & lint hijau. Menyusul: halaman pesanan (tahap E), testing menyeluruh, deploy.
 
 | Route | Halaman | Status |
 |-------|---------|--------|
@@ -396,7 +397,6 @@ npx tsc --noEmit # Type check
 
 **Belum dibangun**:
 
-- Migrasi data katalog/keranjang/pesanan dari `localStorage` ke tabel Supabase (skema & RLS sudah siap di repo)
 - Halaman riwayat pesanan (`/orders`, `/seller/orders`)
 - Payment gateway — sesuai PRD **tidak dipakai** (transfer manual)
 - Deploy
