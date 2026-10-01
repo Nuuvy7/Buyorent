@@ -2,7 +2,7 @@ import { emitStore } from "@/lib/store";
 import { createClient } from "@/lib/supabase/client";
 
 // Sumber data profil & pengguna = tabel users Supabase (Tahap D3).
-// Jembatan localStorage buyorent_account / buyorent_users sudah dihapus.
+// Jembatan localStorage lama sudah dihapus total (nol key tersisa di Tahap D).
 // Role: pembacaan dari kolom role — promosi admin hanya lewat SQL
 // (supabase/setup-admin.sql), karena RLS WITH CHECK memblokir promosi diri.
 
