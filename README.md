@@ -34,7 +34,7 @@
 | **Fauzunnajah Attamam** | Backend Developer | [chfjuna76-sudo](https://github.com/chfjuna76-sudo) |
 | **Sultan Doven Hagi** | Database Developer | [Doveins](https://github.com/Doveins) |
 | **Muhammad Salim Umar** | Developer OPS | [umarrr643](https://github.com/umarrr643) |
-| **Wildan Haibatur Rohim** | Assistant UI/UX Designer | - |
+| **Wildan Haibatur Rohim** | Assistant UI/UX Designer | [haibatur](https://github.com/haibatur) |
 
 
 Guru pengajar: **Raihan Ibrahim Saputra**
