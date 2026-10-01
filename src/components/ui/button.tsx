@@ -3,24 +3,24 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-50 select-none active:scale-[0.98]",
+  "inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyber-border disabled:pointer-events-none disabled:opacity-50 select-none active:scale-[0.98]",
   {
     variants: {
       variant: {
         default:
-          "bg-signal text-black hover:bg-signal/90 shadow-glow-signal font-extrabold uppercase tracking-wider",
+          "bg-signal text-[#ffffff] hover:bg-signal/90 shadow-glow-signal font-extrabold uppercase tracking-wider",
         neon:
-          "bg-transparent border border-accent text-accent hover:bg-accent/10 shadow-glow uppercase font-mono tracking-wider",
+          "bg-transparent border border-accent text-ink hover:bg-accent/10 shadow-glow uppercase font-mono tracking-wider",
         cyan:
           "bg-accent text-black hover:bg-accent/90 shadow-glow font-extrabold uppercase tracking-wider",
         orange:
           "bg-gradient-to-r from-neon-orange to-amber-500 text-black hover:opacity-95 shadow-glow-orange font-bold",
         secondary:
-          "bg-cyber-surface border border-cyber-border text-slate-200 hover:border-slate-500 hover:bg-cyber-light/40",
+          "bg-cyber-surface border border-cyber-border text-slate-700 hover:border-slate-500 hover:bg-cyber-light/40",
         ghost:
-          "hover:bg-cyber-card text-slate-300 hover:text-white",
+          "hover:bg-cyber-card text-slate-600 hover:text-ink",
         link:
-          "text-accent underline-offset-4 hover:underline",
+          "text-ink underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2 rounded-xl",

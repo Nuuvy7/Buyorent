@@ -1,40 +1,34 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { Button } from "@/components/ui/button";
 import { ToastHost, toast } from "@/components/toast";
+import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import { saveAccount } from "@/lib/users";
-import { KeyRound, LogIn, ShieldAlert } from "lucide-react";
-
-const inputClass =
-  "w-full bg-cyber-surface border border-cyber-border rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
+import { ArrowRight, LogIn, ShieldAlert } from "lucide-react";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const inputClass =
+  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
 
 export default function LoginPage() {
   const rootRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState<{ [k: string]: string }>({});
+  const [formError, setFormError] = useState<string | null>(null);
   const [blocked, setBlocked] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".auth-anim",
-        { y: 22, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, stagger: 0.09, ease: "power2.out" }
-      );
-    }, rootRef);
-    return () => ctx.revert();
+    if (!rootRef.current) return;
+    const els = rootRef.current.querySelectorAll('[data-acct="section"]');
+    gsap.set(els, { y: 30, opacity: 0 });
+    gsap.to(els, { y: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: "power2.out", delay: 0.1 });
   }, []);
 
   // middleware melempar ?blokir=1 setelah signOut paksa — tampilkan pesan
@@ -44,29 +38,32 @@ export default function LoginPage() {
     }
   }, []);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    if (!EMAIL_RE.test(email.trim())) {
-      setError("Format email tidak valid");
-      return;
-    }
-    if (password.length < 6) {
-      setError("Password minimal 6 karakter");
-      return;
-    }
+  function validate() {
+    const e: { [k: string]: string } = {};
+    if (!EMAIL_RE.test(form.email)) e.email = "Format email tidak valid.";
+    if (form.password.length < 6) e.password = "Password minimal 6 karakter.";
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  }
+
+  async function handleSubmit(ev: React.FormEvent) {
+    ev.preventDefault();
+    setFormError(null);
+    if (!validate()) return;
     setLoading(true);
+
     const supabase = createClient();
     const { data, error: err } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
-      password,
+      email: form.email.trim(),
+      password: form.password,
     });
+
     if (err || !data.user) {
       setLoading(false);
-      setError(
+      setFormError(
         err?.message?.includes("Invalid login credentials")
-          ? "Email atau password salah"
-          : err?.message ?? "Gagal masuk, coba lagi"
+          ? "Email atau password salah."
+          : err?.message ?? "Gagal masuk, coba lagi."
       );
       return;
     }
@@ -83,13 +80,13 @@ export default function LoginPage() {
       await supabase.auth.signOut();
       setLoading(false);
       setBlocked(true);
-      setError("Akun Anda diblokir oleh admin");
+      setFormError("Akun Anda diblokir oleh admin.");
       return;
     }
 
     saveAccount({
       name: profile?.name ?? "",
-      email: profile?.email ?? email.trim(),
+      email: profile?.email ?? form.email.trim(),
       phone: profile?.phone ?? "",
       campus: profile?.campus ?? "",
       role: profile?.role === "admin" ? "admin" : "user",
@@ -98,86 +95,65 @@ export default function LoginPage() {
     toast("Berhasil masuk — selamat datang kembali");
     router.push("/");
     router.refresh();
-  };
+  }
 
   return (
-    <div className="min-h-screen bg-cyber-bg text-slate-100 flex flex-col font-sans cyber-grid" ref={rootRef}>
-      <Navbar />
-
-      <main className="w-full flex-1 pt-32 pb-20 px-4 sm:px-6">
-        <div className="max-w-md mx-auto flex flex-col gap-6">
-          <div className="text-center flex flex-col gap-2 auth-anim">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-accent">
-              {"// "}Terminal Akses
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-black text-white font-mono uppercase tracking-tight">
-              Masuk ke Buyorent
-            </h1>
-            <p className="text-xs text-slate-400 leading-relaxed max-w-sm mx-auto">
-              Gunakan email dan password yang terdaftar. Semua akun bisa beli sekaligus jual.
-            </p>
-          </div>
-
-          <form
-            className="rounded-3xl bg-cyber-card/90 border border-cyber-border p-6 sm:p-8 shadow-sm flex flex-col gap-4 auth-anim"
-            onSubmit={handleLogin}
-          >
-            {blocked && (
-              <div className="flex items-start gap-2 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-[11px] leading-relaxed">
-                <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5" />
-                Akun Anda diblokir oleh admin dan tidak dapat masuk. Hubungi admin kampus
-                jika menurut Anda ini keliru.
-              </div>
-            )}
-
-            <label className="flex flex-col gap-1.5">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
-                Email
-              </span>
-              <input
-                autoCapitalize="none"
-                className={inputClass}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="nama@kampus.ac.id"
-                type="email"
-                value={email}
-              />
-            </label>
-
-            <label className="flex flex-col gap-1.5">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
-                Password
-              </span>
-              <input
-                className={inputClass}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Minimal 6 karakter"
-                type="password"
-                value={password}
-              />
-            </label>
-
-            {error && <span className="text-[11px] text-rose-400">{error}</span>}
-
-            <Button className="w-full font-mono mt-1" disabled={loading} type="submit" variant="default">
-              <LogIn className="w-3.5 h-3.5" />
-              {loading ? "Memproses…" : "Masuk"}
-            </Button>
-
-            <p className="text-[11px] text-slate-500 text-center">
-              Belum punya akun?{" "}
-              <Link className="text-accent hover:underline font-bold" href="/register">
-                Daftar di sini
-              </Link>
-            </p>
-          </form>
-
-          <p className="text-[10px] text-slate-600 text-center font-mono uppercase tracking-widest flex items-center justify-center gap-1.5 auth-anim">
-            <KeyRound className="w-3 h-3" /> Sesi dikelola Supabase Auth — tanpa verifikasi email
-          </p>
+    <div ref={rootRef} className="min-h-screen bg-cyber-bg cyber-grid relative overflow-hidden">
+      <main className="relative z-10 max-w-md mx-auto px-6 py-24">
+        <div data-acct="section" className="text-center mb-8">
+          <p className="font-mono text-ink text-xs">{"// akses akun"}</p>
+          <h1 className="font-black text-3xl uppercase text-ink mt-2">Masuk</h1>
         </div>
+        <form
+          data-acct="section"
+          onSubmit={handleSubmit}
+          className="rounded-3xl bg-cyber-card border border-cyber-border p-6 space-y-4"
+        >
+          {blocked && (
+            <p className="flex items-start gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-[11px] font-mono leading-relaxed">
+              <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5" />
+              Akun Anda diblokir oleh admin dan tidak dapat masuk. Hubungi admin kampus
+              jika menurut Anda ini keliru.
+            </p>
+          )}
+          {formError && (
+            <p className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-[11px] font-mono">
+              {formError}
+            </p>
+          )}
+          <label className="block">
+            <span className="font-mono text-[10px] text-slate-500">EMAIL</span>
+            <input
+              type="email"
+              placeholder="nama@kampus.ac.id"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              className={inputClass}
+            />
+            {errors.email && <p className="text-[11px] text-red-600 font-mono mt-1">{errors.email}</p>}
+          </label>
+          <label className="block">
+            <span className="font-mono text-[10px] text-slate-500">PASSWORD</span>
+            <input
+              type="password"
+              placeholder="Minimal 6 karakter"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              className={inputClass}
+            />
+            {errors.password && <p className="text-[11px] text-red-600 font-mono mt-1">{errors.password}</p>}
+          </label>
+          <Button type="submit" variant="cyan" className="w-full font-mono" disabled={loading}>
+            {loading ? "Memproses…" : <>Masuk <LogIn className="w-4 h-4" /></>}
+          </Button>
+          <p className="text-center font-mono text-xs text-slate-500">
+            Belum punya akun?{" "}
+            <Link href="/register" className="text-ink underline">
+              Daftar <ArrowRight className="w-3 h-3 inline" />
+            </Link>
+          </p>
+        </form>
       </main>
-
       <Footer />
       <ToastHost />
     </div>

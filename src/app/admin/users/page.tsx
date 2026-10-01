@@ -108,7 +108,7 @@ export default function AdminUsersPage() {
               className={`px-3.5 py-1.5 rounded-full font-mono text-xs font-bold whitespace-nowrap transition-all ${
                 filter === p.key
                   ? "bg-accent text-black shadow-glow"
-                  : "bg-cyber-card text-slate-400 hover:text-white border border-cyber-border"
+                  : "bg-cyber-card text-slate-500 hover:text-ink border border-cyber-border"
               }`}
               key={p.key}
               onClick={() => setFilter(p.key)}
@@ -121,7 +121,7 @@ export default function AdminUsersPage() {
         <div className="relative min-w-[260px]">
           <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-cyber-card border border-cyber-border text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors"
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-cyber-card border border-cyber-border text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors"
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Cari nama atau email pengguna…"
             type="text"
@@ -149,7 +149,7 @@ export default function AdminUsersPage() {
                 <tr>
                   <td className="px-5 py-10 text-center text-slate-500" colSpan={6}>
                     <span className="inline-flex flex-col items-center gap-2">
-                      <SearchX className="w-8 h-8 text-slate-600" />
+                      <SearchX className="w-8 h-8 text-slate-700" />
                       Tidak ada pengguna yang cocok.
                     </span>
                   </td>
@@ -164,14 +164,14 @@ export default function AdminUsersPage() {
                           className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-black text-xs shrink-0 ${
                             u.role === "admin"
                               ? "bg-signal/15 border border-signal/40 text-signal"
-                              : "bg-accent/15 border border-accent/40 text-accent"
+                              : "bg-accent/15 border border-accent/40 text-ink"
                           }`}
                         >
                           {u.name.charAt(0)}
                         </span>
                         <span className="min-w-0">
                           <span className="flex items-center gap-2">
-                            <span className="font-semibold text-slate-100 truncate">
+                            <span className="font-semibold text-ink truncate">
                               {u.name}
                             </span>
                             {u.id === "self" && (
@@ -184,7 +184,7 @@ export default function AdminUsersPage() {
                         </span>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 text-slate-400">{u.campus}</td>
+                    <td className="px-5 py-3.5 text-slate-500">{u.campus}</td>
                     <td className="px-5 py-3.5">
                       <Badge variant={u.role === "admin" ? "default" : "muted"}>
                         {u.role === "admin" ? "Admin" : "Pengguna"}
@@ -193,7 +193,7 @@ export default function AdminUsersPage() {
                     <td className="px-5 py-3.5">
                       <span
                         className={`flex items-center gap-1 font-semibold ${
-                          u.ktm ? "text-signal" : "text-neon-orange"
+                          u.ktm ? "text-signal" : "text-ink"
                         }`}
                       >
                         {u.ktm ? (
@@ -208,7 +208,7 @@ export default function AdminUsersPage() {
                       <span
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider border ${
                           u.isBlocked
-                            ? "bg-rose-500/10 border-rose-500/40 text-rose-400"
+                            ? "bg-rose-500/10 border-rose-500/40 text-rose-600"
                             : "bg-signal/10 border-signal/40 text-signal"
                         }`}
                       >
@@ -240,7 +240,7 @@ export default function AdminUsersPage() {
                               className={
                                 u.isBlocked
                                   ? "text-signal hover:bg-signal/10"
-                                  : "text-neon-orange hover:bg-neon-orange/10"
+                                  : "text-ink hover:bg-neon-orange/10"
                               }
                               onClick={() => toggleBlock(u)}
                               size="sm"
@@ -257,7 +257,7 @@ export default function AdminUsersPage() {
                               )}
                             </Button>
                             <Button
-                              className="text-rose-400 hover:bg-rose-500/10"
+                              className="text-rose-600 hover:bg-rose-500/10"
                               onClick={() => removeUser(u)}
                               size="sm"
                               variant="ghost"
@@ -277,25 +277,25 @@ export default function AdminUsersPage() {
                             <span className="block text-slate-500 uppercase text-[9px] tracking-widest mb-1">
                               ID Akun
                             </span>
-                            <span className="text-slate-200">{u.id}</span>
+                            <span className="text-slate-700">{u.id}</span>
                           </div>
                           <div>
                             <span className="block text-slate-500 uppercase text-[9px] tracking-widest mb-1">
                               No. HP / WA
                             </span>
-                            <span className="text-slate-200">{u.phone}</span>
+                            <span className="text-slate-700">{u.phone}</span>
                           </div>
                           <div>
                             <span className="block text-slate-500 uppercase text-[9px] tracking-widest mb-1">
                               Email Login
                             </span>
-                            <span className="text-slate-200">{u.email}</span>
+                            <span className="text-slate-700">{u.email}</span>
                           </div>
                           <div>
                             <span className="block text-slate-500 uppercase text-[9px] tracking-widest mb-1">
                               Bergabung
                             </span>
-                            <span className="text-slate-200">{u.createdAt}</span>
+                            <span className="text-slate-700">{u.createdAt}</span>
                           </div>
                         </div>
                       </td>
@@ -310,7 +310,7 @@ export default function AdminUsersPage() {
           <span>
             Menampilkan {rows.length} dari {merged.length} akun
           </span>
-          <span className="text-slate-600">
+          <span className="text-slate-700">
             Blokir = tidak bisa login • Hapus = permanen
           </span>
         </div>

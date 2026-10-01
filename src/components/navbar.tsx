@@ -69,14 +69,14 @@ export function Navbar() {
           {/* Logo & Campus badge */}
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent flex items-center justify-center text-accent font-mono font-black text-lg shadow-glow group-hover:scale-105 transition-transform">
+              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent flex items-center justify-center text-ink font-mono font-black text-lg shadow-glow group-hover:scale-105 transition-transform">
                 ⚡
               </div>
               <div className="flex flex-col">
-                <span className="text-base sm:text-xl font-mono font-extrabold tracking-tight text-white flex items-center gap-1">
-                  BUYORENT<span className="text-accent">.SYS</span>
+                <span className="text-base sm:text-xl font-mono font-extrabold tracking-tight text-ink flex items-center gap-1">
+                  BUYORENT<span className="text-ink">.SYS</span>
                 </span>
-                <span className="hidden sm:block text-[9px] font-mono tracking-widest text-slate-400 uppercase -mt-1">
+                <span className="hidden sm:block text-[9px] font-mono tracking-widest text-slate-500 uppercase -mt-1">
                   Campus Circular Economy
                 </span>
               </div>
@@ -84,10 +84,10 @@ export function Navbar() {
 
             {/* Campus Selector */}
             <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-cyber-surface border border-cyber-border hover:border-slate-500 transition-colors cursor-pointer">
-              <MapPin className="w-3.5 h-3.5 text-neon-orange" />
+              <MapPin className="w-3.5 h-3.5 text-ink" />
               <div className="flex flex-col text-left">
-                <span className="text-[9px] font-mono text-slate-400 uppercase">Campus Hub</span>
-                <span className="text-xs font-bold text-slate-200 flex items-center gap-1 font-mono">
+                <span className="text-[9px] font-mono text-slate-500 uppercase">Campus Hub</span>
+                <span className="text-xs font-bold text-slate-700 flex items-center gap-1 font-mono">
                   UI SALEMBA
                   <ChevronDown className="w-3 h-3 text-slate-500" />
                 </span>
@@ -101,10 +101,10 @@ export function Navbar() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-signal opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-signal"></span>
             </span>
-            <span className="text-slate-400">NETWORK:</span>
+            <span className="text-slate-500">NETWORK:</span>
             <span className="text-signal font-semibold">420+ DEALS CLOSED</span>
-            <span className="text-slate-600">|</span>
-            <span className="text-slate-300">EST. SAVINGS: Rp 48.5M</span>
+            <span className="text-slate-700">|</span>
+            <span className="text-slate-600">EST. SAVINGS: Rp 48.5M</span>
           </div>
 
           {/* Right Action buttons */}
@@ -112,10 +112,10 @@ export function Navbar() {
             {/* Cart Button */}
             <Link
               href="/cart"
-              className="relative p-2.5 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 text-slate-300 hover:text-white transition-all flex items-center justify-center"
+              className="relative p-2.5 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 text-slate-600 hover:text-ink transition-all flex items-center justify-center"
               title="Keranjang Belanja"
             >
-              <ShoppingCart className="w-4 h-4 text-accent" />
+              <ShoppingCart className="w-4 h-4 text-ink" />
               {cart.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-neon-orange text-black font-mono font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center shadow-glow-orange">
                   {cart.length}
@@ -125,7 +125,7 @@ export function Navbar() {
 
             {/* Notification Bell */}
             <button
-              className="hidden sm:flex relative p-2.5 rounded-xl bg-cyber-surface border border-cyber-border hover:border-slate-500 text-slate-300 hover:text-white transition-all items-center justify-center"
+              className="hidden sm:flex relative p-2.5 rounded-xl bg-cyber-surface border border-cyber-border hover:border-slate-500 text-slate-600 hover:text-ink transition-all items-center justify-center"
               title="Notifikasi"
               type="button"
             >
@@ -144,7 +144,7 @@ export function Navbar() {
                   {initial}
                 </div>
                 <div className="flex flex-col text-left">
-                  <span className="text-xs font-bold text-slate-200 leading-tight">{displayName}</span>
+                  <span className="text-xs font-bold text-slate-700 leading-tight">{displayName}</span>
                   {account.ktm && (
                     <span className="text-[10px] font-mono text-signal flex items-center gap-0.5 leading-none">
                       <CheckCircle2 className="w-2.5 h-2.5" /> KTM_VERIFIED
@@ -154,7 +154,7 @@ export function Navbar() {
               </Link>
             ) : (
               <Link
-                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 text-slate-200 hover:text-white transition-all font-mono text-xs font-bold uppercase tracking-wider"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 text-slate-700 hover:text-ink transition-all font-mono text-xs font-bold uppercase tracking-wider"
                 href="/login"
                 title="Masuk ke akun"
               >
@@ -177,7 +177,7 @@ export function Navbar() {
 
             {/* Hamburger: elemen navbar terlalu padat di layar kecil */}
             <button
-              className="md:hidden p-2.5 rounded-xl bg-cyber-surface border border-cyber-border text-slate-300 hover:text-white hover:border-accent/50 transition-all flex items-center justify-center"
+              className="md:hidden p-2.5 rounded-xl bg-cyber-surface border border-cyber-border text-slate-600 hover:text-ink hover:border-accent/50 transition-all flex items-center justify-center"
               onClick={() => setMenuOpen((v) => !v)}
               aria-label="Buka menu"
               aria-expanded={menuOpen}
@@ -192,16 +192,16 @@ export function Navbar() {
         {menuOpen && (
           <div className="md:hidden border-t border-cyber-border py-4 flex flex-col gap-3 font-mono text-xs">
             <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border">
-              <MapPin className="w-3.5 h-3.5 text-neon-orange shrink-0" />
-              <span className="text-slate-400 uppercase text-[9px]">Campus Hub</span>
-              <span className="text-slate-200 font-bold ml-auto">UI SALEMBA</span>
+              <MapPin className="w-3.5 h-3.5 text-ink shrink-0" />
+              <span className="text-slate-500 uppercase text-[9px]">Campus Hub</span>
+              <span className="text-slate-700 font-bold ml-auto">UI SALEMBA</span>
             </div>
             <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border">
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-signal opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-signal"></span>
               </span>
-              <span className="text-slate-400">NETWORK:</span>
+              <span className="text-slate-500">NETWORK:</span>
               <span className="text-signal font-semibold">420+ DEALS CLOSED</span>
             </div>
             {account ? (
@@ -210,7 +210,7 @@ export function Navbar() {
                 href="/account"
               >
                 <div className="w-6 h-6 rounded-lg bg-accent text-black font-black flex items-center justify-center shrink-0">{initial}</div>
-                <span className="text-slate-200 font-bold">{displayName}</span>
+                <span className="text-slate-700 font-bold">{displayName}</span>
                 {account.ktm && (
                   <span className="text-signal flex items-center gap-1 ml-auto">
                     <CheckCircle2 className="w-3 h-3" /> KTM_VERIFIED
@@ -224,7 +224,7 @@ export function Navbar() {
                 href="/login"
               >
                 <LogIn className="w-4 h-4 text-accent shrink-0" />
-                <span className="text-slate-200 font-bold">Masuk / Daftar</span>
+                <span className="text-slate-700 font-bold">Masuk / Daftar</span>
                 <span className="text-slate-500 text-[10px] uppercase ml-auto">Login →</span>
               </Link>
             )}

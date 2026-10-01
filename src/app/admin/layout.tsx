@@ -42,12 +42,12 @@ function Metric({
   tone: "accent" | "orange" | "rose" | "signal";
 }) {
   const tones = {
-    accent: { box: "bg-accent/10 border-accent/30 text-accent", text: "text-accent" },
+    accent: { box: "bg-accent/10 border-accent/30 text-ink", text: "text-ink" },
     orange: {
-      box: "bg-neon-orange/10 border-neon-orange/30 text-neon-orange",
-      text: "text-neon-orange",
+      box: "bg-neon-orange/10 border-neon-orange/30 text-ink",
+      text: "text-ink",
     },
-    rose: { box: "bg-rose-500/10 border-rose-500/30 text-rose-400", text: "text-rose-400" },
+    rose: { box: "bg-rose-500/10 border-rose-500/30 text-rose-600", text: "text-rose-600" },
     signal: { box: "bg-signal/10 border-signal/30 text-signal", text: "text-signal" },
   }[tone];
   return (
@@ -110,25 +110,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // ponytail: gate localStorage sebagai demo — ganti cek session Supabase saat auth aktif.
   if (account && account.role !== "admin") {
     return (
-      <div className="min-h-screen bg-cyber-bg text-slate-100 flex flex-col font-sans cyber-grid">
+      <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
         <Navbar />
         <main className="w-full pt-32 pb-20 max-w-2xl mx-auto px-4 sm:px-6 flex-1">
           <div className="bg-cyber-card/90 border border-cyber-border rounded-3xl p-8 flex flex-col items-center text-center gap-4 shadow-sm">
-            <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-600 flex items-center justify-center">
               <ShieldAlert className="w-7 h-7" />
             </div>
-            <h1 className="text-lg font-black text-white font-mono uppercase tracking-tight">
+            <h1 className="text-lg font-black text-ink font-mono uppercase tracking-tight">
               Akses Terbatas — Role Admin
             </h1>
-            <p className="text-xs text-slate-400 leading-relaxed max-w-md">
+            <p className="text-xs text-slate-500 leading-relaxed max-w-md">
               Halaman moderasi listing dan kelola pengguna hanya untuk akun dengan role{" "}
-              <span className="text-accent font-bold">admin</span>. Aktifkan Mode Admin di
+              <span className="text-ink font-bold">admin</span>. Aktifkan Mode Admin di
               halaman Kelola Akun untuk melihat panel ini (demo sebelum Supabase auth
               tersambung).
             </p>
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mt-2">
               <button
-                className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-signal text-black font-mono text-xs font-extrabold uppercase tracking-wider shadow-glow-signal active:scale-[0.98] transition-transform"
+                className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-signal text-[#ffffff] font-mono text-xs font-extrabold uppercase tracking-wider shadow-glow-signal active:scale-[0.98] transition-transform"
                 onClick={() => {
                   saveAccount({ ...account, role: "admin" });
                   refresh();
@@ -139,7 +139,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 Aktifkan Mode Admin (Demo)
               </button>
               <Link
-                className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-cyber-surface border border-cyber-border text-slate-300 hover:text-white hover:border-slate-500 font-mono text-xs text-center uppercase tracking-wider transition-colors"
+                className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-cyber-surface border border-cyber-border text-slate-600 hover:text-ink hover:border-slate-500 font-mono text-xs text-center uppercase tracking-wider transition-colors"
                 href="/account"
               >
                 Ke Halaman Akun
@@ -156,7 +156,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!account) {
     // render pertama (SSR + hydrasi) belum baca localStorage — tampilkan shell kosong
     return (
-      <div className="min-h-screen bg-cyber-bg text-slate-100 flex flex-col font-sans cyber-grid">
+      <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
         <Navbar />
         <main className="flex-1" />
         <Footer />
@@ -180,7 +180,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="min-h-screen bg-cyber-bg text-slate-100 flex flex-col font-sans cyber-grid">
+    <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
       <Navbar />
 
       <main className="w-full pt-28 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col gap-6">
@@ -197,15 +197,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   </span>
                   Panel Admin — Akses Khusus
                 </span>
-                <span className="text-slate-600 text-xs">•</span>
+                <span className="text-slate-700 text-xs">•</span>
                 <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest">
                   Sumber: katalog &amp; pengguna lokal
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight font-mono uppercase">
+              <h1 className="text-2xl sm:text-3xl font-black text-ink tracking-tight font-mono uppercase">
                 Pusat Moderasi &amp; Integritas Kampus
               </h1>
-              <p className="text-xs sm:text-sm text-slate-400 max-w-2xl leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed">
                 Setujui atau turunkan listing serta lihat, blokir, dan hapus akun pengguna
                 Buyorent. Katalog hanya menampilkan listing yang tayang.
               </p>
@@ -220,7 +220,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </span>
               </div>
               <button
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cyber-surface border border-cyber-border text-slate-200 hover:border-accent/50 font-mono text-xs uppercase tracking-wider transition-colors active:scale-[0.98]"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cyber-surface border border-cyber-border text-slate-700 hover:border-accent/50 font-mono text-xs uppercase tracking-wider transition-colors active:scale-[0.98]"
                 onClick={handleSync}
                 type="button"
               >
@@ -274,7 +274,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
                   active
                     ? "bg-accent text-black font-bold shadow-glow"
-                    : "text-slate-400 hover:text-white hover:bg-cyber-card border border-transparent"
+                    : "text-slate-500 hover:text-ink hover:bg-cyber-card border border-transparent"
                 }`}
                 href={t.href}
                 key={t.href}
@@ -284,7 +284,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {badge !== null && (
                   <span
                     className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                      active ? "bg-black/15" : "bg-cyber-bg text-slate-400 border border-cyber-border"
+                      active ? "bg-black/15" : "bg-cyber-bg text-slate-500 border border-cyber-border"
                     }`}
                   >
                     {badge}

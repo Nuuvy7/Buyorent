@@ -42,13 +42,13 @@ function ModCard({ item, down, at }: { item: ItemData; down: boolean; at?: strin
           <span
             className={`absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full font-mono text-[10px] font-bold uppercase tracking-widest shadow-md backdrop-blur-md ${
               down
-                ? "bg-rose-500 text-white"
-                : "bg-signal text-black"
+                ? "bg-rose-500 text-ink"
+                : "bg-signal text-[#ffffff]"
             }`}
           >
             {down ? "Diturunkan" : "Tayang"}
           </span>
-          <span className="absolute bottom-2.5 left-2.5 right-2.5 px-2 py-1 rounded-lg bg-cyber-bg/85 backdrop-blur-md text-slate-300 text-center font-mono text-[10px] tracking-wider">
+          <span className="absolute bottom-2.5 left-2.5 right-2.5 px-2 py-1 rounded-lg bg-cyber-bg/85 backdrop-blur-md text-slate-600 text-center font-mono text-[10px] tracking-wider">
             ID: LST-{item.id}
           </span>
         </div>
@@ -68,12 +68,12 @@ function ModCard({ item, down, at }: { item: ItemData; down: boolean; at?: strin
               </Badge>
             </div>
 
-            <h2 className="text-base font-bold text-white tracking-tight">{item.name}</h2>
+            <h2 className="text-base font-bold text-ink tracking-tight">{item.name}</h2>
             <div className="flex flex-wrap items-baseline gap-3 mt-1">
-              <span className="font-mono font-black text-lg text-white">
+              <span className="font-mono font-black text-lg text-ink">
                 {fmt(item.price)}
                 {item.priceUnit && (
-                  <span className="text-xs font-normal text-slate-400">{item.priceUnit}</span>
+                  <span className="text-xs font-normal text-slate-500">{item.priceUnit}</span>
                 )}
               </span>
               <span className="text-[11px] text-slate-500">
@@ -91,7 +91,7 @@ function ModCard({ item, down, at }: { item: ItemData; down: boolean; at?: strin
             >
               <div
                 className={`flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-widest mb-1.5 ${
-                  down ? "text-rose-400" : "text-signal"
+                  down ? "text-rose-600" : "text-signal"
                 }`}
               >
                 {down ? (
@@ -101,7 +101,7 @@ function ModCard({ item, down, at }: { item: ItemData; down: boolean; at?: strin
                 )}
                 {down ? "Diturunkan Admin" : "Tayang di Katalog Publik"}
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-600 leading-relaxed">
                 {down
                   ? `Tidak tampil di katalog, pencarian, dan halaman detail publik sejak ${at ? fmtDownTime(at) : "-"} . Siap dipulihkan setelah lolos tinjauan ulang.`
                   : "Terlihat oleh semua pengguna di katalog utama, pencarian, dan halaman detail — siap transaksi."}
@@ -109,16 +109,16 @@ function ModCard({ item, down, at }: { item: ItemData; down: boolean; at?: strin
             </div>
 
             {/* Meta seller */}
-            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-slate-400">
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-slate-500">
               <span className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-lg bg-accent/15 border border-accent/40 text-accent flex items-center justify-center font-mono font-bold text-[10px]">
+                <span className="w-6 h-6 rounded-lg bg-accent/15 border border-accent/40 text-ink flex items-center justify-center font-mono font-bold text-[10px]">
                   {item.seller.avatarText}
                 </span>
-                <span className="font-semibold text-slate-200">{item.seller.name}</span>
+                <span className="font-semibold text-slate-700">{item.seller.name}</span>
               </span>
               <span
                 className={`flex items-center gap-1 font-semibold ${
-                  item.seller.verified ? "text-signal" : "text-neon-orange"
+                  item.seller.verified ? "text-signal" : "text-ink"
                 }`}
               >
                 {item.seller.verified ? (
@@ -154,7 +154,7 @@ function ModCard({ item, down, at }: { item: ItemData; down: boolean; at?: strin
               </Button>
             ) : (
               <Button
-                className="text-rose-400 border border-rose-500/40 hover:bg-rose-500/10 hover:border-rose-500/60 bg-transparent"
+                className="text-rose-600 border border-rose-500/40 hover:bg-rose-500/10 hover:border-rose-500/60 bg-transparent"
                 onClick={() => {
                   setTakedown(item.id, true);
                   toast(`"${item.name}" diturunkan dari katalog publik`);
@@ -233,7 +233,7 @@ export default function AdminModerationPage() {
               className={`px-3.5 py-1.5 rounded-full font-mono text-xs font-bold whitespace-nowrap transition-all ${
                 filter === p.key
                   ? "bg-accent text-black shadow-glow"
-                  : "bg-cyber-card text-slate-400 hover:text-white border border-cyber-border"
+                  : "bg-cyber-card text-slate-500 hover:text-ink border border-cyber-border"
               }`}
               key={p.key}
               onClick={() => setFilter(p.key)}
@@ -246,7 +246,7 @@ export default function AdminModerationPage() {
         <div className="relative min-w-[260px]">
           <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-cyber-card border border-cyber-border text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors"
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-cyber-card border border-cyber-border text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors"
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Cari judul listing, nama seller, atau ID…"
             type="text"
@@ -258,8 +258,8 @@ export default function AdminModerationPage() {
       {/* Antrean kartu moderasi */}
       {list.length === 0 ? (
         <div className="rounded-3xl bg-cyber-card/90 border border-cyber-border p-12 flex flex-col items-center text-center gap-3">
-          <SearchX className="w-10 h-10 text-slate-600" />
-          <p className="text-sm font-bold text-slate-300 font-mono uppercase">
+          <SearchX className="w-10 h-10 text-slate-700" />
+          <p className="text-sm font-bold text-slate-600 font-mono uppercase">
             Tidak ada listing pada filter ini
           </p>
           <p className="text-xs text-slate-500 max-w-sm">

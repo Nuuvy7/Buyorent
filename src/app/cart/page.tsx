@@ -55,7 +55,7 @@ const DELIVERY = [
 const fmt = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 
 const inputClass =
-  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
+  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2 text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
 
 /* Satu baris item di keranjang: checkbox penjual, foto + stiker, sub-panel COD/brief */
 function LineCard({ line }: { line: CartLine }) {
@@ -72,14 +72,14 @@ function LineCard({ line }: { line: CartLine }) {
         <label className="flex items-center gap-2.5 cursor-pointer select-none min-w-0">
           <input
             checked={line.checked}
-            className="w-4 h-4 accent-sky-400 shrink-0"
+            className="w-4 h-4 accent-[#14213d] shrink-0"
             onChange={(e) => setChecked(item.id, e.target.checked)}
             type="checkbox"
           />
-          <span className="w-5 h-5 rounded-full bg-accent/15 border border-accent/40 text-accent text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
+          <span className="w-5 h-5 rounded-full bg-accent/15 border border-accent/40 text-ink text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
             {item.seller.avatarText}
           </span>
-          <span className="text-xs font-bold text-slate-200 truncate">{item.seller.name}</span>
+          <span className="text-xs font-bold text-slate-700 truncate">{item.seller.name}</span>
           <span className="text-[11px] text-slate-500 truncate hidden sm:inline">
             • {item.seller.campus}
           </span>
@@ -93,32 +93,32 @@ function LineCard({ line }: { line: CartLine }) {
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative w-full sm:w-28 h-28 rounded-xl overflow-hidden shrink-0 bg-cyber-surface border border-cyber-border">
           <img alt={item.name} className="w-full h-full object-cover" src={item.imageUrl} />
-          <span className="absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/75 backdrop-blur-sm text-white rounded font-mono text-[10px]">
+          <span className="absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/75 backdrop-blur-sm text-[#ffffff] rounded font-mono text-[10px]">
             {isService ? item.subLabel : item.badge}
           </span>
         </div>
         <div className="flex-1 flex flex-col justify-between gap-2 min-w-0">
           <div>
             <div className="flex items-start justify-between gap-2">
-              <h2 className="text-sm font-bold text-white leading-snug">{item.name}</h2>
+              <h2 className="text-sm font-bold text-ink leading-snug">{item.name}</h2>
               <button
                 aria-label="Hapus item"
-                className="text-slate-500 hover:text-rose-400 transition-colors p-1 shrink-0"
+                className="text-slate-500 hover:text-rose-600 transition-colors p-1 shrink-0"
                 onClick={() => removeFromCart(item.id)}
                 type="button"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
+            <p className="text-xs text-slate-500 mt-1 leading-relaxed line-clamp-2">
               {item.description}
             </p>
           </div>
           <div className="flex items-center justify-between">
-            <span className="font-mono font-black text-white">
+            <span className="font-mono font-black text-ink">
               {fmt(item.price)}
               {item.priceUnit && (
-                <span className="text-xs font-normal text-slate-400">{item.priceUnit}</span>
+                <span className="text-xs font-normal text-slate-500">{item.priceUnit}</span>
               )}
             </span>
             <span className="text-[11px] font-mono text-slate-500">Jumlah: 1 unit</span>
@@ -130,7 +130,7 @@ function LineCard({ line }: { line: CartLine }) {
       {isService ? (
         <div className="p-3.5 bg-cyber-surface/60 rounded-2xl border border-cyber-border/60 flex flex-col gap-2">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs font-bold text-slate-200">
+            <span className="text-xs font-bold text-slate-700">
               Link Draft Materi / Instruksi Singkat:
             </span>
             <span className="text-[11px] text-slate-500">Google Drive / Notion</span>
@@ -143,15 +143,15 @@ function LineCard({ line }: { line: CartLine }) {
             value={line.brief ?? ""}
           />
           <p className="text-[11px] text-slate-500 leading-relaxed flex items-start gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
+            <Clock className="w-3.5 h-3.5 text-ink shrink-0 mt-0.5" />
             Nomor WhatsApp penyedia jasa baru terbuka setelah penjual menyetujui pesanan.
           </p>
         </div>
       ) : (
         <div className="p-3.5 bg-cyber-surface/60 rounded-2xl border border-cyber-border/60 flex flex-col gap-2.5">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-accent" />
+            <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <MapPin className="w-4 h-4 text-ink" />
               Titik Temu COD Kampus Bebas Ongkir
             </span>
             <span className="text-[10px] font-mono font-bold text-signal whitespace-nowrap">
@@ -170,13 +170,13 @@ function LineCard({ line }: { line: CartLine }) {
               >
                 <input
                   checked={line.codLoc === s.id}
-                  className="accent-sky-400 shrink-0"
+                  className="accent-[#14213d] shrink-0"
                   name={`cod-${item.id}`}
                   onChange={() => updateLine(item.id, { codLoc: s.id })}
                   type="radio"
                 />
                 <span className="flex flex-col min-w-0">
-                  <span className="text-xs font-semibold text-slate-200 truncate">{s.name}</span>
+                  <span className="text-xs font-semibold text-slate-700 truncate">{s.name}</span>
                   <span className="text-[10px] text-slate-500">{s.jam}</span>
                 </span>
               </label>
@@ -240,21 +240,21 @@ export default function CartPage() {
           <div className="flex items-center gap-3">
             <Link
               aria-label="Kembali ke katalog"
-              className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-cyber-surface border border-cyber-border text-slate-400 hover:text-white hover:border-accent/50 transition-all shrink-0"
+              className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-cyber-surface border border-cyber-border text-slate-500 hover:text-ink hover:border-accent/50 transition-all shrink-0"
               href="/"
             >
               <ArrowLeft className="w-4 h-4" />
             </Link>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
+                <h1 className="text-lg sm:text-xl font-extrabold text-ink tracking-tight">
                   Tas Belanja &amp; Checkout Mahasiswa
                 </h1>
                 <Badge variant="default">Status Tercatat</Badge>
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
                 Pesanan tercatat dengan alur{" "}
-                <span className="text-slate-300">Menunggu pembayaran → Diproses → Selesai</span>.
+                <span className="text-slate-600">Menunggu pembayaran → Diproses → Selesai</span>.
                 Pembayaran transfer manual ke penjual.
               </p>
             </div>
@@ -263,12 +263,12 @@ export default function CartPage() {
             <span className="w-6 h-6 rounded-full bg-accent text-black font-bold flex items-center justify-center">
               1
             </span>
-            <span className="font-semibold text-white">Pilih Item</span>
-            <ChevronRight className="w-3 h-3 text-slate-600" />
-            <span className="w-6 h-6 rounded-full bg-cyber-surface border border-cyber-border text-slate-400 flex items-center justify-center">
+            <span className="font-semibold text-ink">Pilih Item</span>
+            <ChevronRight className="w-3 h-3 text-slate-700" />
+            <span className="w-6 h-6 rounded-full bg-cyber-surface border border-cyber-border text-slate-500 flex items-center justify-center">
               2
             </span>
-            <span className="text-slate-400">Checkout &amp; Transfer Manual</span>
+            <span className="text-slate-500">Checkout &amp; Transfer Manual</span>
           </div>
         </div>
 
@@ -281,7 +281,7 @@ export default function CartPage() {
                   <ShoppingCart className="w-6 h-6 text-slate-500" />
                 </div>
                 <div>
-                  <h2 className="text-sm font-mono font-black text-white uppercase tracking-widest">
+                  <h2 className="text-sm font-mono font-black text-ink uppercase tracking-widest">
                     Keranjang Belanja Kosong
                   </h2>
                   <p className="text-xs text-slate-500 mt-2 max-w-sm">
@@ -302,16 +302,16 @@ export default function CartPage() {
                   <label className="flex items-center gap-3 cursor-pointer select-none">
                     <input
                       checked={rows.length > 0 && sel.length === rows.length}
-                      className="w-4 h-4 accent-sky-400"
+                      className="w-4 h-4 accent-[#14213d]"
                       onChange={(e) => setAllChecked(e.target.checked)}
                       type="checkbox"
                     />
-                    <span className="text-xs font-bold text-slate-200">
+                    <span className="text-xs font-bold text-slate-700">
                       Pilih Semua Item ({rows.length})
                     </span>
                   </label>
                   <button
-                    className="text-xs font-mono text-slate-500 hover:text-rose-400 transition-colors flex items-center gap-1.5 disabled:opacity-40 disabled:hover:text-slate-500"
+                    className="text-xs font-mono text-slate-500 hover:text-rose-600 transition-colors flex items-center gap-1.5 disabled:opacity-40 disabled:hover:text-slate-500"
                     disabled={sel.length === 0}
                     onClick={removeChecked}
                     type="button"
@@ -327,12 +327,12 @@ export default function CartPage() {
 
                 {/* Circular economy */}
                 <div className="p-5 rounded-3xl bg-accent/5 border border-accent/25 flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/40 text-accent flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/40 text-ink flex items-center justify-center shrink-0">
                     <Recycle className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white">Gerakan Hemat Sirkular Kampus</h3>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    <h3 className="text-sm font-bold text-ink">Gerakan Hemat Sirkular Kampus</h3>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
                       Dengan memilih pre-loved dari sesama rekan kampus, kamu memperpanjang masa
                       pakai alat kuliah dan memangkas limbah elektronik di civitas akademika — tanpa
                       harus beli baru.
@@ -347,8 +347,8 @@ export default function CartPage() {
           <aside className="lg:col-span-5 flex flex-col gap-6 lg:sticky lg:top-28 lg:self-start cart-col">
             {/* Metode penyerahan */}
             <div className="bg-cyber-card/90 rounded-3xl p-5 border border-cyber-border flex flex-col gap-3">
-              <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wide flex items-center gap-2">
-                <Truck className="w-4 h-4 text-accent" /> Metode Penyerahan
+              <h3 className="text-sm font-bold text-ink font-mono uppercase tracking-wide flex items-center gap-2">
+                <Truck className="w-4 h-4 text-ink" /> Metode Penyerahan
               </h3>
               <div className="flex flex-col gap-2">
                 {DELIVERY.map((d) => (
@@ -363,19 +363,19 @@ export default function CartPage() {
                     <div className="flex items-center gap-3 min-w-0">
                       <input
                         checked={delivery === d.id}
-                        className="accent-sky-400 shrink-0"
+                        className="accent-[#14213d] shrink-0"
                         name="delivery_opt"
                         onChange={() => setDelivery(d.id)}
                         type="radio"
                       />
                       <div className="min-w-0">
-                        <p className="text-xs font-bold text-white">{d.title}</p>
+                        <p className="text-xs font-bold text-ink">{d.title}</p>
                         <p className="text-[11px] text-slate-500">{d.desc}</p>
                       </div>
                     </div>
                     <span
                       className={`font-mono text-[11px] font-bold shrink-0 ${
-                        d.free ? "text-signal" : "text-slate-400"
+                        d.free ? "text-signal" : "text-slate-500"
                       }`}
                     >
                       {d.price}
@@ -387,19 +387,19 @@ export default function CartPage() {
 
             {/* Ringkasan transaksi */}
             <div className="bg-cyber-card/90 rounded-3xl p-5 border border-cyber-border flex flex-col gap-4">
-              <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wide">
+              <h3 className="text-sm font-bold text-ink font-mono uppercase tracking-wide">
                 Ringkasan Transaksi
               </h3>
               <div className="flex flex-col gap-2 text-xs">
-                <div className="flex justify-between text-slate-400">
+                <div className="flex justify-between text-slate-500">
                   <span>
                     Subtotal Item ({barang} Barang, {jasa} Jasa)
                   </span>
-                  <span className="font-semibold text-slate-200">{fmt(subtotal)}</span>
+                  <span className="font-semibold text-slate-700">{fmt(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-slate-400">
+                <div className="flex justify-between text-slate-500">
                   <span>Ongkir COD Mahasiswa</span>
-                  <span className={ongkir === 0 ? "text-signal font-semibold" : "text-slate-200"}>
+                  <span className={ongkir === 0 ? "text-signal font-semibold" : "text-slate-700"}>
                     {ongkir === 0 ? "Rp 0 (Bebas Ongkir)" : fmt(ongkir)}
                   </span>
                 </div>
@@ -407,7 +407,7 @@ export default function CartPage() {
               <div className="pt-3 border-t border-cyber-border flex items-end justify-between gap-2">
                 <div>
                   <span className="text-xs text-slate-500">Total Pembayaran</span>
-                  <p className="text-xl font-mono font-black text-white leading-tight">
+                  <p className="text-xl font-mono font-black text-ink leading-tight">
                     {fmt(total)}
                   </p>
                 </div>
@@ -417,28 +417,28 @@ export default function CartPage() {
               {/* Instruksi pembayaran manual — PRD: belum ada payment gateway */}
               <div className="p-4 bg-cyber-surface/60 rounded-2xl border border-cyber-border/60 flex flex-col gap-2">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-bold text-slate-200">
+                  <span className="text-xs font-bold text-slate-700">
                     Pembayaran Manual ke Penjual
                   </span>
                   <span className="text-[10px] font-mono font-bold text-signal">
                     TRANSFER LANGSUNG
                   </span>
                 </div>
-                <ol className="flex flex-col gap-1.5 text-[11px] text-slate-400 list-decimal list-inside leading-relaxed">
+                <ol className="flex flex-col gap-1.5 text-[11px] text-slate-500 list-decimal list-inside leading-relaxed">
                   <li>
                     Isi data pengiriman di halaman pembayaran — status tercatat{" "}
-                    <b className="text-slate-200">Menunggu pembayaran</b>.
+                    <b className="text-slate-700">Menunggu pembayaran</b>.
                   </li>
                   <li>
                     Transfer manual sesuai total ke rekening penjual yang disampaikan lewat chat
                     pesanan.
                   </li>
                   <li>
-                    Penjual menandai lunas → <b className="text-slate-200">Diproses</b>, lalu{" "}
-                    <b className="text-slate-200">Selesai</b> setelah serah terima.
+                    Penjual menandai lunas → <b className="text-slate-700">Diproses</b>, lalu{" "}
+                    <b className="text-slate-700">Selesai</b> setelah serah terima.
                   </li>
                 </ol>
-                <p className="flex items-start gap-1.5 text-[11px] text-neon-orange leading-relaxed">
+                <p className="flex items-start gap-1.5 text-[11px] text-ink leading-relaxed">
                   <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                   Jangan transfer ke rekening lain di luar kesepakatan pesanan, dan pastikan pesanan
                   sudah tercatat sebelum mengirim dana.

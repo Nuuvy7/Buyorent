@@ -25,7 +25,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-cyber-bg text-slate-100 font-sans antialiased selection:bg-accent selection:text-black">
+      <body className="bg-cyber-bg text-ink font-sans antialiased selection:bg-accent selection:text-black">
         {children}
       </body>
     </html>

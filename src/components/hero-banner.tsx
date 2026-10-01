@@ -106,11 +106,11 @@ export function HeroBanner({
         {/* Hologram Sticker Badge */}
         <div ref={badgeRef} className="inline-flex items-center gap-2">
           <Badge variant="default" className="text-xs px-3 py-1 font-mono tracking-widest shadow-glow">
-            <Zap className="w-3.5 h-3.5 text-accent fill-accent" />
+            <Zap className="w-3.5 h-3.5 text-ink fill-accent" />
             CAMPUS CIRCULAR ECONOMY
           </Badge>
           <Badge variant="solid" className="text-xs px-3 py-1 font-mono">
-            <ShieldCheck className="w-3.5 h-3.5 text-black" />
+            <ShieldCheck className="w-3.5 h-3.5 text-[#ffffff]" />
             100% KTM VERIFIED
           </Badge>
         </div>
@@ -118,10 +118,10 @@ export function HeroBanner({
         {/* Hero Title */}
         <h1
           ref={titleRef}
-          className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] font-sans"
+          className="text-3xl sm:text-5xl lg:text-6xl font-black text-ink tracking-tight leading-[1.1] font-sans"
         >
           THRIFT GEAR IDAMAN <br className="hidden sm:inline" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-sky-300 to-cyan-300 neon-glow-cyan">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-ink via-ink to-accent neon-glow-cyan">
             & SEWA SKILL TEMAN
           </span>
         </h1>
@@ -129,7 +129,7 @@ export function HeroBanner({
         {/* Subtitle */}
         <p
           ref={subtitleRef}
-          className="text-xs sm:text-sm text-slate-400 max-w-2xl leading-relaxed font-mono"
+          className="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed font-mono"
         >
           Katalog terpusat barang pre-loved & jasa kreatif sesama pelajar dan mahasiswa.
           Transaksi transparan, hemat uang saku, dan COD aman di perpus atau kantin.
@@ -142,32 +142,32 @@ export function HeroBanner({
         >
           {/* Campus Selector */}
           <div className="flex items-center gap-2 bg-cyber-bg px-3.5 py-2.5 rounded-xl border border-cyber-border/80">
-            <School className="w-4 h-4 text-accent shrink-0" />
+            <School className="w-4 h-4 text-ink shrink-0" />
             <div className="flex flex-col text-left">
-              <span className="text-[9px] font-mono font-bold text-slate-400 uppercase tracking-wider">
+              <span className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-wider">
                 LOKASI KAMPUS
               </span>
               <select
                 value={campusFilter}
                 onChange={(e) => setCampusFilter(e.target.value)}
-                className="bg-transparent text-xs font-mono font-semibold text-slate-100 focus:outline-none cursor-pointer pr-4"
+                className="bg-transparent text-xs font-mono font-semibold text-ink focus:outline-none cursor-pointer pr-4"
               >
-                <option value="all" className="bg-cyber-surface text-slate-100">Semua Kampus</option>
-                <option value="ui" className="bg-cyber-surface text-slate-100">UI Salemba</option>
-                <option value="trisakti" className="bg-cyber-surface text-slate-100">Universitas Trisakti</option>
-                <option value="mercubana" className="bg-cyber-surface text-slate-100">Universitas Mercu Buana</option>
-                <option value="sma" className="bg-cyber-surface text-slate-100">SMA/SMK Sekitar</option>
+                <option value="all" className="bg-cyber-surface text-ink">Semua Kampus</option>
+                <option value="ui" className="bg-cyber-surface text-ink">UI Salemba</option>
+                <option value="trisakti" className="bg-cyber-surface text-ink">Universitas Trisakti</option>
+                <option value="mercubana" className="bg-cyber-surface text-ink">Universitas Mercu Buana</option>
+                <option value="sma" className="bg-cyber-surface text-ink">SMA/SMK Sekitar</option>
               </select>
             </div>
           </div>
 
           {/* Search Input */}
           <div className="flex-1 flex items-center px-3.5 bg-cyber-bg rounded-xl border border-cyber-border/80 focus-within:border-accent transition-colors">
-            <Search className="w-4 h-4 text-slate-400 mr-2 shrink-0" />
+            <Search className="w-4 h-4 text-slate-500 mr-2 shrink-0" />
             <input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-transparent border-0 focus:outline-none text-xs text-slate-100 placeholder:text-slate-500 py-2.5 font-mono"
+              className="w-full bg-transparent border-0 focus:outline-none text-xs text-ink placeholder:text-slate-500 py-2.5 font-mono"
               placeholder="Cari kalkulator, kamera, jasa PPT, servis..."
               type="text"
             />
@@ -175,16 +175,16 @@ export function HeroBanner({
 
           {/* Budget Range */}
           <div className="flex items-center gap-1.5 bg-cyber-bg px-3.5 py-2.5 rounded-xl border border-cyber-border/80">
-            <Wallet className="w-4 h-4 text-neon-amber shrink-0" />
+            <Wallet className="w-4 h-4 text-ink shrink-0" />
             <select
               value={budgetFilter}
               onChange={(e) => setBudgetFilter(e.target.value)}
-              className="bg-transparent text-xs font-mono font-semibold text-slate-200 focus:outline-none cursor-pointer"
+              className="bg-transparent text-xs font-mono font-semibold text-slate-700 focus:outline-none cursor-pointer"
             >
-              <option value="any" className="bg-cyber-surface text-slate-100">Semua Budget</option>
-              <option value="u50" className="bg-cyber-surface text-slate-100">&lt; Rp 50.000</option>
-              <option value="50-200" className="bg-cyber-surface text-slate-100">Rp 50rb - 200rb</option>
-              <option value="o200" className="bg-cyber-surface text-slate-100">&gt; Rp 200.000</option>
+              <option value="any" className="bg-cyber-surface text-ink">Semua Budget</option>
+              <option value="u50" className="bg-cyber-surface text-ink">&lt; Rp 50.000</option>
+              <option value="50-200" className="bg-cyber-surface text-ink">Rp 50rb - 200rb</option>
+              <option value="o200" className="bg-cyber-surface text-ink">&gt; Rp 200.000</option>
             </select>
           </div>
 
@@ -210,7 +210,7 @@ export function HeroBanner({
             className={`px-3 py-1 rounded-lg font-mono text-xs transition-all border ${
               budgetFilter === "u50"
                 ? "bg-accent text-black border-accent font-bold shadow-glow"
-                : "bg-cyber-surface text-slate-300 border-cyber-border hover:border-slate-500"
+                : "bg-cyber-surface text-slate-600 border-cyber-border hover:border-slate-500"
             }`}
             type="button"
           >
@@ -221,7 +221,7 @@ export function HeroBanner({
             className={`px-3 py-1 rounded-lg font-mono text-xs transition-all border ${
               budgetFilter === "50-200"
                 ? "bg-accent text-black border-accent font-bold shadow-glow"
-                : "bg-cyber-surface text-slate-300 border-cyber-border hover:border-slate-500"
+                : "bg-cyber-surface text-slate-600 border-cyber-border hover:border-slate-500"
             }`}
             type="button"
           >
@@ -232,7 +232,7 @@ export function HeroBanner({
             className={`px-3 py-1 rounded-lg font-mono text-xs transition-all border ${
               budgetFilter === "o200"
                 ? "bg-accent text-black border-accent font-bold shadow-glow"
-                : "bg-cyber-surface text-slate-300 border-cyber-border hover:border-slate-500"
+                : "bg-cyber-surface text-slate-600 border-cyber-border hover:border-slate-500"
             }`}
             type="button"
           >

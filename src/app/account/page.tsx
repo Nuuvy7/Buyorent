@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 
 const inputClass =
-  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
+  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^(?:08|628)\d{8,11}$/;
@@ -91,21 +91,21 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="min-h-screen bg-cyber-bg text-slate-100 flex flex-col font-sans cyber-grid" ref={rootRef}>
+    <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid" ref={rootRef}>
       <Navbar />
 
       <main className="w-full pt-28 pb-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col gap-8">
         {/* Header halaman */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 acct-anim">
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-accent">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-ink">
               {"// "}
               Pengaturan Akun
             </span>
-            <h1 className="text-2xl sm:text-3xl font-black text-white font-mono uppercase tracking-tight mt-1">
+            <h1 className="text-2xl sm:text-3xl font-black text-ink font-mono uppercase tracking-tight mt-1">
               Kelola Akun
             </h1>
-            <p className="text-xs text-slate-400 mt-2 max-w-xl leading-relaxed">
+            <p className="text-xs text-slate-500 mt-2 max-w-xl leading-relaxed">
               Perbarui identitas yang dipakai saat transaksi — nama tampil di listing dan
               pesanan, no. HP dipakai penjual jasa untuk menghubungi setelah booking ACC.
             </p>
@@ -121,8 +121,8 @@ export default function AccountPage() {
           {/* Kartu profil (form) */}
           <form className="lg:col-span-2 rounded-3xl bg-cyber-card/90 border border-cyber-border p-6 sm:p-8 shadow-sm flex flex-col gap-5 acct-anim" onSubmit={handleSave}>
             <div className="flex items-center gap-2">
-              <UserCog className="w-4 h-4 text-accent" />
-              <h2 className="text-sm font-black text-white font-mono uppercase tracking-widest">
+              <UserCog className="w-4 h-4 text-ink" />
+              <h2 className="text-sm font-black text-ink font-mono uppercase tracking-widest">
                 Profil Saya
               </h2>
             </div>
@@ -140,7 +140,7 @@ export default function AccountPage() {
                   value={form.name}
                 />
                 {errors.name && (
-                  <span className="text-[11px] text-rose-400">{errors.name}</span>
+                  <span className="text-[11px] text-rose-600">{errors.name}</span>
                 )}
               </label>
 
@@ -156,7 +156,7 @@ export default function AccountPage() {
                   value={form.email}
                 />
                 {errors.email && (
-                  <span className="text-[11px] text-rose-400">{errors.email}</span>
+                  <span className="text-[11px] text-rose-600">{errors.email}</span>
                 )}
               </label>
 
@@ -172,7 +172,7 @@ export default function AccountPage() {
                   value={form.phone}
                 />
                 {errors.phone && (
-                  <span className="text-[11px] text-rose-400">{errors.phone}</span>
+                  <span className="text-[11px] text-rose-600">{errors.phone}</span>
                 )}
               </label>
 
@@ -204,11 +204,11 @@ export default function AccountPage() {
           {/* Ringkasan + akses akun */}
           <div className="flex flex-col gap-6">
             <div className="rounded-3xl bg-cyber-card/90 border border-cyber-border p-6 shadow-sm flex flex-col items-center text-center gap-3 acct-anim">
-              <div className="w-16 h-16 rounded-2xl bg-accent/15 border border-accent/40 text-accent flex items-center justify-center font-mono font-black text-2xl">
+              <div className="w-16 h-16 rounded-2xl bg-accent/15 border border-accent/40 text-ink flex items-center justify-center font-mono font-black text-2xl">
                 {(account?.name || "A").charAt(0)}
               </div>
               <div>
-                <p className="text-sm font-bold text-white">
+                <p className="text-sm font-bold text-ink">
                   {account?.name ?? "Memuat…"}
                 </p>
                 <p className="text-[11px] text-slate-500 break-all">{account?.email}</p>
@@ -224,7 +224,7 @@ export default function AccountPage() {
             </div>
 
             <div className="rounded-3xl bg-cyber-card/90 border border-cyber-border p-6 shadow-sm flex flex-col gap-4 acct-anim">
-              <h2 className="text-sm font-black text-white font-mono uppercase tracking-widest">
+              <h2 className="text-sm font-black text-ink font-mono uppercase tracking-widest">
                 Akses &amp; Peran
               </h2>
               <div className="p-1 bg-cyber-surface border border-cyber-border rounded-2xl flex items-center gap-1">
@@ -233,7 +233,7 @@ export default function AccountPage() {
                     className={`flex-1 px-3 py-2 rounded-xl font-mono text-[11px] font-bold uppercase tracking-wider transition-all ${
                       account?.role === r
                         ? "bg-accent text-black shadow-glow"
-                        : "text-slate-400 hover:text-white"
+                        : "text-slate-500 hover:text-ink"
                     }`}
                     key={r}
                     onClick={() => setRole(r)}
@@ -256,7 +256,7 @@ export default function AccountPage() {
               )}
               <div className="pt-1 border-t border-cyber-border mt-1">
                 <button
-                  className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-cyber-surface border border-rose-500/40 text-rose-300 hover:bg-rose-500/10 hover:text-rose-200 font-mono text-[11px] uppercase tracking-wider transition-colors active:scale-[0.98]"
+                  className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-cyber-surface border border-rose-500/40 text-rose-600 hover:bg-rose-500/10 hover:text-rose-700 font-mono text-[11px] uppercase tracking-wider transition-colors active:scale-[0.98]"
                   onClick={handleLogout}
                   type="button"
                 >
