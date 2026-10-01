@@ -145,7 +145,8 @@ alter table public.order_items enable row level security;
 create policy "users: baca sendiri atau admin" on public.users
   for select using (auth.uid() = id or public.is_admin());
 create policy "users: update sendiri atau admin" on public.users
-  for update using (auth.uid() = id or public.is_admin());
+  for update using (auth.uid() = id or public.is_admin())
+  with check (public.is_admin() or (role = 'user' and is_blocked = false));
 
 create policy "categories: publik baca" on public.categories
   for select using (true);

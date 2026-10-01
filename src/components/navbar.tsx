@@ -5,14 +5,18 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
+import { createClient } from "@/lib/supabase/client";
+import { getAccount, type AccountRecord } from "@/lib/users";
+import { useStoreTick } from "@/lib/store";
 import { 
   Sparkles, 
   MapPin, 
   ShoppingCart, 
   Bell, 
   PlusCircle, 
-  ChevronDown, 
+  ChevronDown,
   CheckCircle2,
+  LogIn,
   Terminal,
   Menu,
   X
@@ -21,6 +25,39 @@ import {
 export function Navbar() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const cart = useCart();
+
+  // Tahap C: cek sesi Supabase → tampilkan "Masuk" bila keluar, pill profil bila login.
+  // Nama berasal dari jembatan localStorage (saveAccount) sampai Tahap D.
+  const [account, setAccount] = React.useState<AccountRecord | null>(null);
+  const tick = useStoreTick();
+
+  React.useEffect(() => {
+    const supabase = createClient();
+    let alive = true;
+    const sync = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (alive) setAccount(session ? getAccount() : null);
+    };
+    void sync();
+    const { data: sub } = supabase.auth.onAuthStateChange(() => {
+      void sync();
+    });
+    return () => {
+      alive = false;
+      void sub.subscription.unsubscribe();
+    };
+  }, []);
+
+  React.useEffect(() => {
+    setAccount((acc) => (acc ? getAccount() : null));
+  }, [tick]);
+
+  const nameParts = (account?.name ?? "").trim().split(/\s+/).filter(Boolean);
+  const displayName =
+    nameParts.length > 1 ? `${nameParts[0]} ${nameParts[nameParts.length - 1][0]}.` : nameParts[0] ?? "Akun";
+  const initial = (nameParts[0] ?? "A").charAt(0).toUpperCase();
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-cyber-bg/90 backdrop-blur-xl border-b border-cyber-border">
@@ -96,22 +133,34 @@ export function Navbar() {
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-signal ring-2 ring-cyber-bg"></span>
             </button>
 
-            {/* User Profile Pill -> kelola akun */}
-            <Link
-              className="hidden sm:flex items-center gap-2 bg-cyber-surface border border-cyber-border px-2.5 py-1.5 rounded-xl hover:border-accent/50 transition-colors"
-              href="/account"
-              title="Kelola Akun"
-            >
-              <div className="w-6 h-6 rounded-lg bg-accent text-black font-mono font-black text-xs flex items-center justify-center">
-                D
-              </div>
-              <div className="flex flex-col text-left">
-                <span className="text-xs font-bold text-slate-200 leading-tight">Daffa R.</span>
-                <span className="text-[10px] font-mono text-signal flex items-center gap-0.5 leading-none">
-                  <CheckCircle2 className="w-2.5 h-2.5" /> KTM_VERIFIED
-                </span>
-              </div>
-            </Link>
+            {/* User Profile Pill -> kelola akun (atau tombol Masuk bila belum login) */}
+            {account ? (
+              <Link
+                className="hidden sm:flex items-center gap-2 bg-cyber-surface border border-cyber-border px-2.5 py-1.5 rounded-xl hover:border-accent/50 transition-colors"
+                href="/account"
+                title="Kelola Akun"
+              >
+                <div className="w-6 h-6 rounded-lg bg-accent text-black font-mono font-black text-xs flex items-center justify-center">
+                  {initial}
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="text-xs font-bold text-slate-200 leading-tight">{displayName}</span>
+                  {account.ktm && (
+                    <span className="text-[10px] font-mono text-signal flex items-center gap-0.5 leading-none">
+                      <CheckCircle2 className="w-2.5 h-2.5" /> KTM_VERIFIED
+                    </span>
+                  )}
+                </div>
+              </Link>
+            ) : (
+              <Link
+                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 text-slate-200 hover:text-white transition-all font-mono text-xs font-bold uppercase tracking-wider"
+                href="/login"
+                title="Masuk ke akun"
+              >
+                <LogIn className="w-3.5 h-3.5 text-accent" /> Masuk
+              </Link>
+            )}
 
             {/* Post Ad CTA Button */}
             <Button
@@ -155,17 +204,30 @@ export function Navbar() {
               <span className="text-slate-400">NETWORK:</span>
               <span className="text-signal font-semibold">420+ DEALS CLOSED</span>
             </div>
-            <Link
-              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 transition-colors"
-              href="/account"
-            >
-              <div className="w-6 h-6 rounded-lg bg-accent text-black font-black flex items-center justify-center shrink-0">D</div>
-              <span className="text-slate-200 font-bold">Daffa R.</span>
-              <span className="text-signal flex items-center gap-1 ml-auto">
-                <CheckCircle2 className="w-3 h-3" /> KTM_VERIFIED
-              </span>
-              <span className="text-slate-500 text-[10px] uppercase">Akun →</span>
-            </Link>
+            {account ? (
+              <Link
+                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 transition-colors"
+                href="/account"
+              >
+                <div className="w-6 h-6 rounded-lg bg-accent text-black font-black flex items-center justify-center shrink-0">{initial}</div>
+                <span className="text-slate-200 font-bold">{displayName}</span>
+                {account.ktm && (
+                  <span className="text-signal flex items-center gap-1 ml-auto">
+                    <CheckCircle2 className="w-3 h-3" /> KTM_VERIFIED
+                  </span>
+                )}
+                <span className="text-slate-500 text-[10px] uppercase">Akun →</span>
+              </Link>
+            ) : (
+              <Link
+                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 transition-colors"
+                href="/login"
+              >
+                <LogIn className="w-4 h-4 text-accent shrink-0" />
+                <span className="text-slate-200 font-bold">Masuk / Daftar</span>
+                <span className="text-slate-500 text-[10px] uppercase ml-auto">Login →</span>
+              </Link>
+            )}
           </div>
         )}
       </div>

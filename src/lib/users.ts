@@ -66,6 +66,16 @@ export function saveAccount(acc: AccountRecord) {
   emitStore();
 }
 
+// Dipakai tombol keluar (Tahap C): hapus jembatan localStorage setelah signOut.
+export function clearAccount() {
+  try {
+    localStorage.removeItem(ACCOUNT_KEY);
+  } catch {
+    /* abaikan */
+  }
+  emitStore();
+}
+
 export function getUsers(): UserRecord[] {
   return read<UserRecord[]>(USERS_KEY, SEED_USERS);
 }

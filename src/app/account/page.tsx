@@ -2,17 +2,20 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ToastHost, toast } from "@/components/toast";
-import { getAccount, saveAccount, type AccountRecord } from "@/lib/users";
+import { getAccount, saveAccount, clearAccount, type AccountRecord } from "@/lib/users";
+import { createClient } from "@/lib/supabase/client";
 import {
   ArrowRight,
   CheckCircle2,
   GraduationCap,
+  LogOut,
   Save,
   ShieldCheck,
   UserCog,
@@ -26,6 +29,7 @@ const PHONE_RE = /^(?:08|628)\d{8,11}$/;
 
 export default function AccountPage() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   const [account, setAccount] = useState<AccountRecord | null>(null);
   const [form, setForm] = useState({ name: "", email: "", phone: "", campus: "" });
   const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
@@ -75,6 +79,15 @@ export default function AccountPage() {
     setAccount(updated);
     saveAccount(updated);
     toast(role === "admin" ? "Mode Admin aktif — panel moderasi terbuka" : "Mode Pengguna aktif");
+  };
+
+  // Tahap C: keluar dari sesi Supabase + hapus jembatan localStorage.
+  const handleLogout = async () => {
+    await createClient().auth.signOut();
+    clearAccount();
+    toast("Anda telah keluar dari akun");
+    router.push("/");
+    router.refresh();
   };
 
   return (
@@ -241,6 +254,15 @@ export default function AccountPage() {
                   </Link>
                 </Button>
               )}
+              <div className="pt-1 border-t border-cyber-border mt-1">
+                <button
+                  className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-cyber-surface border border-rose-500/40 text-rose-300 hover:bg-rose-500/10 hover:text-rose-200 font-mono text-[11px] uppercase tracking-wider transition-colors active:scale-[0.98]"
+                  onClick={handleLogout}
+                  type="button"
+                >
+                  <LogOut className="w-3.5 h-3.5" /> Keluar dari Akun
+                </button>
+              </div>
             </div>
           </div>
         </div>
