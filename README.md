@@ -74,14 +74,15 @@ Buyorent menyatukan jual beli barang bekas sekaligus sewa jasa dalam satu platfo
 | *Moderasi Listing* | Admin turunkan/pulihkan listing langsung dari panel | Listing diturunkan hilang dari katalog, pencarian, dan detail (CTA beli dinonaktifkan) |
 | *Kelola Pengguna* | Lihat detail, blokir/unblokir, dan hapus akun dari tabel admin | Blokir = tidak bisa login, hapus = permanen (ada konfirmasi) |
 | *Kelola Akun* | Edit profil (nama, email, no. HP, kampus) tervalidasi + peran akses | Satu pintu ke panel admin untuk role admin |
+| *Auth Supabase* | Login & register email+password, sesi via cookie `@supabase/ssr`, middleware proteksi route, cek `is_blocked` | Halaman auth tanpa navbar; route login/register khusus tamu |
 
 ### Fitur Tambahan
 
 - *Animasi GSAP* — entrance, stagger, dan hover spring dengan cleanup `gsap.context()`
-- *Desain Cyber-Retro Campus* — palet gelap, aksen biru, hijau terbatas untuk elemen penting
+- *Palet Light Mode Coolors* — navy `#14213d` teks/border, oranye `#fca311` aksen, putih & abu permukaan
 - *Responsive + Hamburger* — menu compact saat layar sempit, tanpa overflow di 360–390px
 - *Toast Notifikasi* — umpan balik aksi moderasi/kelola akun ala dashboard
-- *Gate Role Admin* — halaman admin terbatas untuk role `admin` (demo sebelum auth aktif)
+- *Gate Role Admin* — halaman admin terbatas untuk role `admin` (peran dari sesi Supabase + penyimpanan lokal)
 - *Badge Keranjang Live* — jumlah keranjang dari store bersama di semua halaman
 
 ---
@@ -101,14 +102,15 @@ Icons        : Lucide React
 State        : useSyncExternalStore + localStorage
 ```
 
-#### Backend (direncanakan)
+#### Backend (Supabase)
 
 ```
-Service      : Supabase
-Auth         : Supabase Auth (email + password, tanpa verifikasi email)
-Database     : PostgreSQL (users, items, categories, cart, orders, order_items)
-Storage      : Supabase Storage (foto listing)
-Status       : Client @supabase/ssr terpasang, belum tersambung
+Service      : Supabase (hosted, region Singapore)
+Auth         : Supabase Auth (email + password) — login/register + middleware aktif
+Database     : PostgreSQL 6 tabel + RLS via is_admin() SECURITY DEFINER (skema di supabase/schema.sql)
+Storage      : Supabase Storage (2 bucket: foto listing & bukti transfer)
+Koneksi      : Client @supabase/ssr aktif; butuh variabel NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_ANON_KEY
+Belum        : Migrasi data katalog/keranjang/pesanan dari localStorage ke tabel Supabase
 ```
 
 #### DevOps & Tools
@@ -162,13 +164,14 @@ Type Check   : TypeScript (tsc --noEmit)
 │  └────┬────┘ └────┬────┘ └────┬─────┘ └─────┬─────┘  │
 │       └───────────┴───────────┴─────────────┘        │
 │                       │                              │
-│            localStorage (data sementara)             │
+│            localStorage (katalog & pesanan)           │
 └──────────────────────────────────────────────────────┘
-                       │  (menyusul)
+                       │  login/register + sesi cookie
                        ▼
 ┌──────────────────────────────────────────────────────┐
 │                    SUPABASE                          │
-│   Auth • PostgreSQL • Storage • RLS (semua tabel)    │
+│  Auth & middleware aktif • PostgreSQL • RLS • Storage │
+│  (data katalog menyusul dari localStorage)           │
 └──────────────────────────────────────────────────────┘
 ```
 
@@ -182,6 +185,8 @@ Type Check   : TypeScript (tsc --noEmit)
 │ email      │        │ name       │
 │ name       │        └─────┬──────┘
 │ phone      │              │ 1
+│ campus     │              │
+│ ktm        │              │
 │ role       │              │
 │ is_blocked │              │ N
 │ created_at │              │
@@ -192,6 +197,8 @@ Type Check   : TypeScript (tsc --noEmit)
    │   │              │ category_id│
    │   │ 1            │ name       │
    │   │              │ price      │
+   │   │              │ condition  │
+   │   │              │ location   │
    │   │              │ image_url  │
    │   │              │ is_approved│
    │   │ N            └──┬──────┬──┘
@@ -203,8 +210,8 @@ Type Check   : TypeScript (tsc --noEmit)
 │ user_id  │        │ order_id   │
 │ item_id  │        │ item_id    │
 │ quantity │        │ seller_id  │
-└──────────┘        │ price      │
-                    │ is_service │
+│ cod_spot │        │ price      │
+└──────────┘        │ is_service │
 ┌────────────┐      │ service_   │
 │   orders   │      │  approved  │
 ├────────────┤      └────────────┘
@@ -217,6 +224,8 @@ Type Check   : TypeScript (tsc --noEmit)
 │ phone      │
 └────────────┘
 ```
+
+Kolom lengkap, constraint, dan kebijakan RLS: [`supabase/schema.sql`](supabase/schema.sql) (source of truth).
 
 ### Folder Structure
 
@@ -233,6 +242,8 @@ src/
 │   │   └── users/page.tsx       # Kelola pengguna
 │   ├── cart/page.tsx            # Keranjang
 │   ├── checkout/page.tsx        # Pembayaran transfer manual
+│   ├── login/page.tsx           # Login Supabase (tanpa navbar)
+│   ├── register/page.tsx        # Register Supabase (tanpa navbar)
 │   └── items/
 │       ├── page.tsx             # Alias katalog
 │       ├── [id]/page.tsx        # Detail produk/jasa
@@ -245,13 +256,20 @@ src/
 │   ├── filter-sidebar.tsx
 │   ├── toast.tsx                # Toast host global
 │   └── ui/                      # Button, Badge, Card, Input (cva)
-└── lib/
+├── lib/
     ├── items.ts                 # Data katalog + status moderasi
     ├── cart.ts                  # Store keranjang + titik COD
     ├── users.ts                 # Akun + data pengguna
     ├── store.ts                 # Event bus antar-halaman
     ├── utils.ts                 # cn()
-    └── supabase/                # Client Supabase (siap, belum dipakai)
+    └── supabase/                # Client/server Supabase (@supabase/ssr)
+└── middleware.ts                 # Proteksi route auth + sesi cookie
+```
+
+```
+supabase/schema.sql               # Skema 6 tabel + RLS + bucket (SQL Editor)
+supabase/fix-*.sql                # Patch kebijakan RLS
+scripts/check-db.mjs              # Verifikasi koneksi & skema
 ```
 
 ---
@@ -281,7 +299,17 @@ cd Buyorent
 npm install
 ```
 
-#### 3️⃣ Jalankan Development Server
+#### 3️⃣ Konfigurasi Supabase
+
+Auth login/register butuh proyek Supabase:
+
+1. Buat proyek baru di [supabase.com](https://supabase.com) (region Singapore).
+2. Buka **SQL Editor** → jalankan isi [`supabase/schema.sql`](supabase/schema.sql) (6 tabel, fungsi `is_admin()`, RLS, seed kategori, 2 bucket storage).
+3. Isi variabel environment lokal dengan URL & anon key proyek Anda: `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
+> Tanpa konfigurasi ini, `/login`, `/register`, `/cart`, `/checkout`, `/items/new`, dan `/account` error saat dilewati middleware Supabase; halaman publik tetap jalan. Verifikasi koneksi: `node scripts/check-db.mjs`
+
+#### 4️⃣ Jalankan Development Server
 
 ```bash
 npm run dev
@@ -306,6 +334,12 @@ npx tsc --noEmit # Type check
 ```
 
 ### User Guide
+
+#### Masuk / Daftar
+
+1. Buka `/login` (halaman tanpa navbar) → masukkan email & password → *MASUK*
+2. Belum punya akun → klik tautan *DAFTAR* di `/register`: isi nama, email, no. HP, kampus, dan password → akun dibuat dan langsung masuk beranda
+3. Akun yang diblokir admin tidak bisa masuk (dicek server-side saat login)
 
 #### Pasang Iklan
 
@@ -344,7 +378,7 @@ npx tsc --noEmit # Type check
 
 ## 📌 Status Proyek
 
-**Fase**: Implementasi frontend — katalog, detail, pasang iklan, keranjang, checkout, kelola akun, dan panel admin selesai serta terverifikasi (type-check, lint, uji alur browser).
+**Fase**: Frontend lengkap + backend Supabase tahap awal — katalog, detail, pasang iklan, keranjang, checkout, kelola akun, panel admin, serta auth Supabase (login/register/middleware/skema/RLS) sudah masuk; type-check & lint hijau. Migrasi data dari localStorage ke database menyusul.
 
 | Route | Halaman | Status |
 |-------|---------|--------|
@@ -357,13 +391,12 @@ npx tsc --noEmit # Type check
 | `/admin` | Dashboard admin (gate role admin) | ✅ Selesai |
 | `/admin/items` | Moderasi listing | ✅ Selesai |
 | `/admin/users` | Kelola pengguna | ✅ Selesai |
-| `/login`, `/register` | Auth Supabase | ⏳ Menyusul |
+| `/login`, `/register` | Auth Supabase (email + password) | ✅ Selesai |
 | `/orders`, `/seller/orders` | Riwayat pesanan | ⏳ Menyusul |
 
 **Belum dibangun**:
 
-- Supabase auth (login/register, session, cek `role` / `is_blocked` server-side)
-- Koneksi database + RLS (data UI kini di `localStorage`)
+- Migrasi data katalog/keranjang/pesanan dari `localStorage` ke tabel Supabase (skema & RLS sudah siap di repo)
 - Halaman riwayat pesanan (`/orders`, `/seller/orders`)
 - Payment gateway — sesuai PRD **tidak dipakai** (transfer manual)
 - Deploy
