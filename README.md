@@ -307,7 +307,7 @@ Auth login/register butuh proyek Supabase:
 2. Buka **SQL Editor** → jalankan isi [`supabase/schema.sql`](supabase/schema.sql) (6 tabel, fungsi `is_admin()`, RLS, seed kategori, 2 bucket storage).
 3. Isi variabel environment lokal dengan URL & anon key proyek Anda: `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 
-> Tanpa konfigurasi ini, `/login`, `/register`, `/cart`, `/checkout`, `/items/new`, dan `/account` error saat dilewati middleware Supabase; halaman publik tetap jalan. Verifikasi koneksi: `node scripts/check-db.mjs`
+> Tanpa konfigurasi ini, `/login`, `/register`, `/cart`, `/checkout`, `/items/new`, dan `/account` error saat dilewati middleware Supabase; halaman publik tetap jalan. Verifikasi koneksi & skema: `node --env-file=.env.local scripts/check-db.mjs` (jalankan ulang tiap kali proyek Supabase berubah)
 
 #### 4️⃣ Jalankan Development Server
 
