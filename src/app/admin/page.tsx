@@ -14,7 +14,7 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     fetchItems().then(setItems);
-    setUsers(getUsers());
+    void getUsers().then(setUsers);
   }, [tick]);
 
   const downEntries = items.filter((i) => !i.isApproved);

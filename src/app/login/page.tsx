@@ -8,7 +8,6 @@ import { Footer } from "@/components/footer";
 import { ToastHost, toast } from "@/components/toast";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
-import { saveAccount } from "@/lib/users";
 import { flushGuestCart } from "@/lib/cart";
 import { ArrowRight, LogIn, ShieldAlert } from "lucide-react";
 
@@ -69,11 +68,11 @@ export default function LoginPage() {
       return;
     }
 
-    // Ambil baris profil (terisi trigger handle_new_user) → jembatani ke
-    // localStorage sampai Tahap D memigrasi users.ts ke Supabase penuh.
+    // Cek baris profil (terisi trigger handle_new_user) — hanya untuk blokir.
+    // Profil & role dibaca langsung dari tabel users oleh getAccount (Tahap D3).
     const { data: profile } = await supabase
       .from("users")
-      .select("name, email, phone, campus, role, ktm, is_blocked")
+      .select("is_blocked")
       .eq("id", data.user.id)
       .maybeSingle();
 
@@ -85,14 +84,6 @@ export default function LoginPage() {
       return;
     }
 
-    saveAccount({
-      name: profile?.name ?? "",
-      email: profile?.email ?? form.email.trim(),
-      phone: profile?.phone ?? "",
-      campus: profile?.campus ?? "",
-      role: profile?.role === "admin" ? "admin" : "user",
-      ktm: profile?.ktm ?? false,
-    });
     void flushGuestCart(); // tulis buffer cart tamu ke server (Tahap D2)
     toast("Berhasil masuk — selamat datang kembali");
     router.push("/");

@@ -11,7 +11,6 @@ import { fetchItems, type ItemRow } from "@/lib/items";
 import {
   getUsers,
   getAccount,
-  saveAccount,
   type AccountRecord,
   type UserRecord,
 } from "@/lib/users";
@@ -83,11 +82,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [items, setItems] = useState<ItemRow[]>([]);
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [syncing, setSyncing] = useState(false);
+  const [accLoaded, setAccLoaded] = useState(false);
 
   const refresh = () => {
-    setAccount(getAccount());
+    void getAccount().then((acc) => {
+      setAccount(acc);
+      setAccLoaded(true);
+    });
     fetchItems().then(setItems);
-    setUsers(getUsers());
+    void getUsers().then(setUsers);
   };
 
   useEffect(() => {
@@ -106,9 +109,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return () => ctx.revert();
   }, []);
 
-  // Role gate (AI_CONTEXT §4): moderasi & kelola user = admin saja.
-  // ponytail: gate localStorage sebagai demo — ganti cek session Supabase saat auth aktif.
-  if (account && account.role !== "admin") {
+  if (!accLoaded) {
+    // render pertama: profil masih dimuat dari tabel users — shell kosong
+    return (
+      <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
+        <Navbar />
+        <main className="flex-1" />
+        <Footer />
+      </div>
+    );
+  }
+
+  // Role gate (HANDOFF §5): moderasi & kelola user = admin saja, role dari
+  // tabel users. Promosi admin via supabase/setup-admin.sql (Tahap D3).
+  if (!account || account.role !== "admin") {
     return (
       <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
         <Navbar />
@@ -122,22 +136,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </h1>
             <p className="text-xs text-slate-500 leading-relaxed max-w-md">
               Halaman moderasi listing dan kelola pengguna hanya untuk akun dengan role{" "}
-              <span className="text-ink font-bold">admin</span>. Aktifkan Mode Admin di
-              halaman Kelola Akun untuk melihat panel ini (demo sebelum Supabase auth
-              tersambung).
+              <span className="text-ink font-bold">admin</span>. Tim pengelola mempromosikan
+              akun lewat skrip{" "}
+              <span className="text-ink font-bold">supabase/setup-admin.sql</span> di SQL
+              Editor Supabase, lalu muat ulang halaman ini.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mt-2">
-              <button
-                className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-signal text-[#ffffff] font-mono text-xs font-extrabold uppercase tracking-wider shadow-glow-signal active:scale-[0.98] transition-transform"
-                onClick={() => {
-                  saveAccount({ ...account, role: "admin" });
-                  refresh();
-                  toast("Mode Admin aktif — panel moderasi terbuka");
-                }}
-                type="button"
-              >
-                Aktifkan Mode Admin (Demo)
-              </button>
               <Link
                 className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-cyber-surface border border-cyber-border text-slate-600 hover:text-ink hover:border-slate-500 font-mono text-xs text-center uppercase tracking-wider transition-colors"
                 href="/account"
@@ -149,17 +153,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </main>
         <Footer />
         <ToastHost />
-      </div>
-    );
-  }
-
-  if (!account) {
-    // render pertama (SSR + hydrasi) belum baca localStorage — tampilkan shell kosong
-    return (
-      <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
-        <Navbar />
-        <main className="flex-1" />
-        <Footer />
       </div>
     );
   }

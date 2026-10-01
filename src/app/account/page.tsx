@@ -36,9 +36,15 @@ export default function AccountPage() {
   const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
 
   useEffect(() => {
-    const acc = getAccount();
-    setAccount(acc);
-    setForm({ name: acc.name, email: acc.email, phone: acc.phone, campus: acc.campus });
+    let alive = true;
+    getAccount().then((acc) => {
+      if (!alive || !acc) return;
+      setAccount(acc);
+      setForm({ name: acc.name, email: acc.email, phone: acc.phone, campus: acc.campus });
+    });
+    return () => {
+      alive = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -52,7 +58,7 @@ export default function AccountPage() {
     return () => ctx.revert();
   }, []);
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!account) return;
     const next: typeof errors = {};
@@ -69,18 +75,17 @@ export default function AccountPage() {
       phone: form.phone.trim(),
       campus: form.campus.trim(),
     };
+    const r = await saveAccount(updated);
+    if (!r.ok) {
+      toast(`Gagal menyimpan: ${r.error}`);
+      return;
+    }
     setAccount(updated);
-    saveAccount(updated);
     toast("Perubahan profil tersimpan");
   };
 
-  const setRole = (role: "user" | "admin") => {
-    if (!account || account.role === role) return;
-    const updated = { ...account, role };
-    setAccount(updated);
-    saveAccount(updated);
-    toast(role === "admin" ? "Mode Admin aktif — panel moderasi terbuka" : "Mode Pengguna aktif");
-  };
+  // Role = kolom users di database; promosi admin hanya via supabase/setup-admin.sql
+  // (RLS WITH CHECK memblokir promosi diri) — toggle demo sudah dihapus (Tahap D3).
 
   // Tahap C: keluar dari sesi Supabase + hapus jembatan localStorage.
   const handleLogout = async () => {
@@ -231,23 +236,21 @@ export default function AccountPage() {
               </h2>
               <div className="p-1 bg-cyber-surface border border-cyber-border rounded-2xl flex items-center gap-1">
                 {(["user", "admin"] as const).map((r) => (
-                  <button
-                    className={`flex-1 px-3 py-2 rounded-xl font-mono text-[11px] font-bold uppercase tracking-wider transition-all ${
+                  <span
+                    className={`flex-1 px-3 py-2 rounded-xl font-mono text-[11px] font-bold uppercase tracking-wider text-center transition-all ${
                       account?.role === r
                         ? "bg-accent text-black shadow-glow"
-                        : "text-slate-500 hover:text-ink"
+                        : "text-slate-500"
                     }`}
                     key={r}
-                    onClick={() => setRole(r)}
-                    type="button"
                   >
                     {r === "user" ? "Pengguna" : "Admin"}
-                  </button>
+                  </span>
                 ))}
               </div>
               <p className="text-[11px] text-slate-500 leading-relaxed">
                 Role menentukan akses panel: moderasi listing &amp; kelola pengguna hanya untuk
-                admin.
+                admin. Perubahan role diatur tim pengelola lewat database.
               </p>
               {account?.role === "admin" && (
                 <Button asChild variant="cyan">

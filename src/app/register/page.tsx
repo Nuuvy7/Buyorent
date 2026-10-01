@@ -8,7 +8,6 @@ import { Footer } from "@/components/footer";
 import { ToastHost, toast } from "@/components/toast";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
-import { saveAccount } from "@/lib/users";
 import { flushGuestCart } from "@/lib/cart";
 import { ArrowRight, UserPlus } from "lucide-react";
 
@@ -75,14 +74,8 @@ export default function RegisterPage() {
       return;
     }
 
-    saveAccount({
-      name: form.name.trim(),
-      email: form.email.trim(),
-      phone: form.phone.trim(),
-      campus: "",
-      role: "user",
-      ktm: false,
-    });
+    // Jembatan localStorage tidak perlu: trigger handle_new_user sudah mengisi
+    // tabel users (nama/HP dari metadata) — getAccount membacanya langsung (D3).
     void flushGuestCart(); // tulis buffer cart tamu ke server (Tahap D2)
     toast("Pendaftaran berhasil — selamat datang di Buyorent!");
     router.push("/");

@@ -27,7 +27,7 @@ export function Navbar() {
   const cart = useCart();
 
   // Tahap C: cek sesi Supabase → tampilkan "Masuk" bila keluar, pill profil bila login.
-  // Nama berasal dari jembatan localStorage (saveAccount) sampai Tahap D.
+  // Nama/role dibaca langsung dari tabel users lewat getAccount (Tahap D3).
   const [account, setAccount] = React.useState<AccountRecord | null>(null);
   const tick = useStoreTick();
 
@@ -38,7 +38,8 @@ export function Navbar() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      if (alive) setAccount(session ? getAccount() : null);
+      const acc = session ? await getAccount() : null;
+      if (alive) setAccount(acc);
     };
     void sync();
     const { data: sub } = supabase.auth.onAuthStateChange(() => {
@@ -51,7 +52,13 @@ export function Navbar() {
   }, []);
 
   React.useEffect(() => {
-    setAccount((acc) => (acc ? getAccount() : null));
+    let alive = true;
+    getAccount().then((acc) => {
+      if (alive) setAccount(acc);
+    });
+    return () => {
+      alive = false;
+    };
   }, [tick]);
 
   const nameParts = (account?.name ?? "").trim().split(/\s+/).filter(Boolean);
