@@ -379,7 +379,7 @@ npx tsc --noEmit # Type check
 
 ## 📌 Status Proyek
 
-**Fase**: Frontend lengkap + backend Supabase tersambung — auth (login/register/middleware), katalog, keranjang, profil, dan checkout (orders + order_items + upload foto/bukti) baca-tulis ke database; nol kunci `localStorage` tersisa. Type-check & lint hijau. Menyusul: halaman pesanan (tahap E), testing menyeluruh, deploy.
+**Fase**: Frontend + backend Supabase selesai sampai tahap E — auth, katalog, cart, checkout, dan halaman pesanan (`/orders`, `/orders/[id]`, `/seller/orders`) tersambung database; guard status pesanan (trigger DB) aktif; nol kunci `localStorage` tersisa. Type-check & lint hijau; skrip `scripts/e2e-tahap-e.mjs` 17/17. Menyusul: testing menyeluruh, deploy.
 
 | Route | Halaman | Status |
 |-------|---------|--------|
@@ -393,13 +393,14 @@ npx tsc --noEmit # Type check
 | `/admin/items` | Moderasi listing | ✅ Selesai |
 | `/admin/users` | Kelola pengguna | ✅ Selesai |
 | `/login`, `/register` | Auth Supabase (email + password) | ✅ Selesai |
-| `/orders`, `/seller/orders` | Riwayat pesanan | ⏳ Menyusul |
+| `/orders` | Riwayat pesanan pembeli | ✅ Selesai |
+| `/orders/[id]` | Detail pesanan + bukti transfer + kontak jasa | ✅ Selesai |
+| `/seller/orders` | Pesanan masuk penjual (ACC jasa, ubah status) | ✅ Selesai |
 
 **Belum dibangun**:
 
-- Halaman riwayat pesanan (`/orders`, `/seller/orders`)
 - Payment gateway — sesuai PRD **tidak dipakai** (transfer manual)
-- Deploy
+- Testing menyeluruh 15 route + deploy Vercel
 
 ---
 
