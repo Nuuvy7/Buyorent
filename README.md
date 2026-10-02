@@ -397,7 +397,7 @@ npx tsc --noEmit # Type check
 | `/orders/[id]` | Detail pesanan + bukti transfer + kontak jasa | ✅ Selesai |
 | `/seller/orders` | Pesanan masuk penjual (ACC jasa, ubah status) | ✅ Selesai |
 
-**Live**: https://buyorent-omega.vercel.app (Vercel Hobby, team `buyorent`, deploy via CLI — env `NEXT_PUBLIC_SUPABASE_*` di project settings; `vercel git connect` belum disambungkan karena push ke GitHub menunggu perintah user).
+**Live**: https://buyorent-omega.vercel.app (Vercel Hobby, team `buyorent`). GitHub App Vercel tersambung ke `Nuuvy7/Buyorent` (production branch `main`) → **push ke `main` auto-deploy**. Env `NEXT_PUBLIC_SUPABASE_URL`/`_ANON_KEY` ada di project settings.
 
 **Belum dibangun**:
 
