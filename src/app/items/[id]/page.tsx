@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { ItemCard } from "@/components/item-card";
 import { fetchItems, fetchItem, type ItemRow } from "@/lib/items";
 import { addToCart } from "@/lib/cart";
+import { createClient } from "@/lib/supabase/client";
+import { ToastHost, toast } from "@/components/toast";
 import {
   Home,
   ChevronRight,
@@ -100,6 +102,24 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
     if (!item) return;
     addToCart(item.id);
     router.push("/cart");
+  };
+
+  // BUG-05: tombol TANYA → WhatsApp penjual (keputusan nuuvy7 3 Okt 2026).
+  // Nomor HP penjual tidak bisa dibaca langsung (RLS users ketat) — lewat RPC
+  // public_seller_phone(item_id) yang harus dipasang via supabase/tanya-penjual.sql.
+  const askSeller = async () => {
+    if (!item) return;
+    const supabase = createClient();
+    const { data, error } = await supabase.rpc("public_seller_phone", {
+      p_item_id: item.id,
+    });
+    const phone = (data as string | null) ?? "";
+    if (error || !phone) {
+      toast("Kontak penjual belum tersedia. Coba lagi nanti.");
+      return;
+    }
+    const wa = phone.replace(/[^0-9]/g, "").replace(/^0/, "62");
+    window.open(`https://wa.me/${wa}`, "_blank", "noopener,noreferrer");
   };
 
   const leftRef = useRef<HTMLDivElement>(null);
@@ -450,7 +470,12 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                     {/* + keranjang: simpan dulu, baru ke halaman keranjang */}
                     <ShoppingCart className="w-4 h-4" /> + KERANJANG
                   </Button>
-                  <Button className="flex-1 font-mono" size="lg" variant="secondary">
+                  <Button
+                    className="flex-1 font-mono"
+                    size="lg"
+                    variant="secondary"
+                    onClick={askSeller}
+                  >
                     <MessageSquare className="w-4 h-4" /> TANYA
                   </Button>
                 </div>
@@ -632,6 +657,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
       </main>
 
       <Footer />
+      <ToastHost />
     </div>
   );
 }

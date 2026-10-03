@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Shield, Sparkles, Terminal } from "lucide-react";
+import { Shield } from "lucide-react";
 
 export function Footer() {
   return (
@@ -17,12 +17,12 @@ export function Footer() {
               </span>
             </div>
             <p className="text-slate-500 font-sans leading-relaxed text-xs">
-              Platform jual beli barang pre-loved & keahlian mahasiswa berbasis ekonomi sirkular kampus. Amanah, hemat, dan transparan.
+              Platform jual beli barang pre-loved &amp; keahlian sesama pelajar dan mahasiswa Jakarta. Amanah, hemat, dan transparan.
             </p>
           </div>
 
           <div>
-            <h4 className="font-bold text-slate-700 uppercase tracking-widest mb-3 text-[11px] text-ink">
+            <h4 className="font-bold uppercase tracking-widest mb-3 text-[11px] text-ink">
               {"// JELAJAH_KATALOG"}
             </h4>
             <ul className="space-y-2 text-slate-500">
@@ -33,52 +33,32 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/items?category=jasa" className="hover:text-ink transition-colors">
-                  &gt; Jasa & Freelance Mahasiswa
+                  &gt; Jasa &amp; Freelance
                 </Link>
-              </li>
-              <li>
-                <a href="#" className="hover:text-slate-700 transition-colors">
-                  &gt; Node Kampus Terdaftar
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-slate-700 transition-colors">
-                  &gt; Bursa Diktat & Modul
-                </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-bold text-slate-700 uppercase tracking-widest mb-3 text-[11px] text-ink">
+            <h4 className="font-bold uppercase tracking-widest mb-3 text-[11px] text-ink">
               {"// PROTOKOL_KEAMANAN"}
             </h4>
             <ul className="space-y-2 text-slate-500">
               <li>
-                <a href="#" className="hover:text-slate-700 transition-colors">
-                  &gt; Panduan COD Aman Kampus
-                </a>
+                <Link href="/login" className="hover:text-ink transition-colors">
+                  &gt; Masuk / Daftar Akun
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-slate-700 transition-colors">
-                  &gt; Verifikasi Akun Pelajar/KTM
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-slate-700 transition-colors">
-                  &gt; Pusat Bantuan & FAQ
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-slate-700 transition-colors">
-                  &gt; Kebijakan Komunitas
-                </a>
+                <Link href="/account" className="hover:text-ink transition-colors">
+                  &gt; Kelola Akun
+                </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-bold text-slate-700 uppercase tracking-widest mb-3 text-[11px] text-ink">
+            <h4 className="font-bold uppercase tracking-widest mb-3 text-[11px] text-ink">
               {"// JAMINAN_PRIVASI"}
             </h4>
             <div className="bg-cyber-surface border border-cyber-border p-3.5 rounded-2xl">
@@ -94,12 +74,7 @@ export function Footer() {
         </div>
 
         <div className="pt-6 border-t border-cyber-border/70 flex flex-col md:flex-row items-center justify-between text-slate-500 gap-4 text-[11px]">
-          <p>© 2025 BUYORENT INDONESIA // ALL RIGHTS RESERVED.</p>
-          <div className="flex items-center gap-2">
-            <span className="text-ink bg-cyber-surface border border-cyber-border px-3 py-1 rounded-full text-[10px]">
-              NODES: SALEMBA • TRISAKTI • MERCUBANA • JAKARTA
-            </span>
-          </div>
+          <p>© {new Date().getFullYear()} BUYORENT INDONESIA // ALL RIGHTS RESERVED.</p>
         </div>
       </div>
     </footer>

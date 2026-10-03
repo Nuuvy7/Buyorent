@@ -23,6 +23,15 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<{ [k: string]: string }>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+
+  // Tombol aktif hanya saat semua field terisi & T&C dicentang (BUG-08).
+  const canSubmit =
+    form.name.trim().length >= 3 &&
+    form.email.includes("@") &&
+    form.phone.length >= 10 &&
+    form.password.length >= 6 &&
+    agreed;
 
   useEffect(() => {
     if (!rootRef.current) return;
@@ -143,7 +152,19 @@ export default function RegisterPage() {
             />
             {errors.password && <p className="text-[11px] text-red-600 font-mono mt-1">{errors.password}</p>}
           </label>
-          <Button type="submit" variant="cyan" className="w-full font-mono" disabled={loading}>
+          <label className="flex items-start gap-2 cursor-pointer text-xs text-slate-500 font-sans">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+              className="mt-0.5 w-3.5 h-3.5 rounded text-ink bg-cyber-bg border-cyber-border"
+            />
+            <span>
+              Saya menyetujui{" "}
+              <span className="text-ink font-bold">Syarat &amp; Ketentuan</span> penggunaan Buyorent.
+            </span>
+          </label>
+          <Button type="submit" variant="cyan" className="w-full font-mono" disabled={loading || !canSubmit}>
             {loading ? "Memproses…" : <>Daftar <UserPlus className="w-4 h-4" /></>}
           </Button>
           <p className="text-center font-mono text-xs text-slate-500">

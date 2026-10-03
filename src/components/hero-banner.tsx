@@ -4,13 +4,11 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Search, Sparkles, School, Wallet, Zap, ShieldCheck, ArrowRight } from "lucide-react";
+import { Search, Wallet, Zap, ArrowRight } from "lucide-react";
 
 interface HeroBannerProps {
   searchQuery: string;
   setSearchQuery: (q: string) => void;
-  campusFilter: string;
-  setCampusFilter: (c: string) => void;
   budgetFilter: string;
   setBudgetFilter: (b: string) => void;
   onExplore: () => void;
@@ -19,8 +17,6 @@ interface HeroBannerProps {
 export function HeroBanner({
   searchQuery,
   setSearchQuery,
-  campusFilter,
-  setCampusFilter,
   budgetFilter,
   setBudgetFilter,
   onExplore,
@@ -107,11 +103,7 @@ export function HeroBanner({
         <div ref={badgeRef} className="inline-flex items-center gap-2">
           <Badge variant="default" className="text-xs px-3 py-1 font-mono tracking-widest shadow-glow">
             <Zap className="w-3.5 h-3.5 text-ink fill-accent" />
-            CAMPUS CIRCULAR ECONOMY
-          </Badge>
-          <Badge variant="solid" className="text-xs px-3 py-1 font-mono">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#ffffff]" />
-            100% KTM VERIFIED
+            CIRCULAR ECONOMY JAKARTA
           </Badge>
         </div>
 
@@ -122,7 +114,7 @@ export function HeroBanner({
         >
           THRIFT GEAR IDAMAN <br className="hidden sm:inline" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-ink via-ink to-accent neon-glow-cyan">
-            & SEWA SKILL TEMAN
+            &amp; SEWA SKILL TEMAN
           </span>
         </h1>
 
@@ -131,8 +123,8 @@ export function HeroBanner({
           ref={subtitleRef}
           className="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed font-mono"
         >
-          Katalog terpusat barang pre-loved & jasa kreatif sesama pelajar dan mahasiswa.
-          Transaksi transparan, hemat uang saku, dan COD aman di perpus atau kantin.
+          Katalog terpusat barang pre-loved &amp; jasa kreatif sesama pelajar dan mahasiswa Jakarta.
+          Transaksi transparan, hemat uang saku, dan COD aman di titik kesepakatan.
         </p>
 
         {/* Omnibar Search Container */}
@@ -140,27 +132,6 @@ export function HeroBanner({
           ref={omnibarRef}
           className="w-full max-w-3xl bg-cyber-surface/95 rounded-2xl p-2.5 border border-cyber-border shadow-glow flex flex-col md:flex-row items-stretch gap-2.5"
         >
-          {/* Campus Selector */}
-          <div className="flex items-center gap-2 bg-cyber-bg px-3.5 py-2.5 rounded-xl border border-cyber-border/80">
-            <School className="w-4 h-4 text-ink shrink-0" />
-            <div className="flex flex-col text-left">
-              <span className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-wider">
-                LOKASI KAMPUS
-              </span>
-              <select
-                value={campusFilter}
-                onChange={(e) => setCampusFilter(e.target.value)}
-                className="bg-transparent text-xs font-mono font-semibold text-ink focus:outline-none cursor-pointer pr-4"
-              >
-                <option value="all" className="bg-cyber-surface text-ink">Semua Kampus</option>
-                <option value="ui" className="bg-cyber-surface text-ink">UI Salemba</option>
-                <option value="trisakti" className="bg-cyber-surface text-ink">Universitas Trisakti</option>
-                <option value="mercubana" className="bg-cyber-surface text-ink">Universitas Mercu Buana</option>
-                <option value="sma" className="bg-cyber-surface text-ink">SMA/SMK Sekitar</option>
-              </select>
-            </div>
-          </div>
-
           {/* Search Input */}
           <div className="flex-1 flex items-center px-3.5 bg-cyber-bg rounded-xl border border-cyber-border/80 focus-within:border-accent transition-colors">
             <Search className="w-4 h-4 text-slate-500 mr-2 shrink-0" />

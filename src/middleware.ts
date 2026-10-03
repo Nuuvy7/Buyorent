@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 
 // Route yang butuh sesi login (HANDOFF Bagian 5.C)
-const AUTH_ROUTES = ["/cart", "/checkout", "/items/new", "/account", "/orders", "/seller/orders"];
+const AUTH_ROUTES = ["/cart", "/checkout", "/items/new", "/account", "/orders", "/seller/orders", "/admin"];
 // Route khusus tamu — sudah login? lempar ke beranda
 const GUEST_ROUTES = ["/login", "/register"];
 
@@ -80,6 +80,7 @@ export const config = {
     "/account/:path*",
     "/orders/:path*",
     "/seller/orders/:path*",
+    "/admin/:path*",
     "/login",
     "/register",
   ],

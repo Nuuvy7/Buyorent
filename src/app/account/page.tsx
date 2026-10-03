@@ -15,7 +15,6 @@ import { createClient } from "@/lib/supabase/client";
 import {
   ArrowRight,
   CheckCircle2,
-  GraduationCap,
   LogOut,
   Save,
   ShieldCheck,
@@ -32,7 +31,7 @@ export default function AccountPage() {
   const rootRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [account, setAccount] = useState<AccountRecord | null>(null);
-  const [form, setForm] = useState({ name: "", email: "", phone: "", campus: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "" });
   const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
 
   useEffect(() => {
@@ -40,7 +39,7 @@ export default function AccountPage() {
     getAccount().then((acc) => {
       if (!alive || !acc) return;
       setAccount(acc);
-      setForm({ name: acc.name, email: acc.email, phone: acc.phone, campus: acc.campus });
+      setForm({ name: acc.name, email: acc.email, phone: acc.phone });
     });
     return () => {
       alive = false;
@@ -73,7 +72,7 @@ export default function AccountPage() {
       name: form.name.trim(),
       email: form.email.trim(),
       phone: form.phone.trim(),
-      campus: form.campus.trim(),
+      campus: account.campus, // field kampus dihapus dari form (keputusan hapus fitur kampus)
     };
     const r = await saveAccount(updated);
     if (!r.ok) {
@@ -182,19 +181,6 @@ export default function AccountPage() {
                   <span className="text-[11px] text-rose-600">{errors.phone}</span>
                 )}
               </label>
-
-              <label className="flex flex-col gap-1.5">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
-                  Kampus
-                </span>
-                <input
-                  className={inputClass}
-                  onChange={(e) => setForm({ ...form, campus: e.target.value })}
-                  placeholder="UI Salemba"
-                  type="text"
-                  value={form.campus}
-                />
-              </label>
             </div>
 
             <div className="flex items-center justify-between gap-3 pt-2 flex-wrap">
@@ -223,9 +209,6 @@ export default function AccountPage() {
               <div className="flex flex-wrap items-center justify-center gap-2">
                 <Badge variant={account?.role === "admin" ? "default" : "muted"}>
                   {account?.role === "admin" ? "Admin" : "Pengguna"}
-                </Badge>
-                <Badge variant="muted">
-                  <GraduationCap className="w-3 h-3" /> {account?.campus}
                 </Badge>
               </div>
             </div>
