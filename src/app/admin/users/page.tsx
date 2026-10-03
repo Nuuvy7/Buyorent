@@ -150,7 +150,7 @@ export default function AdminUsersPage() {
             <thead className="bg-cyber-surface border-b border-cyber-border font-mono text-[10px] uppercase tracking-widest text-slate-500">
               <tr>
                 <th className="px-5 py-3.5">Pengguna</th>
-                <th className="px-5 py-3.5">Kampus</th>
+                <th className="px-5 py-3.5">Wilayah</th>
                 <th className="px-5 py-3.5">Peran</th>
                 <th className="px-5 py-3.5">KTM</th>
                 <th className="px-5 py-3.5">Status</th>

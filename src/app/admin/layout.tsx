@@ -196,7 +196,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-black text-ink tracking-tight font-mono uppercase">
-                Pusat Moderasi &amp; Integritas Kampus
+                Pusat Moderasi &amp; Integritas
               </h1>
               <p className="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed">
                 Setujui atau turunkan listing serta lihat, blokir, dan hapus akun pengguna

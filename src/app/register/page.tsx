@@ -123,7 +123,7 @@ export default function RegisterPage() {
             <span className="font-mono text-[10px] text-slate-500">EMAIL</span>
             <input
               type="email"
-              placeholder="nama@kampus.ac.id"
+              placeholder="nama@email.com"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className={inputClass}

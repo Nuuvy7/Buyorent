@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { fetchItems, type ItemRow } from "@/lib/items";
 import { useStoreTick } from "@/lib/store";
 import {
-  COD_SPOTS,
   useCart,
   removeChecked,
   type CartLine,
@@ -60,7 +59,7 @@ interface OrderRecord {
 function ItemRow({ entry }: { entry: Entry }) {
   const { item, line } = entry;
   const isService = item.category === "jasa";
-  const spot = line?.codLoc ? COD_SPOTS.find((s) => s.id === line.codLoc) : undefined;
+  const spot = line?.codLoc ? { name: line.codLoc } : undefined;
   return (
     <div className="flex items-center gap-3 py-3 border-b border-cyber-border/60 last:border-0">
       <div className="w-14 h-14 rounded-lg overflow-hidden bg-cyber-surface border border-cyber-border shrink-0">
@@ -69,7 +68,7 @@ function ItemRow({ entry }: { entry: Entry }) {
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
           <Badge variant={isService ? "orange" : "default"} className="text-[9px]">
-            {isService ? "Campus Freelance Skill" : "Pre-Loved Beli"}
+            {isService ? "Jasa Freelance Terkurasi" : "Pre-Loved Beli"}
           </Badge>
           <span className="text-[10px] text-slate-500 truncate">
             {isService ? "Penyedia" : "Penjual"}: {item.seller.name}
@@ -415,7 +414,7 @@ export default function CheckoutPage() {
                       disabled={!!order}
                       id="co-address"
                       onChange={(e) => setAddress(e.target.value)}
-                      placeholder="Kos Melati Jl. Kramat Raya No. 12, Jakarta Pusat — atau titik COD: Kantin Universitas Trisakti"
+                      placeholder="Kos Melati Jl. Kramat Raya No. 12, Jakarta Pusat — atau titik COD: Stasiun Sudirman (BNI City)"
                       value={address}
                     />
                     {errors.address && (
@@ -481,7 +480,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-slate-500">
                   <span>
-                    Metode Penyerahan — {ongkir > 0 ? "Ekspedisi Reguler" : "COD Kampus Aman"}
+                    Metode Penyerahan — {ongkir > 0 ? "Ekspedisi Reguler" : "COD Titik Aman"}
                   </span>
                   <span className={ongkir === 0 ? "text-signal font-semibold" : "text-slate-700"}>
                     {ongkir === 0 ? "Rp 0 (Bebas Ongkir)" : fmt(ongkir)}

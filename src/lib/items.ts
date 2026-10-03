@@ -27,7 +27,7 @@ const SEED_META: Record<
   "00000000-0000-4000-8000-000000000003": { categoryLabel: "Fashion", badge: "Thrifted" },
   "00000000-0000-4000-8000-000000000004": {
     categoryLabel: "Tech Support",
-    badge: "Teknisi Kampus",
+    badge: "Teknisi Terkurasi",
     priceUnit: "/sesi",
   },
   "00000000-0000-4000-8000-000000000005": { categoryLabel: "Perlengkapan Kost", badge: "Kost Gear" },

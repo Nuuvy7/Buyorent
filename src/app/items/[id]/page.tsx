@@ -34,21 +34,21 @@ const REVIEWS = [
   {
     initials: "AN",
     name: "Adinda Nurul",
-    campus: "Farmasi UI '23",
+    campus: "Jakarta Selatan",
     text: "COD lancar di Perpustakaan Pusat. Penjual sabar nungguin ngetes fungsi satu per satu. Barang beneran sesuai deskripsi.",
     context: "Beli Diktat Kimia • 2 minggu lalu",
   },
   {
     initials: "BP",
     name: "Bagas Pratama",
-    campus: "Binus Jakarta '21",
+    campus: "Jakarta Barat",
     text: "Komunikasi via chat ramah dan tepat waktu. Booking jasa diproses cepat, hasil sesuai ekspektasi sidang.",
     context: "Pakai Jasa Desain • 1 bulan lalu",
   },
   {
     initials: "FH",
     name: "Farhan Harahap",
-    campus: "Trisakti '22",
+    campus: "Jakarta Barat",
     text: "Teman seangkatan terpercaya. Nego wajar dan barang sesuai deskripsi, tidak ada yang disembunyikan.",
     context: "Beli Alat Lab • 2 bulan lalu",
   },
@@ -57,9 +57,9 @@ const REVIEWS = [
 const HANDOVER = [
   {
     id: "cod",
-    title: "COD Kampus Bebas Ongkir",
+    title: "COD Titik Aman Bebas Ongkir",
     price: "Gratis",
-    desc: "Titik temu: Perpustakaan UI Salemba / Stasiun Sudirman / kantin fakultas.",
+    desc: "Titik temu: stasiun / halte / lobby gedung publik sesuai daftar COD kota.",
   },
   {
     id: "kurir",
@@ -228,7 +228,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                   Verified Real Pic
                 </span>
                 <Badge variant="default" className="bg-cyber-bg/85 backdrop-blur-md">
-                  {isService ? "Slot Tersedia" : "COD Kampus"}
+                  {isService ? "Slot Tersedia" : "COD Titik Aman"}
                 </Badge>
               </div>
 
@@ -259,7 +259,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <h2 className="text-sm font-bold text-ink font-mono uppercase tracking-wide">
-                    Jaminan Serah Terima Kampus
+                    Jaminan Serah Terima Titik Aman
                   </h2>
                   <Badge variant="muted" className="text-[10px]">
                     Cek Dulu
@@ -268,7 +268,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                 <p className="text-xs text-slate-500 leading-relaxed">
                   {isService
                     ? "Kontak penyedia hanya terbuka setelah booking disetujui. Pembayaran mengikuti alur pesanan Buyorent — tanpa pembayaran di muka di luar platform."
-                    : "Unit diperiksa langsung saat COD kampus. Cek fungsi dan fisik sebelum konfirmasi terima — status pesanan baru berpindah ke Selesai setelah Anda menerima barang."}
+                    : "Unit diperiksa langsung saat serah terima COD. Cek fungsi dan fisik sebelum konfirmasi terima — status pesanan baru berpindah ke Selesai setelah Anda menerima barang."}
                 </p>
               </div>
             </div>
@@ -300,7 +300,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
               <div className="bg-cyber-surface rounded-2xl p-5 mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4 border border-cyber-border">
                 <div>
                   <span className="font-mono text-[10px] text-slate-500 uppercase tracking-wider block mb-1">
-                    {isService ? "Tarif Mulai" : "Harga Kesepakatan Kampus"}
+                    {isService ? "Tarif Mulai" : "Harga Kesepakatan COD"}
                   </span>
                   <div className="flex items-baseline gap-3">
                     <span className="text-3xl font-mono font-black text-ink tracking-tight">
@@ -493,7 +493,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                 {[
                   ["Checkout — status Menunggu Pembayaran", "Pesanan tercatat rapi di riwayat, belum ada transfer."],
                   ["Transfer manual ke penjual", "Penjual mengonfirmasi pembayaran lunas lalu memproses pesanan."],
-                  ["Serah terima: COD kampus / jadwal jasa", "Cek unit atau hasil kerja sebelum konfirmasi terima."],
+                  ["Serah terima: COD di titik kesepakatan / jadwal jasa", "Cek unit atau hasil kerja sebelum konfirmasi terima."],
                   ["Penjual tandai Selesai", "Rekam jejak transaksi bertambah untuk kedua pihak."],
                 ].map(([title, desc], i) => (
                   <div className="relative" key={title}>
@@ -568,7 +568,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                     Rekomendasi
                   </h5>
                   <p className="text-[11px] text-slate-500">
-                    Cocok untuk kebutuhan kuliah di lingkungan kampus UI Salemba — khususnya mahasiswa baru yang
+                    Cocok untuk kebutuhan kuliah di DKI Jakarta — khususnya mahasiswa baru yang
                     butuh {isService ? "bantuan profesional dengan budget mahasiswa" : item.categoryLabel.toLowerCase()}.
                   </p>
                 </div>
@@ -597,7 +597,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                     <CheckCircle2 className="w-4 h-4 text-signal shrink-0" /> Boleh dites dulu saat serah terima.
                   </li>
                   <li className="flex items-start gap-2">
-                    <Clock className="w-4 h-4 text-ink shrink-0" /> Biasanya dibalas dalam ±10 menit pada jam aktif kampus.
+                    <Clock className="w-4 h-4 text-ink shrink-0" /> Biasanya dibalas dalam ±10 menit pada jam aktif (07.00–21.00 WIB).
                   </li>
                 </ul>
               </div>
@@ -639,7 +639,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
           <div className="flex items-center gap-3 mb-6">
             <div className="w-2.5 h-6 rounded-full bg-accent" />
             <div>
-              <h3 className="text-lg font-bold text-ink">Koleksi Terkait di Kampus</h3>
+              <h3 className="text-lg font-bold text-ink">Koleksi Terkait</h3>
               <p className="text-xs text-slate-500">Barang serupa dan perlengkapan kuliah yang siap COD hari ini</p>
             </div>
           </div>

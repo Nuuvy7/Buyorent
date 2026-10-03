@@ -105,7 +105,7 @@ export default function LoginPage() {
           {blocked && (
             <p className="flex items-start gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-[11px] font-mono leading-relaxed">
               <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5" />
-              Akun Anda diblokir oleh admin dan tidak dapat masuk. Hubungi admin kampus
+              Akun Anda diblokir oleh admin dan tidak dapat masuk. Hubungi admin Buyorent
               jika menurut Anda ini keliru.
             </p>
           )}
@@ -118,7 +118,7 @@ export default function LoginPage() {
             <span className="font-mono text-[10px] text-slate-500">EMAIL</span>
             <input
               type="email"
-              placeholder="nama@kampus.ac.id"
+              placeholder="nama@email.com"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className={inputClass}

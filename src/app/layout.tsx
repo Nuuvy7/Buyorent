@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Buyorent // Cyber-Campus Marketplace",
-  description: "Next-gen pre-loved marketplace & student skill exchange. Built for campus hustlers.",
+  title: "Buyorent // Marketplace Pre-Loved Jakarta",
+  description: "Marketplace pre-loved & jasa mahasiswa untuk DKI Jakarta. COD aman di titik temu terverifikasi.",
 };
 
 export default function RootLayout({

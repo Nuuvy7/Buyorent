@@ -1,11 +1,8 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-export const COD_SPOTS = [
-  { id: "kantin", name: "Kantin Pusat Universitas Trisakti", jam: "Jam 11:00 – 16:00 WIB" },
-  { id: "stasiun", name: "Stasiun Sudirman (Jakarta Pusat)", jam: "Jam 17:00 – 19:30 WIB" },
-];
-
+// Titik COD dipilih di cart: default = titik pilihan penjual (items.location),
+// opsi "Lainnya" mengisi codLoc dengan teks bebas dari pembeli.
 export interface CartLine {
   id: string;
   checked: boolean;

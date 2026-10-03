@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { fetchItems, type ItemRow } from "@/lib/items";
 import { useStoreTick } from "@/lib/store";
 import {
-  COD_SPOTS,
   useCart,
   removeFromCart,
   setChecked,
@@ -39,15 +38,15 @@ import {
 const DELIVERY = [
   {
     id: "cod",
-    title: "COD Kampus Aman (Rekomendasi)",
-    desc: "Serah terima langsung di area publik kampus",
+    title: "COD Titik Aman (Rekomendasi)",
+    desc: "Serah terima langsung di titik publik yang ramai",
     price: "GRATIS",
     free: true,
   },
   {
     id: "kurir",
     title: "Ekspedisi Reguler / Antaraja",
-    desc: "Kirim ke kos/rumah di luar wilayah kampus",
+    desc: "Kirim ke alamatmu di mana saja di DKI Jakarta",
     price: "+Rp 10.000",
     free: false,
   },
@@ -149,36 +148,72 @@ function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
               <MapPin className="w-4 h-4 text-ink" />
-              Titik Temu COD Kampus Bebas Ongkir
+              Titik Temu COD Bebas Ongkir
             </span>
             <span className="text-[10px] font-mono font-bold text-signal whitespace-nowrap">
               BEBAS BIAYA
             </span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {COD_SPOTS.map((s) => (
-              <label
-                className={`flex items-center gap-2 p-2.5 rounded-xl cursor-pointer border transition-colors ${
-                  line.codLoc === s.id
-                    ? "bg-cyber-card border-accent/50"
-                    : "bg-cyber-card/50 border-cyber-border hover:border-slate-500"
-                }`}
-                key={s.id}
-              >
-                <input
-                  checked={line.codLoc === s.id}
-                  className="accent-[#14213d] shrink-0"
-                  name={`cod-${item.id}`}
-                  onChange={() => updateLine(item.id, { codLoc: s.id })}
-                  type="radio"
-                />
-                <span className="flex flex-col min-w-0">
-                  <span className="text-xs font-semibold text-slate-700 truncate">{s.name}</span>
-                  <span className="text-[10px] text-slate-500">{s.jam}</span>
+            <label
+              className={`flex items-center gap-2 p-2.5 rounded-xl cursor-pointer border transition-colors ${
+                line.codLoc === item.location
+                  ? "bg-cyber-card border-accent/50"
+                  : "bg-cyber-card/50 border-cyber-border hover:border-slate-500"
+              }`}
+            >
+              <input
+                checked={line.codLoc === item.location}
+                className="accent-[#14213d] shrink-0"
+                name={`cod-${item.id}`}
+                onChange={() => updateLine(item.id, { codLoc: item.location })}
+                type="radio"
+              />
+              <span className="flex flex-col min-w-0">
+                <span className="text-xs font-semibold text-slate-700 truncate">
+                  {item.location || "Titik pilihan penjual"}
                 </span>
-              </label>
-            ))}
+                <span className="text-[10px] text-slate-500">Titik pilihan penjual</span>
+              </span>
+            </label>
+            <label
+              className={`flex items-center gap-2 p-2.5 rounded-xl cursor-pointer border transition-colors ${
+                line.codLoc !== undefined && line.codLoc !== item.location
+                  ? "bg-cyber-card border-accent/50"
+                  : "bg-cyber-card/50 border-cyber-border hover:border-slate-500"
+              }`}
+            >
+              <input
+                checked={line.codLoc !== undefined && line.codLoc !== item.location}
+                className="accent-[#14213d] shrink-0"
+                name={`cod-${item.id}`}
+                onChange={() => updateLine(item.id, { codLoc: "" })}
+                type="radio"
+              />
+              <span className="flex flex-col min-w-0">
+                <span className="text-xs font-semibold text-slate-700 truncate">
+                  Lainnya (pilih lokasi manual)
+                </span>
+                <span className="text-[10px] text-slate-500">Titik di luar daftar</span>
+              </span>
+            </label>
           </div>
+          {line.codLoc !== undefined && line.codLoc !== item.location && (
+            <input
+              className={inputClass}
+              onChange={(e) => updateLine(item.id, { codLoc: e.target.value })}
+              placeholder="Tulis titik COD manual (contoh: Halte TransJakarta X, depan lobby)"
+              type="text"
+              value={line.codLoc}
+            />
+          )}
+          {line.codLoc !== undefined && line.codLoc !== item.location && (
+            <p className="text-[11px] text-amber-600 bg-amber-50 border border-amber-200 rounded-xl p-2.5 leading-relaxed flex items-start gap-1.5">
+              <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+              Titik di luar daftar tidak diverifikasi. Pilih lokasi umum ramai dengan orang lain di
+              sekitar, jangan bawa barang berharga berlebih, dan pilih jam ramai (07.00–21.00 WIB).
+            </p>
+          )}
           <input
             className={inputClass}
             onChange={(e) => updateLine(item.id, { note: e.target.value })}
@@ -304,7 +339,7 @@ export default function CartPage() {
                   </h2>
                   <p className="text-xs text-slate-500 mt-2 max-w-sm">
                     Belum ada barang pre-loved atau jasa mahasiswa di keranjang. Jelajahi katalog
-                    kampus dulu, lalu tekan tombol keranjang pada item yang kamu mau.
+                    dulu, lalu tekan tombol keranjang pada item yang kamu mau.
                   </p>
                 </div>
                 <Button asChild variant="cyan">
@@ -349,9 +384,9 @@ export default function CartPage() {
                     <Recycle className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-ink">Gerakan Hemat Sirkular Kampus</h3>
+                    <h3 className="text-sm font-bold text-ink">Gerakan Hemat Sirkular</h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Dengan memilih pre-loved dari sesama rekan kampus, kamu memperpanjang masa
+                      Dengan memilih pre-loved dari sesama warga Jakarta, kamu memperpanjang masa
                       pakai alat kuliah dan memangkas limbah elektronik di civitas akademika — tanpa
                       harus beli baru.
                     </p>

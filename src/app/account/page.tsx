@@ -157,7 +157,7 @@ export default function AccountPage() {
                 <input
                   className={inputClass}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="nama@kampus.ac.id"
+                  placeholder="nama@email.com"
                   type="email"
                   value={form.email}
                 />

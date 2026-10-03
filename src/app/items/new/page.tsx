@@ -12,6 +12,7 @@ import { ItemCard } from "@/components/item-card";
 import type { ItemData } from "@/components/item-card";
 import { createClient } from "@/lib/supabase/client";
 import { getAccount } from "@/lib/users";
+import { KECAMATAN_COD, KOTA_ADMINISTRASI, COD_LAINNYA, COD_LAINNYA_WARNING } from "@/lib/cod-points";
 import {
   Plus,
   Package,
@@ -24,6 +25,7 @@ import {
   ShieldCheck,
   Send,
   ImageOff,
+  AlertTriangle,
 } from "lucide-react";
 
 const KATEGORI_BARANG = [
@@ -43,19 +45,6 @@ const KONDISI = [
   { label: "Like New 95%+", condition: "like-new" },
   { label: "Wajar Pakai", condition: "used" },
   { label: "Minus Sedikit", condition: "used" },
-];
-const KAMPUS = [
-  "Universitas Trisakti",
-  "Universitas Indonesia (Salemba)",
-  "Universitas Mercu Buana",
-  "Bina Nusantara Jakarta",
-];
-const TITIK_COD = [
-  "Perpustakaan UI Salemba",
-  "Kantin Pusat Universitas Trisakti",
-  "Gedung Utama Universitas Mercu Buana",
-  "Kantin Bina Nusantara Jakarta",
-  "Stasiun Sudirman / BNI City",
 ];
 
 const PLACEHOLDER = `data:image/svg+xml,${encodeURIComponent(
@@ -93,8 +82,9 @@ interface Draft {
   kondisi: number;
   price: string;
   desc: string;
-  kampus: string;
-  titik: string;
+  kecamatan: string;
+  titik: string; // titik dari daftar COD, atau COD_LAINNYA
+  titikManual: string; // isi manual saat titik = COD_LAINNYA
   wa: string;
   bayarCod: boolean;
   bayarTransfer: boolean;
@@ -107,8 +97,9 @@ const EMPTY: Draft = {
   kondisi: 0,
   price: "",
   desc: "",
-  kampus: KAMPUS[0],
-  titik: TITIK_COD[0],
+  kecamatan: KECAMATAN_COD[0].nama,
+  titik: KECAMATAN_COD[0].titik[0],
+  titikManual: "",
   wa: "",
   bayarCod: true,
   bayarTransfer: true,
@@ -149,6 +140,13 @@ export default function PasangIklanPage() {
   const isService = form.type === "jasa";
   const kategoriList = isService ? KATEGORI_JASA : KATEGORI_BARANG;
   const priceNum = parseInt(form.price || "0", 10) || 0;
+  // titik final yang disimpan: pilihan daftar, atau input manual bila "Lainnya"
+  const resolvedTitik =
+    form.titik === COD_LAINNYA ? form.titikManual.trim() : form.titik;
+  const titikOptions = [
+    ...(KECAMATAN_COD.find((k) => k.nama === form.kecamatan)?.titik ?? []),
+    COD_LAINNYA,
+  ];
 
   const addFiles = (files: FileList | null) => {
     if (!files) return;
@@ -168,6 +166,8 @@ export default function PasangIklanPage() {
     if (priceNum <= 0) e.price = "Harga harus lebih dari Rp 0.";
     if (form.desc.trim().length < 20) e.desc = "Deskripsi minimal 20 karakter — jelaskan kondisi & alasan jual.";
     if (photos.length === 0) e.photo = "Wajib minimal 1 foto asli (real pict).";
+    if (!isService && form.titik === COD_LAINNYA && form.titikManual.trim().length < 3)
+      e.titik = "Tulis titik COD manual minimal 3 karakter.";
     if (!/^[0-9\s-]{9,}$/.test(form.wa.trim())) e.wa = "Nomor WhatsApp minimal 9 digit (angka, spasi, atau strip).";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -220,10 +220,10 @@ export default function PasangIklanPage() {
           description: form.desc.trim(),
           price: priceNum,
           condition: isService ? null : KONDISI[form.kondisi].condition,
-          location: isService ? form.kampus : form.titik,
+          location: isService ? form.kecamatan : resolvedTitik,
           image_url: publicUrl,
           seller_name: acc?.name || session.user.email || "Mahasiswa",
-          seller_campus: form.kampus,
+          seller_campus: form.kecamatan,
           seller_ktm: acc?.ktm ?? false,
           is_approved: true,
         })
@@ -262,8 +262,8 @@ export default function PasangIklanPage() {
     ...(isService ? { priceUnit: "/sesi" } : {}),
     imageUrl: photos[0]?.url ?? PLACEHOLDER,
     badge: isService ? "Jasa Baru" : KONDISI[form.kondisi].label,
-    location: isService ? form.kampus : form.titik,
-    seller: { name: "Daffa R.", avatarText: "D", campus: form.kampus, verified: true },
+    location: isService ? form.kecamatan : resolvedTitik,
+    seller: { name: "Daffa R.", avatarText: "D", campus: form.kecamatan, verified: true },
   };
 
   const stepHeader = (n: string, title: string, sub: string) => (
@@ -298,7 +298,7 @@ export default function PasangIklanPage() {
             </h1>
             <p className="text-sm text-slate-500 mt-1.5">
               Putar kembali barang kuliah yang tak terpakai atau monetisasi keahlianmu. 100% bebas biaya komisi
-              antarmahasiswa kampus.
+              antar sesama pelajar Jakarta.
             </p>
           </div>
           <div className="flex items-center gap-3 bg-cyber-card border border-cyber-border px-4 py-2.5 rounded-2xl shrink-0 font-mono">
@@ -321,7 +321,7 @@ export default function PasangIklanPage() {
             </div>
             <h2 className="text-xl font-black text-ink font-mono uppercase">Listing Tayang</h2>
             <p className="text-sm text-slate-500 mt-2 max-w-md">
-              &quot;{form.title.trim()}&quot; sudah masuk katalog kampus dan bisa ditemukan lewat search & filter
+              &quot;{form.title.trim()}&quot; sudah masuk katalog Buyorent dan bisa ditemukan lewat search &amp; filter
               sekarang juga.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mt-6 w-full sm:w-auto">
@@ -565,25 +565,70 @@ export default function PasangIklanPage() {
               <div className="bg-cyber-card/90 rounded-3xl p-6 sm:p-8 border border-cyber-border flex flex-col gap-6">
                 {stepHeader(
                   "04",
-                  isService ? "Lokasi, Kontak & Pembayaran" : "Titik Temu COD Kampus & Kontak",
+                  isService ? "Lokasi, Kontak & Pembayaran" : "Titik Temu COD & Kontak",
                   isService
                     ? "Jadwal & lokasi disepakati setelah pembeli checkout dan Anda menyetujui"
-                    : "Jaminan transaksi aman di area publik kampus yang terpantau"
+                    : "Pilih titik temu terverifikasi di wilayah kamu — lokasi umum, ramai, dan terang"
                 )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider">Kampus Terdaftar</label>
-                    <Select onChange={(v) => set("kampus", v)} options={KAMPUS} value={form.kampus} />
+                    <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider">Wilayah / Kecamatan</label>
+                    <div className="relative">
+                      <select
+                        className={selectClass}
+                        onChange={(e) => {
+                          const kec = KECAMATAN_COD.find((k) => k.nama === e.target.value);
+                          // kecamatan berubah → titik ikut reset ke titik pertamanya
+                          setForm((f) => ({
+                            ...f,
+                            kecamatan: e.target.value,
+                            titik: kec?.titik[0] ?? COD_LAINNYA,
+                            titikManual: "",
+                          }));
+                        }}
+                        value={form.kecamatan}
+                      >
+                        {KOTA_ADMINISTRASI.map((kota) => (
+                          <optgroup key={kota} label={kota}>
+                            {KECAMATAN_COD.filter((k) => k.kota === kota).map((k) => (
+                              <option key={k.nama} value={k.nama}>{k.nama}</option>
+                            ))}
+                          </optgroup>
+                        ))}
+                      </select>
+                      <ChevronDown className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
+                    </div>
                   </div>
                   {!isService && (
                     <div className="flex flex-col gap-1.5">
                       <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider">
                         Rekomendasi Titik Temu COD
                       </label>
-                      <Select onChange={(v) => set("titik", v)} options={TITIK_COD} value={form.titik} />
+                      <Select
+                        onChange={(v) => setForm((f) => ({ ...f, titik: v, titikManual: "" }))}
+                        options={titikOptions}
+                        value={form.titik}
+                      />
                     </div>
                   )}
                 </div>
+
+                {!isService && form.titik === COD_LAINNYA && (
+                  <div className="flex flex-col gap-2">
+                    <input
+                      className="w-full bg-cyber-surface border border-cyber-border rounded-xl px-4 py-3 text-xs text-ink placeholder:text-slate-500 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
+                      onChange={(e) => set("titikManual", e.target.value)}
+                      placeholder="Tulis titik COD manual (contoh: Halte TransJakarta X, depan lobby)"
+                      type="text"
+                      value={form.titikManual}
+                    />
+                    <p className="text-[11px] text-amber-600 bg-amber-50 border border-amber-200 rounded-xl p-3 leading-relaxed flex items-start gap-2">
+                      <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                      {COD_LAINNYA_WARNING}
+                    </p>
+                    {err("titik")}
+                  </div>
+                )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
@@ -678,7 +723,7 @@ export default function PasangIklanPage() {
               <div className="bg-cyber-surface rounded-3xl p-6 flex flex-col gap-4 border border-cyber-border">
                 <div className="flex items-center gap-2.5 text-ink text-sm font-bold font-mono uppercase">
                   <ShieldCheck className="w-5 h-5 text-ink" />
-                  Standar Etika Komunitas Kampus
+                  Standar Etika Komunitas
                 </div>
                 <ul className="space-y-3 text-xs text-slate-500">
                   <li className="flex items-start gap-2.5">
