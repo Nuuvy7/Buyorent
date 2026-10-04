@@ -6,14 +6,19 @@
 drop policy if exists "payment-proofs: login baca" on storage.objects;
 drop policy if exists "payment-proofs: user upload" on storage.objects;
 
+-- CATATAN: storage.foldername() adalah fungsi — butuh kurung sebelum subscript,
+-- tanpa itu Postgres balas `42601 syntax error at or near "["`.
+drop policy if exists "payment-proofs: owner baca" on storage.objects;
+drop policy if exists "payment-proofs: owner upload" on storage.objects;
+
 create policy "payment-proofs: owner baca" on storage.objects
   for select using (
     bucket_id = 'payment-proofs'
-    and (storage.foldername(name)[1] = auth.uid()::text or public.is_admin())
+    and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin())
   );
 
 create policy "payment-proofs: owner upload" on storage.objects
   for insert with check (
     bucket_id = 'payment-proofs'
-    and (storage.foldername(name)[1] = auth.uid()::text or public.is_admin())
+    and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin())
   );
