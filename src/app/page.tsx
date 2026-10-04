@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import gsap from "gsap";
 import { Navbar } from "@/components/navbar";
 import { HeroBanner } from "@/components/hero-banner";
 import { FilterSidebar } from "@/components/filter-sidebar";
 import { ItemCard } from "@/components/item-card";
 import { fetchItems, type ItemRow } from "@/lib/items";
+import { fetchCodPoints, KOTA_ADMINISTRASI, KECAMATAN_COD, type CodPoint } from "@/lib/cod-points";
 import { useStoreTick } from "@/lib/store";
 import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +17,7 @@ import {
   Wrench, 
   Layers, 
   ArrowUpDown, 
+  MapPin,
   SearchX
 } from "lucide-react";
 
@@ -25,10 +27,18 @@ export default function CatalogExplorePage() {
   const [budgetFilter, setBudgetFilter] = useState("any");
   const [conditionFilter, setConditionFilter] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
+  const [filterKota, setFilterKota] = useState(""); // "" = semua kota
+  const [filterKec, setFilterKec] = useState(""); // "" = semua kecamatan
+  const [codPoints, setCodPoints] = useState<CodPoint[] | null>(null);
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
   const tick = useStoreTick();
   const [items, setItems] = useState<ItemRow[]>([]);
   const [loaded, setLoaded] = useState(false);
+
+  // titik COD dari tabel (fallback daftar statis bila belum di-apply)
+  useEffect(() => {
+    void fetchCodPoints().then(setCodPoints);
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -54,7 +64,47 @@ export default function CatalogExplorePage() {
     setBudgetFilter("any");
     setConditionFilter("all");
     setSortBy("featured");
+    setFilterKota("");
+    setFilterKec("");
   };
+
+  // opsi dropdown dari tabel cod_points; fallback statis bila belum di-apply
+  const kotaList = useMemo(
+    () => (codPoints ? Array.from(new Set(codPoints.map((p) => p.kota))) : [...KOTA_ADMINISTRASI]),
+    [codPoints]
+  );
+  const kecList = useMemo(() => {
+    const base = codPoints
+      ? Array.from(
+          new Map(codPoints.map((p) => [p.kecamatan, p.kota] as [string, string])),
+          ([nama, kota]) => ({ nama, kota })
+        )
+      : KECAMATAN_COD.map((k) => ({ nama: k.nama, kota: k.kota }));
+    return filterKota ? base.filter((k) => k.kota === filterKota) : base;
+  }, [codPoints, filterKota]);
+
+  const pointsById = useMemo(
+    () => new Map((codPoints ?? []).map((p) => [p.id, p])),
+    [codPoints]
+  );
+  // nama kecamatan (lowercase) → kota, utk item berteks (jasa location = kecamatan)
+  const kecToKota = useMemo(() => {
+    const m = new Map<string, { kec: string; kota: string }>();
+    for (const k of KECAMATAN_COD) m.set(k.nama.toLowerCase(), { kec: k.nama, kota: k.kota });
+    return m;
+  }, []);
+  /** Lokasi item → {kecamatan, kota, score}; null = teks lawas (kampus/titik manual) */
+  const lokasiInfo = useCallback(
+    (item: ItemRow): { kec: string; kota: string; score: number | null } | null => {
+      const p = pointsById.get(item.location);
+      if (p) return { kec: p.kecamatan, kota: p.kota, score: p.safety_score };
+      const hit = kecToKota.get(item.location.trim().toLowerCase());
+      if (hit) return { ...hit, score: null };
+      return null;
+    },
+    [pointsById, kecToKota]
+  );
+  const lokasiAktif = filterKota !== "" || filterKec !== "";
 
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
@@ -70,13 +120,26 @@ export default function CatalogExplorePage() {
       if (budgetFilter === "u50" && item.price >= 50000) return false;
       if (budgetFilter === "50-200" && (item.price < 50000 || item.price > 200000)) return false;
       if (budgetFilter === "o200" && item.price <= 200000) return false;
+      if (lokasiAktif) {
+        // listing lawas tanpa titik (location kampus/manual) hanya tampil tanpa filter lokasi
+        const info = lokasiInfo(item);
+        if (!info) return false;
+        if (filterKec && info.kec !== filterKec) return false;
+        if (filterKota && info.kota !== filterKota) return false;
+      }
       return true;
     }).sort((a, b) => {
+      if (lokasiAktif) {
+        // safety_score DESC di dalam lokasi terpilih (teks tanpa titik → -1, di bawah)
+        const sa = lokasiInfo(a)?.score ?? -1;
+        const sb = lokasiInfo(b)?.score ?? -1;
+        if (sa !== sb) return sb - sa;
+      }
       if (sortBy === "price-asc") return a.price - b.price;
       if (sortBy === "price-desc") return b.price - a.price;
       return 0;
     });
-  }, [items, activeTab, conditionFilter, searchQuery, budgetFilter, sortBy]);
+  }, [items, activeTab, conditionFilter, searchQuery, budgetFilter, sortBy, filterKota, filterKec, lokasiAktif, lokasiInfo]);
 
   useEffect(() => {
     if (gridRef.current) {
@@ -89,7 +152,7 @@ export default function CatalogExplorePage() {
         );
       }
     }
-  }, [activeTab, conditionFilter, budgetFilter, sortBy, searchQuery]);
+  }, [activeTab, conditionFilter, budgetFilter, sortBy, searchQuery, filterKota, filterKec]);
 
   const baseItems = items;
   const barangCount = baseItems.filter((i) => i.category === "barang").length;
@@ -169,6 +232,35 @@ export default function CatalogExplorePage() {
           </div>
 
           <div className="flex items-center gap-2 self-end sm:self-center font-mono text-xs">
+            <span className="text-slate-500 uppercase tracking-wider flex items-center gap-1">
+              <MapPin className="w-3.5 h-3.5 text-ink" /> LOKASI:
+            </span>
+            <select
+              onChange={(e) => {
+                const v = e.target.value;
+                setFilterKota(v);
+                // kecamatan lama mungkin tidak ada di kota baru → reset
+                if (filterKec && !kecList.some((k) => k.nama === filterKec && k.kota === v))
+                  setFilterKec("");
+              }}
+              value={filterKota}
+              className="bg-cyber-surface text-slate-700 text-xs font-mono font-semibold px-3 py-1.5 rounded-xl border border-cyber-border focus:border-accent focus:outline-none cursor-pointer"
+            >
+              <option value="">Semua Kota</option>
+              {kotaList.map((k) => (
+                <option key={k} value={k}>{k}</option>
+              ))}
+            </select>
+            <select
+              onChange={(e) => setFilterKec(e.target.value)}
+              value={filterKec}
+              className="bg-cyber-surface text-slate-700 text-xs font-mono font-semibold px-3 py-1.5 rounded-xl border border-cyber-border focus:border-accent focus:outline-none cursor-pointer"
+            >
+              <option value="">Semua Kecamatan</option>
+              {kecList.map((k) => (
+                <option key={k.nama} value={k.nama}>{k.nama}</option>
+              ))}
+            </select>
             <span className="text-slate-500 uppercase tracking-wider flex items-center gap-1">
               <ArrowUpDown className="w-3.5 h-3.5 text-ink" /> URUTKAN:
             </span>
