@@ -329,7 +329,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                 </div>
                 <span className="inline-flex items-center gap-1 font-mono text-[10px] font-bold uppercase tracking-wider text-signal border border-signal/40 bg-signal/10 px-2.5 py-1 rounded-full self-start sm:self-auto">
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  Escrow Aktif
+                  Transfer Manual
                 </span>
               </div>
 
@@ -380,7 +380,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                     </div>
                   </div>
                   <Badge variant="solid" className="text-[10px]">
-                    KTM Aktif
+                    Akun Terverifikasi
                   </Badge>
                 </div>
                 <div className="grid grid-cols-3 gap-2 pt-3 border-t border-cyber-border text-center font-mono">

@@ -616,7 +616,7 @@ export default function CheckoutPage() {
               {/* Trust badges */}
               <div className="flex items-center justify-center gap-5 pt-1 text-[11px] text-slate-500 flex-wrap">
                 <span className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-signal" /> Verifikasi KTM Aktif
+                  <ShieldCheck className="w-4 h-4 text-signal" /> Akun Terverifikasi
                 </span>
                 <span className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-signal" /> Status Transaksi Tercatat
