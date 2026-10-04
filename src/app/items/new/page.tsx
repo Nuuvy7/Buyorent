@@ -12,7 +12,7 @@ import { ItemCard } from "@/components/item-card";
 import type { ItemData } from "@/components/item-card";
 import { createClient } from "@/lib/supabase/client";
 import { getAccount } from "@/lib/users";
-import { KECAMATAN_COD, KOTA_ADMINISTRASI, COD_LAINNYA, COD_LAINNYA_WARNING } from "@/lib/cod-points";
+import { KECAMATAN_COD, KOTA_ADMINISTRASI, COD_LAINNYA, COD_LAINNYA_WARNING, fetchTitik, type CodPoint } from "@/lib/cod-points";
 import {
   Plus,
   Package,
@@ -61,15 +61,19 @@ const Select = ({
 }: {
   value: string;
   onChange: (v: string) => void;
-  options: string[];
+  options: Array<string | { value: string; label: string }>;
 }) => (
   <div className="relative">
     <select className={selectClass} onChange={(e) => onChange(e.target.value)} value={value}>
-      {options.map((o) => (
-        <option key={o} value={o}>
-          {o}
-        </option>
-      ))}
+      {options.map((o) => {
+        const v = typeof o === "string" ? o : o.value;
+        const label = typeof o === "string" ? o : o.label;
+        return (
+          <option key={v} value={v}>
+            {label}
+          </option>
+        );
+      })}
     </select>
     <ChevronDown className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
   </div>
@@ -140,13 +144,43 @@ export default function PasangIklanPage() {
   const isService = form.type === "jasa";
   const kategoriList = isService ? KATEGORI_JASA : KATEGORI_BARANG;
   const priceNum = parseInt(form.price || "0", 10) || 0;
-  // titik final yang disimpan: pilihan daftar, atau input manual bila "Lainnya"
+  const kecStatic = KECAMATAN_COD.find((k) => k.nama === form.kecamatan);
+
+  // Titik dari tabel cod_points (safety_score DESC); null = tabel belum ada → fallback statis.
+  const [runtimeTitik, setRuntimeTitik] = useState<CodPoint[] | null>(null);
+  useEffect(() => {
+    let alive = true;
+    setRuntimeTitik(null);
+    const kec = KECAMATAN_COD.find((k) => k.nama === form.kecamatan);
+    void fetchTitik(kec?.kota ?? "", form.kecamatan).then((list) => {
+      if (!alive) return;
+      setRuntimeTitik(list);
+      // kecamatan berubah → titik di-reset ke pilihan pertama (runtime bila ada)
+      setForm((f) => ({
+        ...f,
+        titik: list ? list[0].id : (kec?.titik[0] ?? COD_LAINNYA),
+        titikManual: "",
+      }));
+    });
+    return () => {
+      alive = false;
+    };
+  }, [form.kecamatan]);
+
+  // titik final yang disimpan: point_id (tabel) atau teks; "Lainnya" → input manual
   const resolvedTitik =
     form.titik === COD_LAINNYA ? form.titikManual.trim() : form.titik;
-  const titikOptions = [
-    ...(KECAMATAN_COD.find((k) => k.nama === form.kecamatan)?.titik ?? []),
-    COD_LAINNYA,
+  const titikOptions: Array<{ value: string; label: string }> = [
+    ...(runtimeTitik ?? kecStatic?.titik ?? []).map((t) =>
+      typeof t === "string" ? { value: t, label: t } : { value: t.id, label: t.nama }
+    ),
+    { value: COD_LAINNYA, label: COD_LAINNYA },
   ];
+  // label utk preview (id → nama titik)
+  const titikLabel =
+    form.titik === COD_LAINNYA
+      ? form.titikManual.trim()
+      : titikOptions.find((o) => o.value === form.titik)?.label ?? form.titik;
 
   const addFiles = (files: FileList | null) => {
     if (!files) return;
@@ -166,8 +200,11 @@ export default function PasangIklanPage() {
     if (priceNum <= 0) e.price = "Harga harus lebih dari Rp 0.";
     if (form.desc.trim().length < 20) e.desc = "Deskripsi minimal 20 karakter — jelaskan kondisi & alasan jual.";
     if (photos.length === 0) e.photo = "Wajib minimal 1 foto asli (real pict).";
-    if (!isService && form.titik === COD_LAINNYA && form.titikManual.trim().length < 3)
-      e.titik = "Tulis titik COD manual minimal 3 karakter.";
+    if (!isService && resolvedTitik.length < 3)
+      e.titik =
+        form.titik === COD_LAINNYA
+          ? "Tulis titik COD manual minimal 3 karakter."
+          : "Pilih titik temu COD.";
     if (!/^[0-9\s-]{9,}$/.test(form.wa.trim())) e.wa = "Nomor WhatsApp minimal 9 digit (angka, spasi, atau strip).";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -262,7 +299,7 @@ export default function PasangIklanPage() {
     ...(isService ? { priceUnit: "/sesi" } : {}),
     imageUrl: photos[0]?.url ?? PLACEHOLDER,
     badge: isService ? "Jasa Baru" : KONDISI[form.kondisi].label,
-    location: isService ? form.kecamatan : resolvedTitik,
+    location: isService ? form.kecamatan : titikLabel,
     seller: { name: "Daffa R.", avatarText: "D", campus: form.kecamatan, verified: true },
   };
 
@@ -577,12 +614,11 @@ export default function PasangIklanPage() {
                       <select
                         className={selectClass}
                         onChange={(e) => {
-                          const kec = KECAMATAN_COD.find((k) => k.nama === e.target.value);
-                          // kecamatan berubah → titik ikut reset ke titik pertamanya
+                          // titik di-reset oleh effect setelah fetch titik kecamatan baru
                           setForm((f) => ({
                             ...f,
                             kecamatan: e.target.value,
-                            titik: kec?.titik[0] ?? COD_LAINNYA,
+                            titik: "",
                             titikManual: "",
                           }));
                         }}
@@ -609,6 +645,9 @@ export default function PasangIklanPage() {
                         options={titikOptions}
                         value={form.titik}
                       />
+                      <p className="text-[11px] text-slate-500 font-mono pt-1">
+                        Jam operasional titik COD: 07.00–21.00 WIB
+                      </p>
                     </div>
                   )}
                 </div>
