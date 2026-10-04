@@ -29,6 +29,7 @@ import {
   Wrench,
   Clock,
   BadgeCheck,
+  Camera,
   AlertTriangle,
 } from "lucide-react";
 
@@ -244,9 +245,9 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
             <div className="relative bg-cyber-card/90 rounded-3xl p-4 border border-cyber-border shadow-sm overflow-hidden">
               {/* Floating badges */}
               <div className="absolute top-7 left-7 z-10 flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyber-bg/85 backdrop-blur-md font-mono text-[10px] font-bold uppercase tracking-wider text-signal border border-signal/40 shadow-glow-signal">
-                  <BadgeCheck className="w-3.5 h-3.5" />
-                  Verified Real Pic
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyber-bg/85 backdrop-blur-md font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400 border border-cyber-border">
+                  <Camera className="w-3.5 h-3.5" />
+                  Foto dari Penjual
                 </span>
                 <Badge variant="default" className="bg-cyber-bg/85 backdrop-blur-md">
                   {isService ? "Slot Tersedia" : "COD Titik Aman"}
@@ -384,9 +385,11 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                       <p className="text-xs text-slate-500">{item.seller.campus}</p>
                     </div>
                   </div>
-                  <Badge variant="solid" className="text-[10px]">
-                    Akun Terverifikasi
-                  </Badge>
+                  {item.seller.verified && (
+                    <Badge variant="solid" className="text-[10px]">
+                      Akun Terverifikasi
+                    </Badge>
+                  )}
                 </div>
               </div>
 
