@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { LokasiTitik } from "@/components/lokasi-titik";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { fetchItems, type ItemRow } from "@/lib/items";
@@ -171,7 +172,11 @@ function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
               />
               <span className="flex flex-col min-w-0">
                 <span className="text-xs font-semibold text-slate-700 truncate">
-                  {item.location || "Titik pilihan penjual"}
+                  {item.location ? (
+                    <LokasiTitik value={item.location} fallback="Titik pilihan penjual" />
+                  ) : (
+                    "Titik pilihan penjual"
+                  )}
                 </span>
                 <span className="text-[10px] text-slate-500">Titik pilihan penjual</span>
               </span>

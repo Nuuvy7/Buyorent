@@ -13,6 +13,7 @@ import { fetchItems, fetchItem, type ItemRow } from "@/lib/items";
 import { addToCart } from "@/lib/cart";
 import { createClient } from "@/lib/supabase/client";
 import { ToastHost, toast } from "@/components/toast";
+import { isPointId, resolveLokasi } from "@/lib/cod-points";
 import {
   Home,
   ChevronRight,
@@ -77,6 +78,19 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
   const [item, setItem] = useState<ItemRow | null>(null);
   const [allItems, setAllItems] = useState<ItemRow[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [lokasiTeks, setLokasiTeks] = useState<string | null>(null);
+
+  // location boleh point_id (cod_points) atau teks lama → resolve ke label
+  useEffect(() => {
+    if (!item) return;
+    let alive = true;
+    void resolveLokasi(item.location).then((t) => {
+      if (alive) setLokasiTeks(t);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [item]);
 
   useEffect(() => {
     let alive = true;
@@ -151,6 +165,8 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
   if (!item) return notFound();
 
   const isService = item.category === "jasa";
+  // label lokasi utk spec & badge: point_id → nama titik; sedang resolve → kosong sesaat
+  const lokasi = lokasiTeks ?? (isPointId(item.location) ? "" : item.location);
   // Listing tayang/diturunkan ada di flag RLS — yang non-tayang hanya terlihat
   // penjual/admin, jadi banner "Diturunkan Admin" hanya mungkin untuk mereka.
   const isDown = !item.isApproved;
@@ -167,7 +183,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
         ["Kategori", item.categoryLabel],
         ["Tipe", "Jasa Mahasiswa"],
         ["Cakupan", item.subLabel],
-        ["Area", item.location],
+        ["Area", lokasi],
         ["Tarif", `Rp ${item.price.toLocaleString("id-ID")}${item.priceUnit ?? ""}`],
         ["Penyedia", `${item.seller.name} • ${item.seller.campus}`],
       ]
@@ -176,7 +192,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
         ["Tipe", "Barang Pre-loved"],
         ["Kondisi", item.badge],
         ["Kelengkapan", item.subLabel],
-        ["Lokasi", item.location],
+        ["Lokasi", lokasi],
         ["Harga", `Rp ${item.price.toLocaleString("id-ID")}`],
         ["Penjual", `${item.seller.name} • ${item.seller.campus}`],
       ];
@@ -286,7 +302,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                   </span>
                   <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-cyber-surface border border-cyber-border text-slate-500 font-mono text-[10px] font-bold uppercase tracking-wider">
                     <MapPin className="w-3.5 h-3.5 text-ink" />
-                    {item.location}
+                    {lokasi}
                   </span>
                 </div>
                 <span className="font-mono text-[10px] text-slate-500 shrink-0">UPDATE 2 jam lalu</span>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { addToCart } from "@/lib/cart";
+import { LokasiTitik } from "@/components/lokasi-titik";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
@@ -130,7 +131,7 @@ export function ItemCard({
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[11px] font-mono">
           <span className="bg-cyber-surface/90 border border-cyber-border/80 text-slate-600 px-2 py-0.5 rounded-lg flex items-center gap-1">
             <MapPin className="w-3 h-3 text-ink" />
-            {item.location}
+            <LokasiTitik value={item.location} />
           </span>
           {item.rating && (
             <span className="bg-accent/15 border border-accent/40 text-ink px-2 py-0.5 rounded-lg flex items-center gap-1">

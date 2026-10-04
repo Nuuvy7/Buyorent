@@ -5,6 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { LokasiTitik } from "@/components/lokasi-titik";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { fetchItems, type ItemRow } from "@/lib/items";
@@ -77,7 +78,7 @@ function ItemRow({ entry }: { entry: Entry }) {
         <p className="text-xs font-bold text-ink truncate mt-1">{item.name}</p>
         {spot && (
           <p className="text-[10px] text-slate-500 truncate">
-            COD: {spot.name}
+            COD: <LokasiTitik value={spot.name} />
             {line?.note ? ` — ${line.note}` : ""}
           </p>
         )}
