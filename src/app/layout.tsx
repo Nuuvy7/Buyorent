@@ -3,7 +3,24 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Buyorent // Marketplace Pre-Loved Jakarta",
-  description: "Marketplace pre-loved & jasa mahasiswa untuk DKI Jakarta. COD aman di titik temu terverifikasi.",
+  description:
+    "Marketplace pre-loved & jasa untuk DKI Jakarta. COD aman di titik temu terverifikasi.",
+  metadataBase: new URL("https://buyorent-omega.vercel.app"),
+  openGraph: {
+    title: "Buyorent // Marketplace Pre-Loved Jakarta",
+    description:
+      "Marketplace pre-loved & jasa untuk DKI Jakarta. COD aman di titik temu terverifikasi.",
+    url: "https://buyorent-omega.vercel.app",
+    siteName: "Buyorent",
+    locale: "id_ID",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Buyorent // Marketplace Pre-Loved Jakarta",
+    description:
+      "Marketplace pre-loved & jasa untuk DKI Jakarta. COD aman di titik temu terverifikasi.",
+  },
 };
 
 export default function RootLayout({
