@@ -56,7 +56,7 @@ export const KECAMATAN_COD: KecamatanCOD[] = [
   { nama: "Palmerah", kota: "Jakarta Barat", titik: ["Stasiun Palmerah", "Plaza Slipi Jaya", "Universitas Binus (Kampus Anggrek)"] },
   { nama: "Taman Sari", kota: "Jakarta Barat", titik: ["Stasiun Jakarta Kota", "Glodok Plaza", "Museum Fatahillah (Kota Tua)"] },
   { nama: "Tambora", kota: "Jakarta Barat", titik: ["Seasons City Mall", "Stasiun Angke", "Pasar Pagi Tambora"] },
-  { nama: "Cakung", kota: "Jakarta Timur", titik: ["Stasiun Cakung", "Terminal Pulogebang", "ITC Cakung"] },
+  { nama: "Cakung", kota: "Jakarta Timur", titik: ["Stasiun Cakung", "Terminal Pulogebang"] },
   { nama: "Duren Sawit", kota: "Jakarta Timur", titik: ["Mall Cipinang Indah", "Halte TJ Kalimalang", "Pegadaian Pondok Kelapa Raya"] },
   { nama: "Jatinegara", kota: "Jakarta Timur", titik: ["Stasiun Jatinegara", "Pasar Mester", "Terminal Kampung Melayu"] },
   { nama: "Kramat Jati", kota: "Jakarta Timur", titik: ["Pasar Induk Kramat Jati", "Halte TJ Kramat Jati"] },
@@ -65,7 +65,7 @@ export const KECAMATAN_COD: KecamatanCOD[] = [
   { nama: "Pasar Rebo", kota: "Jakarta Timur", titik: ["Halte Flyover Raya Bogor", "Terminal Pasar Rebo", "RSUD Pasar Rebo"] },
   { nama: "Pulo Gadung", kota: "Jakarta Timur", titik: ["Terminal Pulo Gadung", "Arion Mall", "GOR Rawamangun"] },
   { nama: "Ciracas", kota: "Jakarta Timur", titik: ["Terminal Kampung Rambutan", "Stasiun LRT Ciracas", "Stasiun LRT Kampung Rambutan"] },
-  { nama: "Cipayung", kota: "Jakarta Timur", titik: ["Gerbang Utama TMII", "RSUD Cipayung", "Pasar Cipayung"] },
+  { nama: "Cipayung", kota: "Jakarta Timur", titik: ["Gerbang Utama TMII", "RSUD Cipayung"] },
 ];
 
 // ===== Runtime layer: tabel public.cod_points =====

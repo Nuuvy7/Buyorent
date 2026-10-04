@@ -50,7 +50,7 @@ Cakupan: 42 kecamatan di 5 kota administrasi (Kepulauan Seribu dikecualikan — 
 - **Tambora**: Seasons City Mall, Stasiun Angke, Pasar Pagi Tambora.
 
 ### Jakarta Timur (10 kecamatan)
-- **Cakung**: Stasiun Cakung, Terminal Pulogebang, ITC Cakung.
+- **Cakung**: Stasiun Cakung, Terminal Pulogebang. (ITC Cakung: diverifikasi ulang dulu sebelum masuk kembali — `[unver]` saat riset.)
 - **Duren Sawit**: Mall Cipinang Indah, Halte TJ Kalimalang, Pegadaian Pondok Kelapa Raya.
 - **Jatinegara**: Stasiun Jatinegara, Pasar Mester, Terminal Kampung Melayu.
 - **Kramat Jati**: Pasar Induk Kramat Jati, Halte TJ Kramat Jati. (PGC Cililitan ditarik sementara — verifikasi online gagal saat riset `[unver]`; masukkan lagi setelah verifikasi ulang.)
@@ -59,7 +59,7 @@ Cakupan: 42 kecamatan di 5 kota administrasi (Kepulauan Seribu dikecualikan — 
 - **Pasar Rebo**: Halte Flyover Raya Bogor, Terminal Pasar Rebo, RSUD Pasar Rebo.
 - **Pulo Gadung**: Terminal Pulo Gadung, Arion Mall, GOR Rawamangun.
 - **Ciracas**: Terminal Kampung Rambutan, Stasiun LRT Ciracas, Stasiun LRT Kampung Rambutan.
-- **Cipayung**: Gerbang Utama TMII, RSUD Cipayung, Pasar Cipayung.
+- **Cipayung**: Gerbang Utama TMII, RSUD Cipayung. (Pasar Cipayung: diverifikasi ulang dulu sebelum masuk kembali — `[unver]` saat riset.)
 
 ## 2. Kriteria seleksi — checklist ANGPA
 

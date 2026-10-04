@@ -124,7 +124,6 @@ insert into public.cod_points (kota, kecamatan, nama, safety_score) values
 ('Jakarta Barat', 'Tambora', 'Pasar Pagi Tambora', 2),
 ('Jakarta Timur', 'Cakung', 'Stasiun Cakung', 3),
 ('Jakarta Timur', 'Cakung', 'Terminal Pulogebang', 2),
-('Jakarta Timur', 'Cakung', 'ITC Cakung', 2),
 ('Jakarta Timur', 'Duren Sawit', 'Mall Cipinang Indah', 3),
 ('Jakarta Timur', 'Duren Sawit', 'Halte TJ Kalimalang', 2),
 ('Jakarta Timur', 'Duren Sawit', 'Pegadaian Pondok Kelapa Raya', 2),
@@ -149,6 +148,5 @@ insert into public.cod_points (kota, kecamatan, nama, safety_score) values
 ('Jakarta Timur', 'Ciracas', 'Stasiun LRT Ciracas', 3),
 ('Jakarta Timur', 'Ciracas', 'Stasiun LRT Kampung Rambutan', 3),
 ('Jakarta Timur', 'Cipayung', 'Gerbang Utama TMII', 2),
-('Jakarta Timur', 'Cipayung', 'RSUD Cipayung', 3),
-('Jakarta Timur', 'Cipayung', 'Pasar Cipayung', 2)
+('Jakarta Timur', 'Cipayung', 'RSUD Cipayung', 3)
 on conflict (kota, kecamatan, nama) do nothing;
