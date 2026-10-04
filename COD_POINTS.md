@@ -2,6 +2,7 @@
 
 Sumber: riset Lythrum (2026-10-03), handoff via Iris ke Ficus untuk implementasi.
 Status: draft siap implementasi — `safety_score` masih scoring statis, bukan klaim "aman" final.
+Catatan seed: `safety_score` **derived dari jenis titik per kriteria ANGPA** (kelas 3 = grid petugas/CCTV permanen: stasiun/mal/bandara/RS; kelas 2 = ramai+terang, pengawasan situasional). Titik `[unver]` tidak masuk seed sampai verifikasi ulang.
 
 ## 1. Daftar titik per wilayah & kecamatan
 
@@ -52,7 +53,7 @@ Cakupan: 42 kecamatan di 5 kota administrasi (Kepulauan Seribu dikecualikan — 
 - **Cakung**: Stasiun Cakung, Terminal Pulogebang, ITC Cakung.
 - **Duren Sawit**: Mall Cipinang Indah, Halte TJ Kalimalang, Pegadaian Pondok Kelapa Raya.
 - **Jatinegara**: Stasiun Jatinegara, Pasar Mester, Terminal Kampung Melayu.
-- **Kramat Jati**: PGC Cililitan, Pasar Induk Kramat Jati, Halte TJ Kramat Jati.
+- **Kramat Jati**: Pasar Induk Kramat Jati, Halte TJ Kramat Jati. (PGC Cililitan ditarik sementara — verifikasi online gagal saat riset `[unver]`; masukkan lagi setelah verifikasi ulang.)
 - **Makasar**: Terminal Pinang Ranti, Stasiun LRT Taman Mini, Bandara Halim Perdanakusuma.
 - **Matraman**: Stasiun Matraman, Halte TJ Matraman 1/2, Pasar Genjing.
 - **Pasar Rebo**: Halte Flyover Raya Bogor, Terminal Pasar Rebo, RSUD Pasar Rebo.

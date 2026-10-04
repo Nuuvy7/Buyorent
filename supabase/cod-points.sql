@@ -131,7 +131,6 @@ insert into public.cod_points (kota, kecamatan, nama, safety_score) values
 ('Jakarta Timur', 'Jatinegara', 'Stasiun Jatinegara', 3),
 ('Jakarta Timur', 'Jatinegara', 'Pasar Mester', 2),
 ('Jakarta Timur', 'Jatinegara', 'Terminal Kampung Melayu', 2),
-('Jakarta Timur', 'Kramat Jati', 'PGC Cililitan', 2),
 ('Jakarta Timur', 'Kramat Jati', 'Pasar Induk Kramat Jati', 2),
 ('Jakarta Timur', 'Kramat Jati', 'Halte TJ Kramat Jati', 2),
 ('Jakarta Timur', 'Makasar', 'Terminal Pinang Ranti', 2),

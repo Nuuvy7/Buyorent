@@ -59,7 +59,7 @@ export const KECAMATAN_COD: KecamatanCOD[] = [
   { nama: "Cakung", kota: "Jakarta Timur", titik: ["Stasiun Cakung", "Terminal Pulogebang", "ITC Cakung"] },
   { nama: "Duren Sawit", kota: "Jakarta Timur", titik: ["Mall Cipinang Indah", "Halte TJ Kalimalang", "Pegadaian Pondok Kelapa Raya"] },
   { nama: "Jatinegara", kota: "Jakarta Timur", titik: ["Stasiun Jatinegara", "Pasar Mester", "Terminal Kampung Melayu"] },
-  { nama: "Kramat Jati", kota: "Jakarta Timur", titik: ["PGC Cililitan", "Pasar Induk Kramat Jati", "Halte TJ Kramat Jati"] },
+  { nama: "Kramat Jati", kota: "Jakarta Timur", titik: ["Pasar Induk Kramat Jati", "Halte TJ Kramat Jati"] },
   { nama: "Makasar", kota: "Jakarta Timur", titik: ["Terminal Pinang Ranti", "Stasiun LRT Taman Mini", "Bandara Halim Perdanakusuma"] },
   { nama: "Matraman", kota: "Jakarta Timur", titik: ["Stasiun Matraman", "Halte TJ Matraman 1/2", "Pasar Genjing"] },
   { nama: "Pasar Rebo", kota: "Jakarta Timur", titik: ["Halte Flyover Raya Bogor", "Terminal Pasar Rebo", "RSUD Pasar Rebo"] },
