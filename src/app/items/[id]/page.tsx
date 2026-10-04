@@ -89,7 +89,10 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
   };
   const goCart = () => {
     if (!item) return;
-    addToCart(item.id);
+    if (!addToCart(item.id)) {
+      toast("Sudah di keranjang.");
+      return;
+    }
     router.push("/cart");
   };
 

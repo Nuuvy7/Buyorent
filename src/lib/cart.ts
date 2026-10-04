@@ -143,8 +143,9 @@ export function resetCart() {
   notify();
 }
 
-export function addToCart(id: string) {
-  if (state.some((l) => l.id === id)) return;
+/** true = item masuk cart baru; false = sudah ada di cart. */
+export function addToCart(id: string): boolean {
+  if (state.some((l) => l.id === id)) return false;
   commit([...state, { id, checked: true }]);
   if (canSync(id)) {
     void withSession((uid) =>
@@ -156,6 +157,7 @@ export function addToCart(id: string) {
         })
     );
   }
+  return true;
 }
 
 export function removeFromCart(id: string) {
