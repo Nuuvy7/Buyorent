@@ -113,7 +113,7 @@ export function Navbar() {
                   <span className="text-xs font-bold text-slate-700 leading-tight">{displayName}</span>
                   {account.ktm && (
                     <span className="text-[10px] font-mono text-signal flex items-center gap-0.5 leading-none">
-                      <CheckCircle2 className="w-2.5 h-2.5" /> KTM_VERIFIED
+                      <CheckCircle2 className="w-2.5 h-2.5" /> IDENTITAS_VERIFIED
                     </span>
                   )}
                 </div>

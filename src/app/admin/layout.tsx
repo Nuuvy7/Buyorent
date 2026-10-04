@@ -250,7 +250,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Metric
             icon={<ShieldCheck className="w-5 h-5" />}
             label="Pengguna Terverifikasi"
-            sub={`KTM valid & belum diblokir • ${users.length} total akun`}
+            sub={`Identitas valid & belum diblokir • ${users.length} total akun`}
             tone="signal"
             value={`${verified}`}
           />

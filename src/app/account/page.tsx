@@ -118,7 +118,7 @@ export default function AccountPage() {
           </div>
           {account?.ktm && (
             <Badge variant="solid">
-              <CheckCircle2 className="w-3 h-3" /> KTM Terverifikasi
+              <CheckCircle2 className="w-3 h-3" /> Identitas Terverifikasi
             </Badge>
           )}
         </div>

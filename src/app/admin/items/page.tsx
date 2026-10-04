@@ -120,7 +120,7 @@ function ModCard({ item, down }: { item: ItemData; down: boolean }) {
                 ) : (
                   <AlertTriangle className="w-3.5 h-3.5" />
                 )}
-                {item.seller.verified ? "KTM Terverifikasi" : "KTM Belum Terverifikasi"}
+                {item.seller.verified ? "Identitas Terverifikasi" : "Belum Terverifikasi"}
               </span>
               <span className="flex items-center gap-1">
                 <MapPin className="w-3 h-3" /> {item.seller.campus}

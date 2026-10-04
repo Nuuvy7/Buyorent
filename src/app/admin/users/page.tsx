@@ -152,7 +152,7 @@ export default function AdminUsersPage() {
                 <th className="px-5 py-3.5">Pengguna</th>
                 <th className="px-5 py-3.5">Wilayah</th>
                 <th className="px-5 py-3.5">Peran</th>
-                <th className="px-5 py-3.5">KTM</th>
+                <th className="px-5 py-3.5">Identitas</th>
                 <th className="px-5 py-3.5">Status</th>
                 <th className="px-5 py-3.5 text-right">Aksi</th>
               </tr>

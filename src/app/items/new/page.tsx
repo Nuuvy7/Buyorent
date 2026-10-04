@@ -243,7 +243,7 @@ export default function PasangIklanPage() {
         data: { publicUrl },
       } = supabase.storage.from("listing-images").getPublicUrl(up.data.path);
 
-      // 2. profil penjual dari tabel users (nama & status KTM asli)
+      // 2. profil penjual dari tabel users (nama & status verifikasi asli)
       const acc = await getAccount();
 
       // 3. insert baris items (categories: 1 = Barang, 2 = Jasa)
@@ -769,7 +769,7 @@ export default function PasangIklanPage() {
                     <Check className="w-4 h-4 text-signal shrink-0 mt-0.5" />
                     <span>
                       <strong className="text-slate-700">Anti-Joki Tugas & Skripsi:</strong> dilarang menawarkan
-                      pengerjaan tugas akademik. Pelanggaran berakibat pencabutan akses KTM.
+                      pengerjaan tugas akademik. Pelanggaran berakibat pencabutan status terverifikasi.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
@@ -782,7 +782,7 @@ export default function PasangIklanPage() {
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-signal shrink-0 mt-0.5" />
                     <span>
-                      <strong className="text-slate-700">Verifikasi Mahasiswa:</strong> identitas KTM aktif
+                      <strong className="text-slate-700">Verifikasi Mahasiswa:</strong> identitas terverifikasi
                       melindungi setiap transaksi di platform.
                     </span>
                   </li>
