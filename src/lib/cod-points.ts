@@ -67,3 +67,61 @@ export const KECAMATAN_COD: KecamatanCOD[] = [
   { nama: "Ciracas", kota: "Jakarta Timur", titik: ["Terminal Kampung Rambutan", "Stasiun LRT Ciracas", "Stasiun LRT Kampung Rambutan"] },
   { nama: "Cipayung", kota: "Jakarta Timur", titik: ["Gerbang Utama TMII", "RSUD Cipayung", "Pasar Cipayung"] },
 ];
+
+// ===== Runtime layer: tabel public.cod_points =====
+// Canonical source setelah SQL di-apply (supabase/cod-points.sql).
+// Sebelum apply / fetch gagal → caller fallback ke KECAMATAN_COD statis.
+
+export interface CodPoint {
+  id: string;
+  kota: string;
+  kecamatan: string;
+  nama: string;
+  safety_score: number;
+  operating_hours: string;
+}
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+export const isPointId = (v: string) => UUID_RE.test(v);
+
+let cache: CodPoint[] | null = null;
+let inflight: Promise<CodPoint[] | null> | null = null;
+
+/** Ambil semua titik, sort safety_score DESC lalu nama. Null = tabel belum ada / error. */
+export async function fetchCodPoints(): Promise<CodPoint[] | null> {
+  if (cache) return cache;
+  if (inflight) return inflight;
+  inflight = (async () => {
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const { data, error } = await createClient()
+        .from("cod_points")
+        .select("id,kota,kecamatan,nama,safety_score,operating_hours")
+        .order("safety_score", { ascending: false })
+        .order("nama");
+      if (error || !data?.length) return null;
+      cache = data as CodPoint[];
+      return cache;
+    } catch {
+      return null;
+    } finally {
+      inflight = null;
+    }
+  })();
+  return inflight;
+}
+
+/** Titik dalam satu kota+kecamatan (urutan safety_score DESC dari cache). */
+export async function fetchTitik(kota: string, kecamatan: string): Promise<CodPoint[] | null> {
+  const all = await fetchCodPoints();
+  if (!all) return null;
+  return all.filter((p) => p.kota === kota && p.kecamatan === kecamatan);
+}
+
+/** point_id → label tampil; teks bebas / id tak dikenal → apa adanya. */
+export async function resolveLokasi(v: string): Promise<string> {
+  if (!isPointId(v)) return v;
+  const all = await fetchCodPoints();
+  const p = all?.find((x) => x.id === v);
+  return p ? `${p.nama} — ${p.kecamatan}, ${p.kota}` : v;
+}
