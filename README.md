@@ -49,7 +49,7 @@ Pelajar SMA/sederajat berjualan melalui Facebook, WhatsApp, dan media sosial lai
 
 ### Solusi yang Ditawarkan
 
-Buyorent menyatukan jual beli barang bekas sekaligus sewa jasa dalam satu platform: katalog terpusat dengan pencarian dan filter, transaksi terlacak dengan status pesanan, serta moderasi admin agar katalog aman dari penipuan dan pelanggaran kode etik kampus.
+Buyorent menyatukan jual beli barang bekas sekaligus sewa jasa dalam satu platform: katalog terpusat dengan pencarian dan filter, transaksi terlacak dengan status pesanan, serta moderasi admin agar katalog aman dari penipuan.
 
 ### Tujuan Proyek
 
@@ -65,15 +65,15 @@ Buyorent menyatukan jual beli barang bekas sekaligus sewa jasa dalam satu platfo
 
 | Fitur | Deskripsi | Keunggulan |
 |-------|-----------|------------|
-| *Search & Filter* | Cari nama item, filter kategori (barang/jasa), kondisi, kampus, dan rentang harga | Menemukan kebutuhan kuliah dalam hitungan detik |
+| *Search & Filter* | Cari nama item, filter kategori (barang/jasa), kondisi, lokasi (kota/kecamatan titik COD), dan rentang harga | Menemukan kebutuhan kuliah dalam hitungan detik |
 | *Pasang Iklan* | Form posting barang/jasa (nama, harga, foto, deskripsi) dengan draft autosave | Listing langsung tayang, draft tidak hilang saat pindah halaman |
 | *Detail Produk* | Halaman detail dengan foto, spesifikasi, kondisi, penjual, dan related items | Info lengkap sebelum memutuskan beli atau booking |
-| *Keranjang* | Pilih item + titik COD/catatan janji temu, ringkasan subtotal & ongkir | Mendukung COD kampus (gratis) dan ekspedisi reguler |
+| *Keranjang* | Pilih item + titik COD/catatan janji temu, ringkasan subtotal & ongkir | Mendukung COD titik wilayah Jakarta (gratis) dan ekspedisi reguler |
 | *Checkout Transfer Manual* | Form alamat & no. HP tervalidasi, instruksi transfer 3 langkah, upload bukti | Tanpa payment gateway — sesuai alur PRD |
 | *Sewa Jasa* | Booking jasa wajib ACC penjual, kontak penjual terbuka setelah disetujui | Melindungi pembeli dari kontak di luar platform |
 | *Moderasi Listing* | Admin turunkan/pulihkan listing langsung dari panel | Listing diturunkan hilang dari katalog, pencarian, dan detail (CTA beli dinonaktifkan) |
 | *Kelola Pengguna* | Lihat detail, blokir/unblokir, dan hapus akun dari tabel admin | Blokir = tidak bisa login, hapus = permanen (ada konfirmasi) |
-| *Kelola Akun* | Edit profil (nama, email, no. HP, kampus) tervalidasi + peran akses | Satu pintu ke panel admin untuk role admin |
+| *Kelola Akun* | Edit profil (nama, email, no. HP) tervalidasi + peran akses | Satu pintu ke panel admin untuk role admin |
 | *Auth Supabase* | Login & register email+password, sesi via cookie `@supabase/ssr`, middleware proteksi route, cek `is_blocked` | Halaman auth tanpa navbar; route login/register khusus tamu |
 
 ### Fitur Tambahan
@@ -339,7 +339,7 @@ npx tsc --noEmit # Type check
 #### Masuk / Daftar
 
 1. Buka `/login` (halaman tanpa navbar) → masukkan email & password → *MASUK*
-2. Belum punya akun → klik tautan *DAFTAR* di `/register`: isi nama, email, no. HP, kampus, dan password → akun dibuat dan langsung masuk beranda
+2. Belum punya akun → klik tautan *DAFTAR* di `/register`: isi nama, email, no. HP, dan password → akun dibuat dan langsung masuk beranda
 3. Akun yang diblokir admin tidak bisa masuk (dicek server-side saat login)
 
 #### Pasang Iklan
@@ -366,7 +366,7 @@ npx tsc --noEmit # Type check
 #### Kelola Akun
 
 1. Klik chip profil di navbar (atau baris profil di menu mobile)
-2. Perbarui nama, email, no. HP, kampus → *SIMPAN PERUBAHAN*
+2. Perbarui nama, email, no. HP → *SIMPAN PERUBAHAN*
 3. Peran *Pengguna / Admin* tampil sebagai info saja — perubahan role diatur tim pengelola lewat database
 
 #### Panel Admin
@@ -379,7 +379,7 @@ npx tsc --noEmit # Type check
 
 ## 📌 Status Proyek
 
-**Fase**: Frontend + backend Supabase selesai sampai tahap E — auth, katalog, cart, checkout, dan halaman pesanan (`/orders`, `/orders/[id]`, `/seller/orders`) tersambung database; guard status pesanan (trigger DB) aktif; nol kunci `localStorage` tersisa. Type-check & lint hijau; skrip `scripts/e2e-tahap-e.mjs` 17/17. Menyusul: testing menyeluruh, deploy.
+**Fase**: Live di production (https://buyorent-omega.vercel.app, Vercel Hobby, auto-deploy on push ke `main`) sejak 2 Okt 2026. Fitur inti lengkap: auth, katalog + search + filter (termasuk **filter lokasi kota/kecamatan titik COD**), cart, checkout transfer manual, halaman pesanan, panel admin. Tabel `cod_points` (123 titik COD DKI Jakarta, jam operasional 07.00–21.00 WIB). Layout mobile 375px sudah responsif (accordion filter). Audit menyeluruh 3 Okt 2026 oleh 3 agen: 22 bug dilaporkan — **11 sudah beres/ditutup**, perbaikan kritis berjalan. Data/UI murni DKI Jakarta; istilah kampus sudah dihapus dari produk.
 
 | Route | Halaman | Status |
 |-------|---------|--------|
