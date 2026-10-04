@@ -24,6 +24,8 @@ import {
   ShieldCheck,
   MessageSquare,
   ArrowRight,
+  Share2,
+  Flag,
   Wrench,
   Clock,
   BadgeCheck,
@@ -87,6 +89,31 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
     if (!item) return;
     router.push(`/checkout?item=${item.id}`);
   };
+  const shareItem = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast("Link listing disalin.");
+    } catch {
+      toast("Gagal menyalin link.");
+    }
+  };
+
+  const reportItem = async () => {
+    if (!item) return;
+    const supabase = createClient();
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast("Masuk dulu untuk melapor.");
+      return;
+    }
+    const { error } = await supabase.from("reports").insert({
+      item_id: item.id,
+      reason: "Pelanggaran dilaporkan pengguna (tanpa rincian)",
+    });
+    if (error) toast("Gagal mengirim laporan. Coba lagi nanti.");
+    else toast("Laporan terkirim. Admin akan meninjau.");
+  };
+
   const goCart = () => {
     if (!item) return;
     if (!addToCart(item.id)) {
@@ -455,6 +482,22 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                   >
                     <MessageSquare className="w-4 h-4" /> TANYA
                   </Button>
+                </div>
+                <div className="flex gap-3 pt-1">
+                  <button
+                    className="flex-1 flex items-center justify-center gap-1.5 text-[11px] font-mono text-slate-400 hover:text-ink transition-colors py-1"
+                    onClick={shareItem}
+                    type="button"
+                  >
+                    <Share2 className="w-3.5 h-3.5" /> Bagikan
+                  </button>
+                  <button
+                    className="flex-1 flex items-center justify-center gap-1.5 text-[11px] font-mono text-slate-400 hover:text-rose-500 transition-colors py-1"
+                    onClick={reportItem}
+                    type="button"
+                  >
+                    <Flag className="w-3.5 h-3.5" /> Lapor
+                  </button>
                 </div>
               </div>
 

@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ToastHost, toast } from "@/components/toast";
+import { createClient } from "@/lib/supabase/client";
 import { fetchItems, type ItemRow } from "@/lib/items";
 import {
   getUsers,
@@ -82,6 +83,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [items, setItems] = useState<ItemRow[]>([]);
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [syncing, setSyncing] = useState(false);
+  const [openReports, setOpenReports] = useState(0);
   const [accLoaded, setAccLoaded] = useState(false);
 
   const refresh = () => {
@@ -91,6 +93,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     });
     fetchItems().then(setItems);
     void getUsers().then(setUsers);
+    // reports (supabase/reports.sql) — sebelum apply: error → tetap 0
+    void createClient()
+      .from("reports")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "open")
+      .then(({ count }) => setOpenReports(count ?? 0));
   };
 
   useEffect(() => {
@@ -243,9 +251,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Metric
             icon={<Flag className="w-5 h-5" />}
             label="Laporan Terbuka"
-            sub="Fitur laporan pelanggaran menyusul"
+            sub={openReports ? "Menunggu tindak lanjut admin" : "Tidak ada — bersih"}
             tone="rose"
-            value="0"
+            value={String(openReports)}
           />
           <Metric
             icon={<ShieldCheck className="w-5 h-5" />}
