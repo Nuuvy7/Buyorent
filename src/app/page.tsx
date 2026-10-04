@@ -231,7 +231,7 @@ export default function CatalogExplorePage() {
             </button>
           </div>
 
-          <div className="flex items-center gap-2 self-end sm:self-center font-mono text-xs">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto self-stretch sm:self-center justify-start sm:justify-end font-mono text-xs">
             <span className="text-slate-500 uppercase tracking-wider flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5 text-ink" /> LOKASI:
             </span>
