@@ -558,7 +558,7 @@ export default function PasangIklanPage() {
 
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-bold text-slate-600 font-mono uppercase tracking-wider" htmlFor="input-price">
-                    {isService ? "Tarif Jasa Mahasiswa (Rp)" : "Harga Jual Mahasiswa (Rp)"}
+                    {isService ? "Tarif Jasa (Rp)" : "Harga Jual (Rp)"}
                   </label>
                   <div className="flex items-center bg-cyber-surface border border-cyber-border rounded-xl px-4 focus-within:border-accent focus-within:ring-1 focus-within:ring-accent transition-colors">
                     <span className="text-lg font-bold text-slate-500 mr-2 font-mono">Rp</span>

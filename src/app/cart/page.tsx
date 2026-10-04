@@ -506,7 +506,7 @@ export default function CartPage() {
               {/* Aksi utama */}
               <Button
                 className="w-full whitespace-normal"
-                disabled={sel.length === 0}
+                disabled={sel.length === 0 || sel.some((r) => r.line.codLoc === "")}
                 onClick={goCheckout}
                 size="lg"
                 variant="default"
@@ -519,6 +519,11 @@ export default function CartPage() {
               {sel.length === 0 && (
                 <p className="text-[11px] font-mono text-slate-500 text-center">
                   PILIH MINIMAL 1 ITEM UNTUK CHECKOUT.
+                </p>
+              )}
+              {sel.length > 0 && sel.some((r) => r.line.codLoc === "") && (
+                <p className="text-[11px] font-mono text-amber-600 text-center">
+                  Isi titik COD manual untuk pilihan &quot;Lainnya&quot; sebelum lanjut.
                 </p>
               )}
 

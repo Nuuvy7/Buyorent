@@ -24,36 +24,11 @@ import {
   ShieldCheck,
   MessageSquare,
   ArrowRight,
-  Star,
   Wrench,
   Clock,
   BadgeCheck,
   AlertTriangle,
 } from "lucide-react";
-
-const REVIEWS = [
-  {
-    initials: "AN",
-    name: "Adinda Nurul",
-    campus: "Jakarta Selatan",
-    text: "COD lancar di Perpustakaan Pusat. Penjual sabar nungguin ngetes fungsi satu per satu. Barang beneran sesuai deskripsi.",
-    context: "Beli Diktat Kimia • 2 minggu lalu",
-  },
-  {
-    initials: "BP",
-    name: "Bagas Pratama",
-    campus: "Jakarta Barat",
-    text: "Komunikasi via chat ramah dan tepat waktu. Booking jasa diproses cepat, hasil sesuai ekspektasi sidang.",
-    context: "Pakai Jasa Desain • 1 bulan lalu",
-  },
-  {
-    initials: "FH",
-    name: "Farhan Harahap",
-    campus: "Jakarta Barat",
-    text: "Teman seangkatan terpercaya. Nego wajar dan barang sesuai deskripsi, tidak ada yang disembunyikan.",
-    context: "Beli Alat Lab • 2 bulan lalu",
-  },
-];
 
 const HANDOVER = [
   {
@@ -74,7 +49,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [favorite, setFavorite] = useState(false);
   const [handover, setHandover] = useState("cod");
-  const [activeTab, setActiveTab] = useState<"spec" | "history" | "reviews">("spec");
+  const [activeTab, setActiveTab] = useState<"spec" | "history">("spec");
   const [item, setItem] = useState<ItemRow | null>(null);
   const [allItems, setAllItems] = useState<ItemRow[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -383,23 +358,6 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                     Akun Terverifikasi
                   </Badge>
                 </div>
-                <div className="grid grid-cols-3 gap-2 pt-3 border-t border-cyber-border text-center font-mono">
-                  <div>
-                    <span className="text-xs font-bold text-ink flex items-center justify-center gap-1">
-                      <Star className="w-3.5 h-3.5 fill-neon-amber text-ink" />
-                      {isService ? (item.rating ?? "Baru") : "4.9"}
-                    </span>
-                    <span className="text-[10px] text-slate-500 block">Rating</span>
-                  </div>
-                  <div>
-                    <span className="text-xs font-bold text-ink">~10 mnt</span>
-                    <span className="text-[10px] text-slate-500 block">Respon Chat</span>
-                  </div>
-                  <div>
-                    <span className="text-xs font-bold text-ink">19 Sukses</span>
-                    <span className="text-[10px] text-slate-500 block">Transaksi</span>
-                  </div>
-                </div>
               </div>
 
               {/* Handover / booking selection */}
@@ -529,14 +487,13 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-        {/* Tabs: specs / history / reviews */}
+        {/* Tabs: specs / history */}
         <div className="w-full bg-cyber-card/90 rounded-3xl p-6 sm:p-10 border border-cyber-border shadow-sm">
           <div className="border-b border-cyber-border flex items-center gap-6 overflow-x-auto mb-8">
             {(
               [
                 ["spec", isService ? "Spesifikasi Layanan" : "Spesifikasi Teknis"],
                 ["history", "Riwayat Pemakaian & Alasan Dijual"],
-                ["reviews", "Ulasan (24)"],
               ] as const
             ).map(([key, label]) => (
               <button
@@ -620,34 +577,6 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
             </div>
           )}
 
-          {activeTab === "reviews" && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {REVIEWS.map((r) => (
-                <div className="bg-cyber-surface p-5 rounded-2xl border border-cyber-border flex flex-col justify-between" key={r.name}>
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="w-7 h-7 rounded-full bg-cyber-bg flex items-center justify-center font-mono font-bold text-xs text-ink border border-accent/40">
-                          {r.initials}
-                        </span>
-                        <div>
-                          <p className="text-xs font-semibold text-ink">{r.name}</p>
-                          <p className="text-[11px] text-slate-500">{r.campus}</p>
-                        </div>
-                      </div>
-                      <div className="flex text-ink">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star className="w-3.5 h-3.5 fill-neon-amber" key={i} />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-xs text-slate-500 leading-relaxed">&quot;{r.text}&quot;</p>
-                  </div>
-                  <span className="text-[11px] text-slate-700 mt-4 block font-mono">{r.context}</span>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Related items */}
