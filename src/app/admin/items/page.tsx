@@ -108,7 +108,7 @@ function ModCard({ item, down }: { item: ItemData; down: boolean }) {
                 <span className="w-6 h-6 rounded-lg bg-accent/15 border border-accent/40 text-ink flex items-center justify-center font-mono font-bold text-[10px]">
                   {item.seller.avatarText}
                 </span>
-                <span className="font-semibold text-slate-700">{item.seller.name}</span>
+                <span className="font-semibold text-slate-400">{item.seller.name}</span>
               </span>
               <span
                 className={`flex items-center gap-1 font-semibold ${
@@ -255,7 +255,7 @@ export default function AdminModerationPage() {
         <div className="relative min-w-[260px]">
           <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-cyber-card border border-cyber-border text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors"
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-cyber-card border border-cyber-border text-xs text-slate-400 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors"
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Cari judul listing, nama seller, atau ID…"
             type="text"
@@ -271,7 +271,7 @@ export default function AdminModerationPage() {
         </div>
       ) : list.length === 0 ? (
         <div className="rounded-3xl bg-cyber-card/90 border border-cyber-border p-12 flex flex-col items-center text-center gap-3">
-          <SearchX className="w-10 h-10 text-slate-700" />
+          <SearchX className="w-10 h-10 text-slate-400" />
           <p className="text-sm font-bold text-slate-600 font-mono uppercase">
             Tidak ada listing pada filter ini
           </p>

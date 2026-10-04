@@ -150,7 +150,7 @@ export function HeroBanner({
             <select
               value={budgetFilter}
               onChange={(e) => setBudgetFilter(e.target.value)}
-              className="bg-transparent text-xs font-mono font-semibold text-slate-700 focus:outline-none cursor-pointer"
+              className="bg-transparent text-xs font-mono font-semibold text-slate-400 focus:outline-none cursor-pointer"
             >
               <option value="any" className="bg-cyber-surface text-ink">Semua Budget</option>
               <option value="u50" className="bg-cyber-surface text-ink">&lt; Rp 50.000</option>

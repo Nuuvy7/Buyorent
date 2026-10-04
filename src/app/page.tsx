@@ -244,7 +244,7 @@ export default function CatalogExplorePage() {
                   setFilterKec("");
               }}
               value={filterKota}
-              className="bg-cyber-surface text-slate-700 text-xs font-mono font-semibold px-3 py-1.5 rounded-xl border border-cyber-border focus:border-accent focus:outline-none cursor-pointer"
+              className="bg-cyber-surface text-slate-400 text-xs font-mono font-semibold px-3 py-1.5 rounded-xl border border-cyber-border focus:border-accent focus:outline-none cursor-pointer"
             >
               <option value="">Semua Kota</option>
               {kotaList.map((k) => (
@@ -254,7 +254,7 @@ export default function CatalogExplorePage() {
             <select
               onChange={(e) => setFilterKec(e.target.value)}
               value={filterKec}
-              className="bg-cyber-surface text-slate-700 text-xs font-mono font-semibold px-3 py-1.5 rounded-xl border border-cyber-border focus:border-accent focus:outline-none cursor-pointer"
+              className="bg-cyber-surface text-slate-400 text-xs font-mono font-semibold px-3 py-1.5 rounded-xl border border-cyber-border focus:border-accent focus:outline-none cursor-pointer"
             >
               <option value="">Semua Kecamatan</option>
               {kecList.map((k) => (
@@ -267,7 +267,7 @@ export default function CatalogExplorePage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-cyber-surface text-slate-700 text-xs font-mono font-semibold px-3 py-1.5 rounded-xl border border-cyber-border focus:border-accent focus:outline-none cursor-pointer"
+              className="bg-cyber-surface text-slate-400 text-xs font-mono font-semibold px-3 py-1.5 rounded-xl border border-cyber-border focus:border-accent focus:outline-none cursor-pointer"
             >
               <option value="featured">Paling Relevan</option>
               <option value="price-asc">Harga Terhemat (Low &gt; High)</option>
@@ -309,7 +309,7 @@ export default function CatalogExplorePage() {
                 </div>
               ) : filteredItems.length === 0 ? (
                 <div className="bg-cyber-card/60 rounded-3xl p-16 text-center border border-cyber-border flex flex-col items-center justify-center font-mono">
-                  <SearchX className="w-12 h-12 text-slate-700 mb-3" />
+                  <SearchX className="w-12 h-12 text-slate-400 mb-3" />
                   <p className="text-sm font-bold text-slate-600 uppercase">
                     TIDAK ADA HASIL YANG COCOK
                   </p>

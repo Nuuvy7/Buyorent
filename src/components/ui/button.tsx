@@ -16,7 +16,7 @@ const buttonVariants = cva(
         orange:
           "bg-gradient-to-r from-neon-orange to-amber-500 text-black hover:opacity-95 shadow-glow-orange font-bold",
         secondary:
-          "bg-cyber-surface border border-cyber-border text-slate-700 hover:border-slate-500 hover:bg-cyber-light/40",
+          "bg-cyber-surface border border-cyber-border text-slate-400 hover:border-slate-500 hover:bg-cyber-light/40",
         ghost:
           "hover:bg-cyber-card text-slate-600 hover:text-ink",
         link:

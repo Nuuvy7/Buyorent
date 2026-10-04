@@ -190,7 +190,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   </span>
                   Panel Admin — Akses Khusus
                 </span>
-                <span className="text-slate-700 text-xs">•</span>
+                <span className="text-slate-400 text-xs">•</span>
                 <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest">
                   Sumber: Supabase (katalog &amp; pengguna)
                 </span>
@@ -213,7 +213,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </span>
               </div>
               <button
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cyber-surface border border-cyber-border text-slate-700 hover:border-accent/50 font-mono text-xs uppercase tracking-wider transition-colors active:scale-[0.98]"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cyber-surface border border-cyber-border text-slate-400 hover:border-accent/50 font-mono text-xs uppercase tracking-wider transition-colors active:scale-[0.98]"
                 onClick={handleSync}
                 type="button"
               >

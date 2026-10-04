@@ -106,7 +106,7 @@ export default function SellerOrdersPage() {
           </div>
         ) : groups.length === 0 ? (
           <div className="rounded-3xl bg-cyber-card/90 border border-cyber-border p-12 flex flex-col items-center text-center gap-4">
-            <Inbox className="w-10 h-10 text-slate-700" />
+            <Inbox className="w-10 h-10 text-slate-400" />
             <div>
               <p className="text-sm font-bold text-slate-600 font-mono uppercase">
                 Belum ada pesanan masuk

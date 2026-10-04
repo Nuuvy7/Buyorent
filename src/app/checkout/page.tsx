@@ -31,7 +31,7 @@ import {
 const fmt = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 
 const inputClass =
-  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2 text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors disabled:opacity-60";
+  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2 text-xs text-slate-400 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors disabled:opacity-60";
 
 const inputClassArea = inputClass + " min-h-[72px] resize-none leading-relaxed";
 
@@ -344,7 +344,7 @@ export default function CheckoutPage() {
               1
             </span>
             <span className="text-slate-500">Pilih Item</span>
-            <ChevronRight className="w-3 h-3 text-slate-700" />
+            <ChevronRight className="w-3 h-3 text-slate-400" />
             <span
               className={`w-6 h-6 rounded-full flex items-center justify-center ${
                 order
@@ -407,7 +407,7 @@ export default function CheckoutPage() {
                     Data Pengiriman &amp; Kontak
                   </h3>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-700" htmlFor="co-address">
+                    <label className="text-xs font-bold text-slate-400" htmlFor="co-address">
                       Alamat / Titik Serah Terima
                     </label>
                     <textarea
@@ -423,7 +423,7 @@ export default function CheckoutPage() {
                     )}
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-700" htmlFor="co-phone">
+                    <label className="text-xs font-bold text-slate-400" htmlFor="co-phone">
                       No. HP / WhatsApp
                     </label>
                     <input
@@ -455,7 +455,7 @@ export default function CheckoutPage() {
                         {jasa} Jasa dalam pesanan — butuh ACC penyedia
                       </h3>
                       <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                        Pesanan jasa masuk dengan status <b className="text-slate-700">Menunggu
+                        Pesanan jasa masuk dengan status <b className="text-slate-400">Menunggu
                         persetujuan</b>. Kontak penyedia (HP/WA) baru terbuka setelah penyedia
                         menyetujui pesananmu.
                       </p>
@@ -477,13 +477,13 @@ export default function CheckoutPage() {
                   <span>
                     Subtotal Item ({barang} Barang, {jasa} Jasa)
                   </span>
-                  <span className="font-semibold text-slate-700">{fmt(subtotal)}</span>
+                  <span className="font-semibold text-slate-400">{fmt(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-slate-500">
                   <span>
                     Metode Penyerahan — {ongkir > 0 ? "Ekspedisi Reguler" : "COD Titik Aman"}
                   </span>
-                  <span className={ongkir === 0 ? "text-signal font-semibold" : "text-slate-700"}>
+                  <span className={ongkir === 0 ? "text-signal font-semibold" : "text-slate-400"}>
                     {ongkir === 0 ? "Rp 0 (Bebas Ongkir)" : fmt(ongkir)}
                   </span>
                 </div>
@@ -501,7 +501,7 @@ export default function CheckoutPage() {
               {/* Instruksi transfer manual */}
               <div className="p-4 bg-cyber-surface/60 rounded-2xl border border-cyber-border/60 flex flex-col gap-3">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-bold text-slate-700">
+                  <span className="text-xs font-bold text-slate-400">
                     Transfer Manual ke Penjual
                   </span>
                   <span className="text-[10px] font-mono font-bold text-signal">
@@ -529,15 +529,15 @@ export default function CheckoutPage() {
                 <ol className="flex flex-col gap-1.5 text-[11px] text-slate-500 list-decimal list-inside leading-relaxed">
                   <li>
                     Buat pesanan — status tercatat{" "}
-                    <b className="text-slate-700">Menunggu pembayaran</b>.
+                    <b className="text-slate-400">Menunggu pembayaran</b>.
                   </li>
                   <li>
                     Transfer sesuai nominal ke rekening penjual yang disampaikan lewat chat pesanan.
                   </li>
                   <li>
                     Unggah bukti transfer — penjual menandai lunas →{" "}
-                    <b className="text-slate-700">Diproses</b>, lalu{" "}
-                    <b className="text-slate-700">Selesai</b> setelah serah terima.
+                    <b className="text-slate-400">Diproses</b>, lalu{" "}
+                    <b className="text-slate-400">Selesai</b> setelah serah terima.
                   </li>
                 </ol>
                 <p className="flex items-start gap-1.5 text-[11px] text-ink leading-relaxed">

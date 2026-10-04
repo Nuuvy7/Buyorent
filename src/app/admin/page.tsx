@@ -34,7 +34,7 @@ export default function AdminDashboardPage() {
             <div className="w-11 h-11 rounded-2xl bg-accent/10 border border-accent/30 text-ink flex items-center justify-center">
               <Store className="w-5 h-5" />
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-700 group-hover:text-ink group-hover:translate-x-1 transition-all" />
+            <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-ink group-hover:translate-x-1 transition-all" />
           </div>
           <div>
             <h2 className="text-sm font-black text-ink font-mono uppercase tracking-tight">
@@ -57,7 +57,7 @@ export default function AdminDashboardPage() {
             <div className="w-11 h-11 rounded-2xl bg-accent/10 border border-accent/30 text-ink flex items-center justify-center">
               <Users className="w-5 h-5" />
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-700 group-hover:text-ink group-hover:translate-x-1 transition-all" />
+            <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-ink group-hover:translate-x-1 transition-all" />
           </div>
           <div>
             <h2 className="text-sm font-black text-ink font-mono uppercase tracking-tight">
@@ -95,7 +95,7 @@ export default function AdminDashboardPage() {
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <AlertTriangle className="w-4 h-4 text-ink shrink-0" />
-                  <span className="text-xs text-slate-700 font-semibold truncate max-w-[220px] sm:max-w-sm">
+                  <span className="text-xs text-slate-400 font-semibold truncate max-w-[220px] sm:max-w-sm">
                     {item.name}
                   </span>
                   <span className="text-[10px] font-mono text-slate-500 shrink-0">

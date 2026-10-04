@@ -56,7 +56,7 @@ const DELIVERY = [
 const fmt = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 
 const inputClass =
-  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2 text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
+  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2 text-xs text-slate-400 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
 
 /* Satu baris item di keranjang: checkbox penjual, foto + stiker, sub-panel COD/brief */
 function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
@@ -76,7 +76,7 @@ function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
           <span className="w-5 h-5 rounded-full bg-accent/15 border border-accent/40 text-ink text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
             {item.seller.avatarText}
           </span>
-          <span className="text-xs font-bold text-slate-700 truncate">{item.seller.name}</span>
+          <span className="text-xs font-bold text-slate-400 truncate">{item.seller.name}</span>
           <span className="text-[11px] text-slate-500 truncate hidden sm:inline">
             • {item.seller.campus}
           </span>
@@ -127,7 +127,7 @@ function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
       {isService ? (
         <div className="p-3.5 bg-cyber-surface/60 rounded-2xl border border-cyber-border/60 flex flex-col gap-2">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs font-bold text-slate-700">
+            <span className="text-xs font-bold text-slate-400">
               Link Draft Materi / Instruksi Singkat:
             </span>
             <span className="text-[11px] text-slate-500">Google Drive / Notion</span>
@@ -147,7 +147,7 @@ function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
       ) : (
         <div className="p-3.5 bg-cyber-surface/60 rounded-2xl border border-cyber-border/60 flex flex-col gap-2.5">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+            <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
               <MapPin className="w-4 h-4 text-ink" />
               Titik Temu COD Bebas Ongkir
             </span>
@@ -171,7 +171,7 @@ function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
                 type="radio"
               />
               <span className="flex flex-col min-w-0">
-                <span className="text-xs font-semibold text-slate-700 truncate">
+                <span className="text-xs font-semibold text-slate-400 truncate">
                   {item.location ? (
                     <LokasiTitik value={item.location} fallback="Titik pilihan penjual" />
                   ) : (
@@ -196,7 +196,7 @@ function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
                 type="radio"
               />
               <span className="flex flex-col min-w-0">
-                <span className="text-xs font-semibold text-slate-700 truncate">
+                <span className="text-xs font-semibold text-slate-400 truncate">
                   Lainnya (pilih lokasi manual)
                 </span>
                 <span className="text-[10px] text-slate-500">Titik di luar daftar</span>
@@ -318,7 +318,7 @@ export default function CartPage() {
               1
             </span>
             <span className="font-semibold text-ink">Pilih Item</span>
-            <ChevronRight className="w-3 h-3 text-slate-700" />
+            <ChevronRight className="w-3 h-3 text-slate-400" />
             <span className="w-6 h-6 rounded-full bg-cyber-surface border border-cyber-border text-slate-500 flex items-center justify-center">
               2
             </span>
@@ -364,7 +364,7 @@ export default function CartPage() {
                       onChange={(e) => setAllChecked(e.target.checked)}
                       type="checkbox"
                     />
-                    <span className="text-xs font-bold text-slate-700">
+                    <span className="text-xs font-bold text-slate-400">
                       Pilih Semua Item ({rows.length})
                     </span>
                   </label>
@@ -453,11 +453,11 @@ export default function CartPage() {
                   <span>
                     Subtotal Item ({barang} Barang, {jasa} Jasa)
                   </span>
-                  <span className="font-semibold text-slate-700">{fmt(subtotal)}</span>
+                  <span className="font-semibold text-slate-400">{fmt(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-slate-500">
                   <span>Ongkir COD Mahasiswa</span>
-                  <span className={ongkir === 0 ? "text-signal font-semibold" : "text-slate-700"}>
+                  <span className={ongkir === 0 ? "text-signal font-semibold" : "text-slate-400"}>
                     {ongkir === 0 ? "Rp 0 (Bebas Ongkir)" : fmt(ongkir)}
                   </span>
                 </div>
@@ -475,7 +475,7 @@ export default function CartPage() {
               {/* Instruksi pembayaran manual — PRD: belum ada payment gateway */}
               <div className="p-4 bg-cyber-surface/60 rounded-2xl border border-cyber-border/60 flex flex-col gap-2">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-bold text-slate-700">
+                  <span className="text-xs font-bold text-slate-400">
                     Pembayaran Manual ke Penjual
                   </span>
                   <span className="text-[10px] font-mono font-bold text-signal">
@@ -485,15 +485,15 @@ export default function CartPage() {
                 <ol className="flex flex-col gap-1.5 text-[11px] text-slate-500 list-decimal list-inside leading-relaxed">
                   <li>
                     Isi data pengiriman di halaman pembayaran — status tercatat{" "}
-                    <b className="text-slate-700">Menunggu pembayaran</b>.
+                    <b className="text-slate-400">Menunggu pembayaran</b>.
                   </li>
                   <li>
                     Transfer manual sesuai total ke rekening penjual yang disampaikan lewat chat
                     pesanan.
                   </li>
                   <li>
-                    Penjual menandai lunas → <b className="text-slate-700">Diproses</b>, lalu{" "}
-                    <b className="text-slate-700">Selesai</b> setelah serah terima.
+                    Penjual menandai lunas → <b className="text-slate-400">Diproses</b>, lalu{" "}
+                    <b className="text-slate-400">Selesai</b> setelah serah terima.
                   </li>
                 </ol>
                 <p className="flex items-start gap-1.5 text-[11px] text-ink leading-relaxed">

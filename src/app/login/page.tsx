@@ -13,7 +13,7 @@ import { ArrowRight, LogIn, ShieldAlert } from "lucide-react";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const inputClass =
-  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
+  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2.5 text-xs text-slate-400 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
 
 export default function LoginPage() {
   const rootRef = useRef<HTMLDivElement>(null);

@@ -714,7 +714,7 @@ export default function PasangIklanPage() {
                             type="checkbox"
                           />
                           <span className="flex flex-col text-left">
-                            <span className="text-[11px] font-bold text-slate-700">{title}</span>
+                            <span className="text-[11px] font-bold text-slate-400">{title}</span>
                             <span className="text-[10px] text-slate-500">{desc}</span>
                           </span>
                         </label>
@@ -768,21 +768,21 @@ export default function PasangIklanPage() {
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-signal shrink-0 mt-0.5" />
                     <span>
-                      <strong className="text-slate-700">Anti-Joki Tugas & Skripsi:</strong> dilarang menawarkan
+                      <strong className="text-slate-400">Anti-Joki Tugas & Skripsi:</strong> dilarang menawarkan
                       pengerjaan tugas akademik. Pelanggaran berakibat pencabutan status terverifikasi.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-signal shrink-0 mt-0.5" />
                     <span>
-                      <strong className="text-slate-700">Barang Ilegal & Bajakan:</strong> software crack, barang
+                      <strong className="text-slate-400">Barang Ilegal & Bajakan:</strong> software crack, barang
                       tanpa izin, atau produk ilegal dilarang tayang.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-signal shrink-0 mt-0.5" />
                     <span>
-                      <strong className="text-slate-700">Verifikasi Mahasiswa:</strong> identitas terverifikasi
+                      <strong className="text-slate-400">Verifikasi Mahasiswa:</strong> identitas terverifikasi
                       melindungi setiap transaksi di platform.
                     </span>
                   </li>

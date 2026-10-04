@@ -88,6 +88,7 @@ export function Navbar() {
             {/* Cart Button */}
             <Link
               href="/cart"
+              aria-label="Keranjang Belanja"
               className="relative p-2.5 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 text-slate-600 hover:text-ink transition-all flex items-center justify-center"
               title="Keranjang Belanja"
             >
@@ -110,7 +111,7 @@ export function Navbar() {
                   {initial}
                 </div>
                 <div className="flex flex-col text-left">
-                  <span className="text-xs font-bold text-slate-700 leading-tight">{displayName}</span>
+                  <span className="text-xs font-bold text-slate-400 leading-tight">{displayName}</span>
                   {account.ktm && (
                     <span className="text-[10px] font-mono text-signal flex items-center gap-0.5 leading-none">
                       <CheckCircle2 className="w-2.5 h-2.5" /> IDENTITAS_VERIFIED
@@ -120,7 +121,7 @@ export function Navbar() {
               </Link>
             ) : (
               <Link
-                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 text-slate-700 hover:text-ink transition-all font-mono text-xs font-bold uppercase tracking-wider"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-cyber-surface border border-cyber-border hover:border-accent/50 text-slate-400 hover:text-ink transition-all font-mono text-xs font-bold uppercase tracking-wider"
                 href="/login"
                 title="Masuk ke akun"
               >
@@ -163,7 +164,7 @@ export function Navbar() {
                 href="/account"
               >
                 <div className="w-6 h-6 rounded-lg bg-accent text-black font-black flex items-center justify-center shrink-0">{initial}</div>
-                <span className="text-slate-700 font-bold">{displayName}</span>
+                <span className="text-slate-400 font-bold">{displayName}</span>
                 {account.ktm && (
                   <span className="text-signal flex items-center gap-1 ml-auto">
                     <CheckCircle2 className="w-3 h-3" /> IDENTITAS_VERIFIED
@@ -177,7 +178,7 @@ export function Navbar() {
                 href="/login"
               >
                 <LogIn className="w-4 h-4 text-accent shrink-0" />
-                <span className="text-slate-700 font-bold">Masuk / Daftar</span>
+                <span className="text-slate-400 font-bold">Masuk / Daftar</span>
                 <span className="text-slate-500 text-[10px] uppercase ml-auto">Login →</span>
               </Link>
             )}

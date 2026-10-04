@@ -217,7 +217,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                 </p>
                 <div className="pt-3 border-t border-cyber-border flex justify-between text-xs">
                   <span className="text-slate-500">Ongkir ({order.shipping_fee > 0 ? "Ekspedisi" : "COD"})</span>
-                  <span className="font-semibold text-slate-700">{fmt(order.shipping_fee)}</span>
+                  <span className="font-semibold text-slate-400">{fmt(order.shipping_fee)}</span>
                 </div>
                 <div className="flex justify-between items-end">
                   <span className="text-xs text-slate-500">Total Pembayaran</span>

@@ -121,6 +121,7 @@ export function ItemCard({
           className={`absolute top-3 right-3 w-8 h-8 rounded-xl bg-cyber-bg/80 backdrop-blur-md border border-cyber-border flex items-center justify-center transition-colors ${
             isFavorite ? "text-rose-600 border-rose-500/50" : "text-slate-500 hover:text-ink"
           }`}
+          aria-label={isFavorite ? "Hapus dari favorit" : "Simpan ke favorit"}
           title="Simpan ke favorit"
           type="button"
         >
@@ -177,7 +178,7 @@ export function ItemCard({
               <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-mono font-bold bg-accent/20 text-ink border border-accent/40">
                 {item.seller.avatarText}
               </div>
-              <span className="font-semibold text-slate-700">{item.seller.name}</span>
+              <span className="font-semibold text-slate-400">{item.seller.name}</span>
               {item.seller.verified && (
                 <CheckCircle2 className="w-3.5 h-3.5 text-signal" />
               )}

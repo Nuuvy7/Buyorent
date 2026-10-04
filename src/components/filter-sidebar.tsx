@@ -30,7 +30,7 @@ export function FilterSidebar({
           type="button"
         >
           <RotateCcw className="w-3 h-3" />
-          RESET
+          RESET FILTER
         </button>
       </div>
 

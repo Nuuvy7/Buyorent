@@ -134,7 +134,7 @@ export default function AdminUsersPage() {
         <div className="relative min-w-[260px]">
           <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-cyber-card border border-cyber-border text-xs text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors"
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-cyber-card border border-cyber-border text-xs text-slate-400 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors"
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Cari nama atau email pengguna…"
             type="text"
@@ -162,7 +162,7 @@ export default function AdminUsersPage() {
                 <tr>
                   <td className="px-5 py-10 text-center text-slate-500" colSpan={6}>
                     <span className="inline-flex flex-col items-center gap-2">
-                      <SearchX className="w-8 h-8 text-slate-700" />
+                      <SearchX className="w-8 h-8 text-slate-400" />
                       Tidak ada pengguna yang cocok.
                     </span>
                   </td>
@@ -290,25 +290,25 @@ export default function AdminUsersPage() {
                             <span className="block text-slate-500 uppercase text-[9px] tracking-widest mb-1">
                               ID Akun
                             </span>
-                            <span className="text-slate-700">{u.id}</span>
+                            <span className="text-slate-400">{u.id}</span>
                           </div>
                           <div>
                             <span className="block text-slate-500 uppercase text-[9px] tracking-widest mb-1">
                               No. HP / WA
                             </span>
-                            <span className="text-slate-700">{u.phone}</span>
+                            <span className="text-slate-400">{u.phone}</span>
                           </div>
                           <div>
                             <span className="block text-slate-500 uppercase text-[9px] tracking-widest mb-1">
                               Email Login
                             </span>
-                            <span className="text-slate-700">{u.email}</span>
+                            <span className="text-slate-400">{u.email}</span>
                           </div>
                           <div>
                             <span className="block text-slate-500 uppercase text-[9px] tracking-widest mb-1">
                               Bergabung
                             </span>
-                            <span className="text-slate-700">{u.createdAt}</span>
+                            <span className="text-slate-400">{u.createdAt}</span>
                           </div>
                         </div>
                       </td>
@@ -323,7 +323,7 @@ export default function AdminUsersPage() {
           <span>
             Menampilkan {rows.length} dari {merged.length} akun
           </span>
-          <span className="text-slate-700">
+          <span className="text-slate-400">
             Blokir = tidak bisa login • Hapus = permanen
           </span>
         </div>
