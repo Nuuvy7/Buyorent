@@ -38,6 +38,13 @@ export default function LoginPage() {
     }
   }, []);
 
+  // alur forgot-password: ?reset=1 (link terkirim) / ?reset=done (password baru tersimpan)
+  useEffect(() => {
+    const reset = new URLSearchParams(window.location.search).get("reset");
+    if (reset === "1") toast("Link reset dikirim ke email. Cek inbox dan folder spam.");
+    if (reset === "done") toast("Password berhasil diubah. Silakan masuk kembali.");
+  }, []);
+
   function validate() {
     const e: { [k: string]: string } = {};
     if (!EMAIL_RE.test(form.email)) e.email = "Format email tidak valid.";
@@ -136,6 +143,11 @@ export default function LoginPage() {
             />
             {errors.password && <p className="text-[11px] text-red-600 font-mono mt-1">{errors.password}</p>}
           </label>
+          <div className="text-right -mt-2">
+            <Link className="font-mono text-[11px] text-slate-500 hover:text-ink underline" href="/forgot-password">
+              Lupa password?
+            </Link>
+          </div>
           <Button type="submit" variant="cyan" className="w-full font-mono" disabled={loading}>
             {loading ? "Memproses…" : <>Masuk <LogIn className="w-4 h-4" /></>}
           </Button>
