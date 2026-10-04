@@ -166,7 +166,7 @@ export function Navbar() {
                 <span className="text-slate-700 font-bold">{displayName}</span>
                 {account.ktm && (
                   <span className="text-signal flex items-center gap-1 ml-auto">
-                    <CheckCircle2 className="w-3 h-3" /> KTM_VERIFIED
+                    <CheckCircle2 className="w-3 h-3" /> IDENTITAS_VERIFIED
                   </span>
                 )}
                 <span className="text-slate-500 text-[10px] uppercase ml-auto">Akun →</span>
