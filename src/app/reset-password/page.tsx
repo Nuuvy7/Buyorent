@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 import { ArrowRight, KeyRound, ShieldAlert } from "lucide-react";
 
 const inputClass =
-  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2.5 text-xs text-slate-400 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
+  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2.5 text-xs text-slate-700 placeholder:text-slate-600 focus:outline-none focus:border-accent transition-colors";
 
 // Tujuan link email reset. Client (PKCE, detectSessionInUrl=true) menukar ?code=
 // / fragment #access_token otomatis jadi sesi recovery — halaman ini tinggal
