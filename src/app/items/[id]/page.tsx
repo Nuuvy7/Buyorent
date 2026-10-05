@@ -44,7 +44,7 @@ const HANDOVER = [
     id: "kurir",
     title: "Kurir Instan Pelajar (GoSend / Grab)",
     price: "Rp 12.000",
-    desc: "Kirim aman ke area Kost Tebet, Kramat, atau Salemba (±30 menit tiba).",
+    desc: "Kirim aman ke alamat tujuan di Jakarta (±30 menit tiba).",
   },
 ];
 

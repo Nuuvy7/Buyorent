@@ -29,6 +29,8 @@ export default function CatalogExplorePage() {
   const [sortBy, setSortBy] = useState("featured");
   const [filterKota, setFilterKota] = useState(""); // "" = semua kota
   const [filterKec, setFilterKec] = useState(""); // "" = semua kecamatan
+  const PAGE_SIZE = 24;
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE); // #6: tampil per batch
   const [codPoints, setCodPoints] = useState<CodPoint[] | null>(null);
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
   const tick = useStoreTick();
@@ -143,6 +145,7 @@ export default function CatalogExplorePage() {
   }, [items, activeTab, conditionFilter, searchQuery, budgetFilter, sortBy, filterKota, filterKec, lokasiAktif, lokasiInfo]);
 
   useEffect(() => {
+    setVisibleCount(PAGE_SIZE); // filter berubah → kembali ke batch pertama
     if (gridRef.current) {
       const cards = gridRef.current.querySelectorAll(".item-card-anim");
       if (cards.length > 0) {
@@ -327,16 +330,30 @@ export default function CatalogExplorePage() {
                   </Button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filteredItems.map((item) => (
-                    <ItemCard
-                      key={item.id}
-                      item={item}
-                      isFavorite={!!favorites[item.id]}
-                      onToggleFavorite={toggleFavorite}
-                    />
-                  ))}
-                </div>
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {filteredItems.slice(0, visibleCount).map((item) => (
+                      <ItemCard
+                        key={item.id}
+                        item={item}
+                        isFavorite={!!favorites[item.id]}
+                        onToggleFavorite={toggleFavorite}
+                      />
+                    ))}
+                  </div>
+                  {filteredItems.length > visibleCount && (
+                    <div className="flex justify-center mt-8">
+                      <Button
+                        onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                        variant="neon"
+                        size="sm"
+                        className="font-mono"
+                      >
+                        MUAT LEBIH BANYAK ({filteredItems.length - visibleCount} SISA)
+                      </Button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
