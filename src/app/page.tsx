@@ -129,14 +129,15 @@ export default function CatalogExplorePage() {
       }
       return true;
     }).sort((a, b) => {
+      // sortir harga = pilihan eksplisit user, selalu dihormati dulu
+      if (sortBy === "price-asc") return a.price - b.price;
+      if (sortBy === "price-desc") return b.price - a.price;
       if (lokasiAktif) {
-        // safety_score DESC di dalam lokasi terpilih (teks tanpa titik → -1, di bawah)
+        // "Paling Relevan" + lokasi: safety_score DESC (teks tanpa titik → -1, di bawah)
         const sa = lokasiInfo(a)?.score ?? -1;
         const sb = lokasiInfo(b)?.score ?? -1;
         if (sa !== sb) return sb - sa;
       }
-      if (sortBy === "price-asc") return a.price - b.price;
-      if (sortBy === "price-desc") return b.price - a.price;
       return 0;
     });
   }, [items, activeTab, conditionFilter, searchQuery, budgetFilter, sortBy, filterKota, filterKec, lokasiAktif, lokasiInfo]);

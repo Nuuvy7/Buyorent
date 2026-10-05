@@ -219,11 +219,20 @@ insert into storage.buckets (id, name, public) values
   ('listing-images', 'listing-images', true),
   ('payment-proofs', 'payment-proofs', false);
 
-create policy "listing-images: publik baca" on storage.objects
-  for select using (bucket_id = 'listing-images');
+-- Public URL /object/public/... tidak lewat policy — file tetap bisa dibaca siapa pun.
+-- Policy SELECT hanya mengatur ENUMERASI (list) — dulu terbuka untuk semua login.
+drop policy if exists "listing-images: publik baca" on storage.objects;
+create policy "listing-images: owner baca" on storage.objects
+  for select using (
+    bucket_id = 'listing-images'
+    and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin())
+  );
 create policy "listing-images: user upload" on storage.objects
   for insert with check (bucket_id = 'listing-images' and auth.role() = 'authenticated');
-create policy "payment-proofs: login baca" on storage.objects
-  for select using (bucket_id = 'payment-proofs' and auth.role() = 'authenticated');
+create policy "payment-proofs: owner baca" on storage.objects
+  for select using (
+    bucket_id = 'payment-proofs'
+    and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin())
+  );
 create policy "payment-proofs: user upload" on storage.objects
   for insert with check (bucket_id = 'payment-proofs' and auth.role() = 'authenticated');

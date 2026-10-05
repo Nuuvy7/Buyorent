@@ -82,7 +82,7 @@ function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
           </span>
         </label>
         <Badge variant={isService ? "orange" : "default"} className="shrink-0">
-          {isService ? "Jasa Mahasiswa Terkurasi" : "Pre-Loved Bersertifikat"}
+          {isService ? "Jasa Mahasiswa" : "Barang Pre-Loved"}
         </Badge>
       </div>
 
