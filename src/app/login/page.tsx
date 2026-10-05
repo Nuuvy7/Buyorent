@@ -125,6 +125,8 @@ export default function LoginPage() {
             <span className="font-mono text-[10px] text-slate-500">EMAIL</span>
             <input
               type="email"
+              name="email"
+              autoComplete="email"
               placeholder="nama@email.com"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -136,6 +138,8 @@ export default function LoginPage() {
             <span className="font-mono text-[10px] text-slate-500">PASSWORD</span>
             <input
               type="password"
+              name="password"
+              autoComplete="current-password"
               placeholder="Minimal 6 karakter"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}

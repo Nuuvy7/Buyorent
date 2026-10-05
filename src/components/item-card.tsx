@@ -32,6 +32,8 @@ export interface ItemData {
   badge: string;
   location: string;
   rating?: string;
+  /** Waktu listing dipasang (ISO). Untuk label waktu relatif di halaman detail. */
+  createdAt?: string;
   seller: {
     name: string;
     avatarText: string;

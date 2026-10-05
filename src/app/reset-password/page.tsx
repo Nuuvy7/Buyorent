@@ -104,6 +104,8 @@ export default function ResetPasswordPage() {
               <span className="font-mono text-[10px] text-slate-500">PASSWORD BARU</span>
               <input
                 className={inputClass}
+                autoComplete="new-password"
+                name="password"
                 onChange={(e) => setPw(e.target.value)}
                 placeholder="Minimal 6 karakter"
                 type="password"
@@ -114,6 +116,8 @@ export default function ResetPasswordPage() {
               <span className="font-mono text-[10px] text-slate-500">ULANGI PASSWORD</span>
               <input
                 className={inputClass}
+                autoComplete="new-password"
+                name="password_confirm"
                 onChange={(e) => setPw2(e.target.value)}
                 placeholder="Sama dengan di atas"
                 type="password"

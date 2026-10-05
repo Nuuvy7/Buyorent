@@ -112,6 +112,8 @@ export default function RegisterPage() {
             <span className="font-mono text-[10px] text-slate-500">NAMA LENGKAP</span>
             <input
               type="text"
+              name="name"
+              autoComplete="name"
               placeholder="Nama kamu"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -123,6 +125,8 @@ export default function RegisterPage() {
             <span className="font-mono text-[10px] text-slate-500">EMAIL</span>
             <input
               type="email"
+              name="email"
+              autoComplete="email"
               placeholder="nama@email.com"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -134,6 +138,8 @@ export default function RegisterPage() {
             <span className="font-mono text-[10px] text-slate-500">NO. HP / WA</span>
             <input
               type="tel"
+              name="phone"
+              autoComplete="tel-national"
               placeholder="08xxxxxxxxxx"
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -145,6 +151,8 @@ export default function RegisterPage() {
             <span className="font-mono text-[10px] text-slate-500">PASSWORD</span>
             <input
               type="password"
+              name="password"
+              autoComplete="new-password"
               placeholder="Minimal 6 karakter"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}

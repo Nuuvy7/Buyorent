@@ -58,6 +58,7 @@ interface ItemDbRow {
   seller_kecamatan: string;
   seller_ktm: boolean;
   is_approved: boolean;
+  created_at: string;
 }
 
 function mapRow(r: ItemDbRow): ItemRow {
@@ -105,6 +106,7 @@ function mapRow(r: ItemDbRow): ItemRow {
       verified: r.seller_ktm,
     },
     isApproved: r.is_approved,
+    createdAt: r.created_at,
   };
 }
 

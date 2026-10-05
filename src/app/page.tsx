@@ -108,9 +108,9 @@ export default function CatalogExplorePage() {
   );
   const lokasiAktif = filterKota !== "" || filterKec !== "";
 
-  const filteredItems = useMemo(() => {
+  // Filter semua param TANPA tab — dipakai counter tab & turunan filteredItems.
+  const nonTabFiltered = useMemo(() => {
     return items.filter((item) => {
-      if (activeTab !== "all" && item.category !== activeTab) return false;
       if (conditionFilter !== "all" && item.condition && item.condition !== conditionFilter) return false;
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
@@ -142,7 +142,13 @@ export default function CatalogExplorePage() {
       }
       return 0;
     });
-  }, [items, activeTab, conditionFilter, searchQuery, budgetFilter, sortBy, filterKota, filterKec, lokasiAktif, lokasiInfo]);
+  }, [items, conditionFilter, searchQuery, budgetFilter, sortBy, filterKota, filterKec, lokasiAktif, lokasiInfo]);
+
+  // Tab diterapkan belakangan supaya counter kategori tetap mencerminkan filter.
+  const filteredItems = useMemo(
+    () => (activeTab === "all" ? nonTabFiltered : nonTabFiltered.filter((i) => i.category === activeTab)),
+    [nonTabFiltered, activeTab]
+  );
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE); // filter berubah → kembali ke batch pertama
@@ -158,9 +164,8 @@ export default function CatalogExplorePage() {
     }
   }, [activeTab, conditionFilter, budgetFilter, sortBy, searchQuery, filterKota, filterKec]);
 
-  const baseItems = items;
-  const barangCount = baseItems.filter((i) => i.category === "barang").length;
-  const jasaCount = baseItems.filter((i) => i.category === "jasa").length;
+  const barangCount = nonTabFiltered.filter((i) => i.category === "barang").length;
+  const jasaCount = nonTabFiltered.filter((i) => i.category === "jasa").length;
 
   return (
     <div className="min-h-screen bg-cyber-bg text-ink flex flex-col font-sans cyber-grid">
@@ -207,7 +212,7 @@ export default function CatalogExplorePage() {
               type="button"
             >
               <Layers className="w-3.5 h-3.5" />
-              <span>SEMUA ({loaded ? baseItems.length : "-"})</span>
+              <span>SEMUA ({loaded ? nonTabFiltered.length : "-"})</span>
             </button>
             <button
               onClick={() => setActiveTab("barang")}

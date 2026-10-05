@@ -33,6 +33,20 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
+/** Waktu relatif Indonesia dari ISO timestamp. Tanpa lib — cukup untuk label singkat. */
+function relTime(iso?: string): string {
+  if (!iso) return "baru saja";
+  const d = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  if (d < 60) return "baru saja";
+  const m = Math.floor(d / 60);
+  if (m < 60) return `${m} menit lalu`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h} jam lalu`;
+  const day = Math.floor(h / 24);
+  if (day < 30) return `${day} hari lalu`;
+  return new Date(iso).toLocaleDateString("id-ID", { day: "numeric", month: "short" });
+}
+
 const HANDOVER = [
   {
     id: "cod",
@@ -311,7 +325,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                     {lokasi}
                   </span>
                 </div>
-                <span className="font-mono text-[10px] text-slate-500 shrink-0">UPDATE 2 jam lalu</span>
+                <span className="font-mono text-[10px] text-slate-500 shrink-0">DIPASANG {relTime(item.createdAt)}</span>
               </div>
 
               {/* Title & description */}
