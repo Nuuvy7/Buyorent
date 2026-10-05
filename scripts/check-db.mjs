@@ -10,10 +10,10 @@ const db = createClient(url, key);
 
 // [tabel, kolom wajib] — probe per kolom: error = kolom tidak ada
 const PROBES = [
-  ["users", ["id", "email", "name", "phone", "campus", "ktm", "role", "is_blocked", "created_at"]],
+  ["users", ["id", "email", "name", "phone", "kecamatan", "ktm", "role", "is_blocked", "created_at"]],
   ["categories", ["id", "name"]],
   ["items", ["id", "seller_id", "category_id", "sub_category", "name", "description", "price",
-    "condition", "location", "image_url", "seller_name", "seller_campus", "seller_ktm",
+    "condition", "location", "image_url", "seller_name", "seller_kecamatan", "seller_ktm",
     "is_approved", "created_at"]],
   ["cart", ["id", "user_id", "item_id", "quantity", "cod_spot", "note", "brief"]],
   ["orders", ["id", "buyer_id", "total_price", "shipping_fee", "status", "payment_proof", "address", "phone"]],

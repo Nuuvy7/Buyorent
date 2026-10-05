@@ -260,7 +260,7 @@ export default function PasangIklanPage() {
           location: isService ? form.kecamatan : resolvedTitik,
           image_url: publicUrl,
           seller_name: acc?.name || session.user.email || "Pelajar",
-          seller_campus: form.kecamatan,
+          seller_kecamatan: form.kecamatan,
           seller_ktm: acc?.ktm ?? false,
           is_approved: true,
         })
@@ -300,7 +300,7 @@ export default function PasangIklanPage() {
     imageUrl: photos[0]?.url ?? PLACEHOLDER,
     badge: isService ? "Jasa Baru" : KONDISI[form.kondisi].label,
     location: isService ? form.kecamatan : titikLabel,
-    seller: { name: "Daffa R.", avatarText: "D", campus: form.kecamatan, verified: true },
+    seller: { name: "Daffa R.", avatarText: "D", kecamatan: form.kecamatan, verified: true },
   };
 
   const stepHeader = (n: string, title: string, sub: string) => (

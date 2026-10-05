@@ -52,7 +52,7 @@ console.log("akun siap (id tidak dicetak)");
 
 // --- Tahap: penjual punya 2 listing (barang + jasa) ---
 await B.db.from("items").delete().eq("seller_id", B.uid).eq("location", "Jakarta E2E");
-const barang = { seller_id: B.uid, category_id: 1, name: "Barang Tes E2E", description: "hapus otomatis", price: 50000, condition: "used", location: "Jakarta E2E", seller_name: "Tes Penjual E2E", seller_campus: "Universitas Trisakti", seller_ktm: true, is_approved: true };
+const barang = { seller_id: B.uid, category_id: 1, name: "Barang Tes E2E", description: "hapus otomatis", price: 50000, condition: "used", location: "Jakarta E2E", seller_name: "Tes Penjual E2E", seller_kecamatan: "Universitas Trisakti", seller_ktm: true, is_approved: true };
 const jasa = { ...barang, category_id: 2, name: "Jasa Tes E2E", price: 75000, condition: null };
 const { data: iB, error: e1 } = await B.db.from("items").insert([barang, jasa]).select("id, category_id");
 ok(!e1 && iB?.length === 2, `penjual insert 2 listing${e1 ? " — " + e1.message : ""}`);

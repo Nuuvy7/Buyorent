@@ -78,7 +78,7 @@ function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
           </span>
           <span className="text-xs font-bold text-slate-400 truncate">{item.seller.name}</span>
           <span className="text-[11px] text-slate-500 truncate hidden sm:inline">
-            • {item.seller.campus}
+            • {item.seller.kecamatan}
           </span>
         </label>
         <Badge variant={isService ? "orange" : "default"} className="shrink-0">

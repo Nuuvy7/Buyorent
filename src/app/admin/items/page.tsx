@@ -123,7 +123,7 @@ function ModCard({ item, down }: { item: ItemData; down: boolean }) {
                 {item.seller.verified ? "Identitas Terverifikasi" : "Belum Terverifikasi"}
               </span>
               <span className="flex items-center gap-1">
-                <MapPin className="w-3 h-3" /> {item.seller.campus}
+                <MapPin className="w-3 h-3" /> {item.seller.kecamatan}
               </span>
             </div>
           </div>

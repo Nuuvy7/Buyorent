@@ -4,7 +4,7 @@ create table public.users (
   email text unique not null,
   name text not null default '',
   phone text,
-  campus text,
+  kecamatan text,
   ktm boolean not null default false,
   role text not null default 'user' check (role in ('user','admin')),
   is_blocked boolean not null default false,
@@ -29,7 +29,7 @@ create table public.items (
   location text,
   image_url text,
   seller_name text not null default '',
-  seller_campus text not null default '',
+  seller_kecamatan text not null default '',
   seller_ktm boolean not null default false,
   is_approved boolean not null default true,
   created_at timestamptz not null default now()

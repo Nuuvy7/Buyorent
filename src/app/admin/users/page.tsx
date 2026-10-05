@@ -53,7 +53,7 @@ export default function AdminUsersPage() {
         name: self.name,
         email: self.email,
         phone: self.phone,
-        campus: self.campus,
+        kecamatan: self.kecamatan,
         role: self.role,
         ktm: self.ktm,
         isBlocked: false,
@@ -197,7 +197,7 @@ export default function AdminUsersPage() {
                         </span>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 text-slate-500">{u.campus}</td>
+                    <td className="px-5 py-3.5 text-slate-500">{u.kecamatan}</td>
                     <td className="px-5 py-3.5">
                       <Badge variant={u.role === "admin" ? "default" : "muted"}>
                         {u.role === "admin" ? "Admin" : "Pengguna"}

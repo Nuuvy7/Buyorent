@@ -10,7 +10,7 @@ export interface AccountRecord {
   name: string;
   email: string;
   phone: string;
-  campus: string;
+  kecamatan: string;
   role: "user" | "admin";
   ktm: boolean;
 }
@@ -20,7 +20,7 @@ export interface UserRecord {
   name: string;
   email: string;
   phone: string;
-  campus: string;
+  kecamatan: string;
   role: "user" | "admin";
   ktm: boolean;
   isBlocked: boolean;
@@ -32,14 +32,14 @@ interface UserDbRow {
   name: string;
   email: string;
   phone: string | null;
-  campus: string | null;
+  kecamatan: string | null;
   ktm: boolean;
   role: "user" | "admin";
   is_blocked?: boolean;
   created_at?: string;
 }
 
-const ACC_COLS = "name, email, phone, campus, role, ktm";
+const ACC_COLS = "name, email, phone, kecamatan, role, ktm";
 const BULAN = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
 function fmtDate(iso: string | undefined): string {
@@ -52,7 +52,7 @@ function mapAcc(r: {
   name: string;
   email: string;
   phone: string | null;
-  campus: string | null;
+  kecamatan: string | null;
   role: "user" | "admin";
   ktm: boolean;
 }): AccountRecord {
@@ -60,7 +60,7 @@ function mapAcc(r: {
     name: r.name ?? "",
     email: r.email,
     phone: r.phone ?? "",
-    campus: r.campus ?? "",
+    kecamatan: r.kecamatan ?? "",
     role: r.role === "admin" ? "admin" : "user",
     ktm: !!r.ktm,
   };
@@ -72,7 +72,7 @@ function mapUser(r: UserDbRow): UserRecord {
     name: r.name ?? "",
     email: r.email,
     phone: r.phone ?? "",
-    campus: r.campus ?? "",
+    kecamatan: r.kecamatan ?? "",
     role: r.role === "admin" ? "admin" : "user",
     ktm: !!r.ktm,
     isBlocked: !!r.is_blocked,
@@ -108,7 +108,7 @@ export async function getAccount(): Promise<AccountRecord | null> {
 }
 
 /**
- * Simpan profil (name/email/phone/campus). Role TIDAK lewat sini — promosi
+ * Simpan profil (name/email/phone/kecamatan). Role TIDAK lewat sini — promosi
  * admin via supabase/setup-admin.sql (RLS WITH CHECK menolak promosi diri).
  */
 export async function saveAccount(
@@ -125,7 +125,7 @@ export async function saveAccount(
       name: acc.name,
       email: acc.email,
       phone: acc.phone,
-      campus: acc.campus,
+      kecamatan: acc.kecamatan,
     })
     .eq("id", session.user.id);
   if (error) return { ok: false, error: error.message };
@@ -147,7 +147,7 @@ export function clearAccount() {
 export async function getUsers(): Promise<UserRecord[]> {
   const { data, error } = await createClient()
     .from("users")
-    .select("id, name, email, phone, campus, ktm, role, is_blocked, created_at")
+    .select("id, name, email, phone, kecamatan, ktm, role, is_blocked, created_at")
     .order("created_at", { ascending: true });
   if (error) {
     console.error("getUsers:", error.message);

@@ -40,7 +40,7 @@ const SEEDS = [
     image_url:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuDBGWQVWin4spjXjFKD6SxnAHPNgHv26kfF9qqIi0E-zo4OhYDVZrKJg9SV9M09IbvJXT7pPzXUH8XoRPwcIe0e470Txyzc-iqxJc-hZi9CBSKtZu5SYbmFDAEHqtiz2j5WhOTaQ9pDPSKzosJIlyuWTSO_2IHzUD_Sr5VnmiHdnqh5ZqevmdiOck-viXA7s9XU_b0SePJmUjNcqxdvv2mS6Qe2ZLTtSYPnbrPvrRofY1eO9C9DTPNGFQ",
     seller_name: "Rizky M.",
-    seller_campus: "UI Salemba",
+    seller_kecamatan: "UI Salemba",
     seller_ktm: true,
   },
   {
@@ -56,7 +56,7 @@ const SEEDS = [
     image_url:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuCSIdSKHxgj5QPvunyLR1oMzEuexatWFCxLa5tpx31qALEtd6yVxbEkj9tn9KWT1LSP7fv-ts6Rzi5MMcLeIGLayYOI5_soax9grAy4quEjoFf7s9EC1j3iGZr8yi33jlBsSzv6ZcbvsdpdoUIJXI47pwFzTsx8I1Bt3qw4BFF4S8mWJWXrVAJzUUDCUbMlORtSlA1aaxjqED-_1HPlSX9soGvf76dGInbopEopkxVwwI5Ox7ud1O1jzw",
     seller_name: "Nadia S.",
-    seller_campus: "DKV Binus Jakarta",
+    seller_kecamatan: "DKV Binus Jakarta",
     seller_ktm: true,
   },
   {
@@ -72,7 +72,7 @@ const SEEDS = [
     image_url:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuCd6_OBrPsNEH3YdOXTni5bNxNvaLQ2qazdFX9RrocUCjjEHQYE5pPrkAEPu2SIW7iOiv3RdMfq5uYBuQaOxGqHnnXuXZdqPLtbE1Uh9Xogv18GTxuFfGSkRgqDmc02X3YnBIzkaXgM6qpDpo8m_YY9Ll7C2idEgUYeJxf3xtlaUgmBEIUGVpCBkPQkR79DWUc3VRyE_3mptD41NqwdULCMxzKybfuQTSgzKCr3V0wu8qc1x4w1wXQk9A",
     seller_name: "Alifia",
-    seller_campus: "SMAN 28",
+    seller_kecamatan: "SMAN 28",
     seller_ktm: false,
   },
   {
@@ -88,7 +88,7 @@ const SEEDS = [
     image_url:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuD-Rk-m7P92D8sa2Zr2J3RwMhsUNau55-9AuA6mwe4yjbQu5NWkxBT95UPD5DvGszTQ80kZ9rJqwSAnpxAaI-6jRjJQ6WUqMKP-KGyI6AQUFMMpTfTZ7BmiT0HHKMK4KgExH-t57KOOIHogJDXaMm__okUQu968hs4IBNG300aEJyo9Qc92m1-OZOkThHGKZZRAVhEpCJ68dEE3nicqX07i3mjqRzCm0X74PpuLOHLikO7i-6ZbQIEjsg",
     seller_name: "Bima Tech",
-    seller_campus: "Universitas Trisakti",
+    seller_kecamatan: "Universitas Trisakti",
     seller_ktm: true,
   },
   {
@@ -104,7 +104,7 @@ const SEEDS = [
     image_url:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuAiC-OPADkgOaFC3JvOjS2f3Lze6B7gZJuhZYvP5RMS8PnI6PiBGgK3XkEk40OhEts18ncQOL4GSYuZRsbmqXyTfn98qBU8PrmPWp-Qxl0oeZJxxw8If6ZwhdrdRbghu7PSj1a1cm72YON8k37sEEGi8JBz5gUbQvpWe2F7grh8SBjL6eFFG_pu-Ak0lFW7DpiK68Eq0pwuGQLTBxVXBYE-909YLW7LdaWQm9CnjLfYQL96yFk3hBlPbw",
     seller_name: "Dimas K.",
-    seller_campus: "Tebet",
+    seller_kecamatan: "Tebet",
     seller_ktm: true,
   },
   {
@@ -120,7 +120,7 @@ const SEEDS = [
     image_url:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuCvORGLssFRSO5CPoriG3wNBqAH4WeEhIbpAR-ER36dHnE_7DVPpb327FqqzsdBbOzUNMDhCOLeEX68hDkIaOSzUQXZmafCxOpyD3GS9KqE9FXcJWUIxQxn5IseUDBFyd5W6zMV_TwiUWhnV0zQxgjzzhsdKNtueHgljOXICvsCHKxslP_A6gCp5TN5lFbmXw1JqGik63JosiR4H6gDFcwAcXz32irRBO9eJH2ilyakp-sa4F6NGZbbtA",
     seller_name: "LensKreatif",
-    seller_campus: "UI Salemba",
+    seller_kecamatan: "UI Salemba",
     seller_ktm: true,
   },
 ];
@@ -171,7 +171,7 @@ async function main() {
     location: s.location,
     image_url: s.image_url,
     seller_name: s.seller_name,
-    seller_campus: s.seller_campus,
+    seller_kecamatan: s.seller_kecamatan,
     seller_ktm: s.seller_ktm,
     is_approved: true,
     created_at: new Date(base + i * 60_000).toISOString(),

@@ -35,7 +35,7 @@ export interface ItemData {
   seller: {
     name: string;
     avatarText: string;
-    campus: string;
+    kecamatan: string;
     verified: boolean;
   };
 }
@@ -184,7 +184,7 @@ export function ItemCard({
                 <CheckCircle2 className="w-3.5 h-3.5 text-signal" />
               )}
             </div>
-            <span className="text-[11px] font-mono text-slate-500">{item.seller.campus}</span>
+            <span className="text-[11px] font-mono text-slate-500">{item.seller.kecamatan}</span>
           </div>
 
           {/* Pricing & CTA */}

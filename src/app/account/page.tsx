@@ -72,7 +72,7 @@ export default function AccountPage() {
       name: form.name.trim(),
       email: form.email.trim(),
       phone: form.phone.trim(),
-      campus: account.campus, // field kampus dihapus dari form (keputusan hapus fitur kampus)
+      kecamatan: account.kecamatan, // field kampus dihapus dari form (keputusan hapus fitur kampus)
     };
     const r = await saveAccount(updated);
     if (!r.ok) {

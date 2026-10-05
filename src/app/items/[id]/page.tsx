@@ -191,7 +191,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
         ["Cakupan", item.subLabel],
         ["Area", lokasi],
         ["Tarif", `Rp ${item.price.toLocaleString("id-ID")}${item.priceUnit ?? ""}`],
-        ["Penyedia", `${item.seller.name} • ${item.seller.campus}`],
+        ["Penyedia", `${item.seller.name} • ${item.seller.kecamatan}`],
       ]
     : [
         ["Kategori", item.categoryLabel],
@@ -200,7 +200,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
         ["Kelengkapan", item.subLabel],
         ["Lokasi", lokasi],
         ["Harga", `Rp ${item.price.toLocaleString("id-ID")}`],
-        ["Penjual", `${item.seller.name} • ${item.seller.campus}`],
+        ["Penjual", `${item.seller.name} • ${item.seller.kecamatan}`],
       ];
 
   return (
@@ -382,7 +382,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                         <h3 className="text-sm font-bold text-ink">{item.seller.name}</h3>
                         {item.seller.verified && <BadgeCheck className="w-4 h-4 text-signal" />}
                       </div>
-                      <p className="text-xs text-slate-500">{item.seller.campus}</p>
+                      <p className="text-xs text-slate-500">{item.seller.kecamatan}</p>
                     </div>
                   </div>
                   {item.seller.verified && (

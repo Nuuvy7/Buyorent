@@ -55,7 +55,7 @@ interface ItemDbRow {
   location: string | null;
   image_url: string | null;
   seller_name: string;
-  seller_campus: string;
+  seller_kecamatan: string;
   seller_ktm: boolean;
   is_approved: boolean;
 }
@@ -101,7 +101,7 @@ function mapRow(r: ItemDbRow): ItemRow {
     seller: {
       name: r.seller_name,
       avatarText: (r.seller_name.trim()[0] ?? "?").toUpperCase(),
-      campus: r.seller_campus,
+      kecamatan: r.seller_kecamatan,
       verified: r.seller_ktm,
     },
     isApproved: r.is_approved,
