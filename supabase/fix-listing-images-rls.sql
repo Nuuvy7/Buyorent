@@ -11,5 +11,11 @@ create policy "listing-images: owner baca" on storage.objects
     and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin())
   );
 
--- CATATAN (belum diubah): policy INSERT masih "authenticated tanpa filter folder",
--- jadi user login bisa menulis ke folder orang lain. Belum diuji dampaknya — follow-up.
+-- INSERT: user hanya boleh tulis ke folder sendiri (dieksekusi 5 Okt 2026).
+drop policy if exists "listing-images: user upload" on storage.objects;
+create policy "listing-images: owner upload" on storage.objects
+  for insert with check (
+    bucket_id = 'listing-images'
+    and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin())
+  );
+-- Terverifikasi: upload ke folder sendiri 200, folder orang lain 403, anon 403.

@@ -227,8 +227,11 @@ create policy "listing-images: owner baca" on storage.objects
     bucket_id = 'listing-images'
     and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin())
   );
-create policy "listing-images: user upload" on storage.objects
-  for insert with check (bucket_id = 'listing-images' and auth.role() = 'authenticated');
+create policy "listing-images: owner upload" on storage.objects
+  for insert with check (
+    bucket_id = 'listing-images'
+    and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin())
+  );
 create policy "payment-proofs: owner baca" on storage.objects
   for select using (
     bucket_id = 'payment-proofs'
