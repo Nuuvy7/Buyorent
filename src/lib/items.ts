@@ -17,7 +17,7 @@ const SEED_META: Record<
   string,
   Partial<Pick<ItemData, "categoryLabel" | "badge" | "rating" | "priceUnit">>
 > = {
-  "00000000-0000-4000-8000-000000000001": { categoryLabel: "Alat Kuliah", badge: "95% Mulus" },
+  "00000000-0000-4000-8000-000000000001": { categoryLabel: "Alat Belajar", badge: "95% Mulus" },
   "00000000-0000-4000-8000-000000000002": {
     categoryLabel: "Freelance",
     badge: "Jasa Desain",

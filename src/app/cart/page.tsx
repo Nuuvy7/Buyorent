@@ -82,7 +82,7 @@ function LineCard({ line, item }: { line: CartLine; item: ItemRow }) {
           </span>
         </label>
         <Badge variant={isService ? "orange" : "default"} className="shrink-0">
-          {isService ? "Jasa Mahasiswa" : "Barang Pre-Loved"}
+          {isService ? "Jasa Pelajar" : "Barang Pre-Loved"}
         </Badge>
       </div>
 
@@ -302,7 +302,7 @@ export default function CartPage() {
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-lg sm:text-xl font-extrabold text-ink tracking-tight">
-                  Tas Belanja &amp; Checkout Mahasiswa
+                  Tas Belanja &amp; Checkout Pelajar
                 </h1>
                 <Badge variant="default">Status Tercatat</Badge>
               </div>
@@ -343,7 +343,7 @@ export default function CartPage() {
                     Keranjang Belanja Kosong
                   </h2>
                   <p className="text-xs text-slate-500 mt-2 max-w-sm">
-                    Belum ada barang pre-loved atau jasa mahasiswa di keranjang. Jelajahi katalog
+                    Belum ada barang pre-loved atau jasa pelajar di keranjang. Jelajahi katalog
                     dulu, lalu tekan tombol keranjang pada item yang kamu mau.
                   </p>
                 </div>
@@ -392,7 +392,7 @@ export default function CartPage() {
                     <h3 className="text-sm font-bold text-ink">Gerakan Hemat Sirkular</h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
                       Dengan memilih pre-loved dari sesama warga Jakarta, kamu memperpanjang masa
-                      pakai alat kuliah dan memangkas limbah elektronik di civitas akademika — tanpa
+                      pakai alat belajar dan memangkas limbah elektronik di kalangan pelajar — tanpa
                       harus beli baru.
                     </p>
                   </div>
@@ -456,7 +456,7 @@ export default function CartPage() {
                   <span className="font-semibold text-slate-400">{fmt(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-slate-500">
-                  <span>Ongkir COD Mahasiswa</span>
+                  <span>Ongkir COD Pelajar</span>
                   <span className={ongkir === 0 ? "text-signal font-semibold" : "text-slate-400"}>
                     {ongkir === 0 ? "Rp 0 (Bebas Ongkir)" : fmt(ongkir)}
                   </span>

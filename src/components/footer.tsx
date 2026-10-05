@@ -17,7 +17,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-slate-500 font-sans leading-relaxed text-xs">
-              Platform jual beli barang pre-loved &amp; keahlian sesama pelajar dan mahasiswa Jakarta. Amanah, hemat, dan transparan.
+              Platform jual beli barang pre-loved &amp; keahlian sesama pelajar Jakarta. Amanah, hemat, dan transparan.
             </p>
           </div>
 

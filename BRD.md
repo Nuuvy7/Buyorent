@@ -4,9 +4,9 @@
 
 Belakangan ini marak sekali pelajar SMA sederajat yang berjualan melalui Facebook, WhatsApp, dan media sosial lainnya. Katalog yang dibuat biasanya berupa foto dan caption yang tersebar di story atau grup chat, sehingga tidak terstruktur, tidak memiliki fitur pencarian, dan jangkauannya hanya terbatas pada lingkaran pertemanan penjual.
 
-Di sisi lain, banyak pelajar dan mahasiswa yang memiliki *skill* — seperti desain, foto, les privat, servis, dan sebagainya — yang berpotensi untuk diperjualbelikan, namun tidak memiliki wadah publikasi yang tepat.
+Di sisi lain, banyak pelajar yang memiliki *skill* — seperti desain, foto, les privat, servis, dan sebagainya — yang berpotensi untuk diperjualbelikan, namun tidak memiliki wadah publikasi yang tepat.
 
-Buyorent hadir sebagai solusi dengan menyatukan kedua hal tersebut dalam satu platform jual beli barang bekas sekaligus sewa jasa. Target pengguna utamanya adalah pelajar hingga mahasiswa dan anak muda.
+Buyorent hadir sebagai solusi dengan menyatukan kedua hal tersebut dalam satu platform jual beli barang bekas sekaligus sewa jasa. Target pengguna utamanya adalah pelajar dan anak muda.
 
 Manfaat yang diharapkan:
 

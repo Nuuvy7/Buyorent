@@ -93,7 +93,7 @@ export default function CatalogExplorePage() {
     for (const k of KECAMATAN_COD) m.set(k.nama.toLowerCase(), { kec: k.nama, kota: k.kota });
     return m;
   }, []);
-  /** Lokasi item → {kecamatan, kota, score}; null = teks lawas (kampus/titik manual) */
+  /** Lokasi item → {kecamatan, kota, score}; null = teks lawas (lokasi/titik manual) */
   const lokasiInfo = useCallback(
     (item: ItemRow): { kec: string; kota: string; score: number | null } | null => {
       const p = pointsById.get(item.location);
@@ -121,7 +121,7 @@ export default function CatalogExplorePage() {
       if (budgetFilter === "50-200" && (item.price < 50000 || item.price > 200000)) return false;
       if (budgetFilter === "o200" && item.price <= 200000) return false;
       if (lokasiAktif) {
-        // listing lawas tanpa titik (location kampus/manual) hanya tampil tanpa filter lokasi
+        // listing lawas tanpa titik (location teks manual) hanya tampil tanpa filter lokasi
         const info = lokasiInfo(item);
         if (!info) return false;
         if (filterKec && info.kec !== filterKec) return false;
@@ -167,7 +167,7 @@ export default function CatalogExplorePage() {
         {/* Info ribbon */}
         <div className="w-full bg-cyber-card/80 border border-cyber-border py-2 px-4 rounded-2xl flex items-center justify-between text-xs font-mono backdrop-blur-md shadow-xs">
           <span className="truncate text-slate-500">
-            Platform jual-beli barang pre-loved &amp; jasa sesama pelajar dan mahasiswa Jakarta.
+            Platform jual-beli barang pre-loved &amp; jasa sesama pelajar Jakarta.
           </span>
           <div className="hidden sm:flex items-center gap-4 shrink-0 text-slate-500">
             <span className="text-ink flex items-center gap-1">

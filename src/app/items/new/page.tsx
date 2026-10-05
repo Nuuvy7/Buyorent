@@ -29,8 +29,8 @@ import {
 } from "lucide-react";
 
 const KATEGORI_BARANG = [
-  "Gadget & Alat Hitung Kuliah",
-  "Buku & Diktat Kuliah",
+  "Gadget & Alat Hitung Pelajar",
+  "Buku & Modul Belajar",
   "Sewa Kamera & Lensa",
   "Perlengkapan Kost & Kamar",
   "Fashion & Jas Lab / Almamater",
@@ -259,7 +259,7 @@ export default function PasangIklanPage() {
           condition: isService ? null : KONDISI[form.kondisi].condition,
           location: isService ? form.kecamatan : resolvedTitik,
           image_url: publicUrl,
-          seller_name: acc?.name || session.user.email || "Mahasiswa",
+          seller_name: acc?.name || session.user.email || "Pelajar",
           seller_campus: form.kecamatan,
           seller_ktm: acc?.ktm ?? false,
           is_approved: true,
@@ -328,13 +328,13 @@ export default function PasangIklanPage() {
           <div className="max-w-2xl">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/40 text-ink font-mono text-[10px] font-bold uppercase tracking-wider mb-3">
               <Plus className="w-3.5 h-3.5" />
-              Portal Pasang Iklan Mahasiswa
+              Portal Pasang Iklan Pelajar
             </span>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-ink">
               Jual Barang Pre-loved atau Tawarkan Skill & Jasamu
             </h1>
             <p className="text-sm text-slate-500 mt-1.5">
-              Putar kembali barang kuliah yang tak terpakai atau monetisasi keahlianmu. 100% bebas biaya komisi
+              Putar kembali barang belajar yang tak terpakai atau monetisasi keahlianmu. 100% bebas biaya komisi
               antar sesama pelajar Jakarta.
             </p>
           </div>
@@ -382,7 +382,7 @@ export default function PasangIklanPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {(
                     [
-                      ["barang", Package, "Jual Barang Pre-loved", "Kalkulator, buku kuliah, gawai, pakaian thrift, atau furnitur kost siap pakai."],
+                      ["barang", Package, "Jual Barang Pre-loved", "Kalkulator, buku belajar, gawai, pakaian thrift, atau furnitur kost siap pakai."],
                       ["jasa", Wrench, "Tawarkan Jasa & Skill", "Desain poster, fotografi wisuda, terjemahan jurnal, atau les privat sesama kawan."],
                     ] as const
                   ).map(([key, Icon, title, desc]) => {
@@ -782,7 +782,7 @@ export default function PasangIklanPage() {
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-signal shrink-0 mt-0.5" />
                     <span>
-                      <strong className="text-slate-400">Verifikasi Mahasiswa:</strong> identitas terverifikasi
+                      <strong className="text-slate-400">Verifikasi Pelajar:</strong> identitas terverifikasi
                       melindungi setiap transaksi di platform.
                     </span>
                   </li>

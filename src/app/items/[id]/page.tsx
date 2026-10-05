@@ -42,7 +42,7 @@ const HANDOVER = [
   },
   {
     id: "kurir",
-    title: "Kurir Instan Mahasiswa (GoSend / Grab)",
+    title: "Kurir Instan Pelajar (GoSend / Grab)",
     price: "Rp 12.000",
     desc: "Kirim aman ke area Kost Tebet, Kramat, atau Salemba (±30 menit tiba).",
   },
@@ -187,7 +187,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
   const specRows: [string, string][] = isService
     ? [
         ["Kategori", item.categoryLabel],
-        ["Tipe", "Jasa Mahasiswa"],
+        ["Tipe", "Jasa Pelajar"],
         ["Cakupan", item.subLabel],
         ["Area", lokasi],
         ["Tarif", `Rp ${item.price.toLocaleString("id-ID")}${item.priceUnit ?? ""}`],
@@ -510,7 +510,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
             <div className="bg-cyber-card/90 rounded-3xl p-6 border border-cyber-border shadow-sm">
               <h3 className="text-sm font-bold text-ink font-mono mb-4 flex items-center gap-2 uppercase tracking-wide">
                 <ShieldCheck className="w-4 h-4 text-ink" />
-                Alur Transaksi Aman Antarmahasiswa
+                Alur Transaksi Aman Antarpelajar
               </h3>
               <div className="relative pl-6 space-y-4 before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-cyber-border">
                 {[
@@ -576,7 +576,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
               <div className="space-y-6">
                 <div>
                   <h4 className="text-sm font-bold text-ink mb-2 font-mono uppercase">
-                    {isService ? "Cara Kerja" : "Riwayat Penggunaan oleh Mahasiswa"}
+                    {isService ? "Cara Kerja" : "Riwayat Penggunaan oleh Pelajar"}
                   </h4>
                   <p className="text-xs text-slate-500 leading-relaxed">
                     {isService
@@ -590,8 +590,8 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                     Rekomendasi
                   </h5>
                   <p className="text-[11px] text-slate-500">
-                    Cocok untuk kebutuhan kuliah di DKI Jakarta — khususnya mahasiswa baru yang
-                    butuh {isService ? "bantuan profesional dengan budget mahasiswa" : item.categoryLabel.toLowerCase()}.
+                    Cocok untuk kebutuhan belajar di DKI Jakarta — khususnya pelajar baru yang
+                    butuh {isService ? "bantuan profesional dengan budget pelajar" : item.categoryLabel.toLowerCase()}.
                   </p>
                 </div>
               </div>
@@ -605,8 +605,8 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                 <p className="text-xs text-slate-500 leading-relaxed">{item.description}</p>
                 <p className="text-xs text-slate-500 leading-relaxed mt-3">
                   {isService
-                    ? "Penyedia menawarkan slot terbatas tiap minggu karena masih aktif kuliah — booking lebih awal disarankan."
-                    : "Dijual karena kebutuhan kuliah sudah berganti — tidak ada niat menyembunyikan kekurangan, calon pembeli dipersilakan cek langsung saat COD."}
+                    ? "Penyedia menawarkan slot terbatas tiap minggu karena masih aktif belajar — booking lebih awal disarankan."
+                    : "Dijual karena kebutuhan belajar sudah berganti — tidak ada niat menyembunyikan kekurangan, calon pembeli dipersilakan cek langsung saat COD."}
                 </p>
               </div>
               <div>
@@ -634,7 +634,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
             <div className="w-2.5 h-6 rounded-full bg-accent" />
             <div>
               <h3 className="text-lg font-bold text-ink">Koleksi Terkait</h3>
-              <p className="text-xs text-slate-500">Barang serupa dan perlengkapan kuliah yang siap COD hari ini</p>
+              <p className="text-xs text-slate-500">Barang serupa dan perlengkapan belajar yang siap COD hari ini</p>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

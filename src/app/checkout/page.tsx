@@ -69,7 +69,7 @@ function ItemRow({ entry }: { entry: Entry }) {
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
           <Badge variant={isService ? "orange" : "default"} className="text-[9px]">
-            {isService ? "Jasa Mahasiswa" : "Barang Pre-Loved"}
+            {isService ? "Jasa Pelajar" : "Barang Pre-Loved"}
           </Badge>
           <span className="text-[10px] text-slate-500 truncate">
             {isService ? "Penyedia" : "Penjual"}: {item.seller.name}

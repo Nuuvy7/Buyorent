@@ -123,7 +123,7 @@ export function HeroBanner({
           ref={subtitleRef}
           className="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed font-mono"
         >
-          Katalog terpusat barang pre-loved &amp; jasa kreatif sesama pelajar dan mahasiswa Jakarta.
+          Katalog terpusat barang pre-loved &amp; jasa kreatif sesama pelajar Jakarta.
           Transaksi transparan, hemat uang saku, dan COD aman di titik kesepakatan.
         </p>
 

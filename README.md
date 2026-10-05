@@ -1,7 +1,7 @@
 <div align="center">
 
   # Buyorent
-  ### Platform Jual Beli Barang Bekas & Sewa Jasa Antar Mahasiswa
+  ### Platform Jual Beli Barang Bekas & Sewa Jasa Antar Pelajar
 
   [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/Nuuvy7/Buyorent)
 
@@ -45,7 +45,7 @@ Guru pengajar: **Raihan Ibrahim Saputra**
 
 ### Latar Belakang
 
-Pelajar SMA/sederajat berjualan melalui Facebook, WhatsApp, dan media sosial lain. Katalog berupa foto + caption yang tersebar di story atau grup chat — tidak terstruktur, tanpa pencarian, dan jangkauannya terbatas pada lingkaran pertemanan penjual. Di sisi lain, banyak pelajar/mahasiswa yang punya *skill* (desain, foto, les privat, servis) namun tidak memiliki wadah publikasi yang tepat.
+Pelajar SMA/sederajat berjualan melalui Facebook, WhatsApp, dan media sosial lain. Katalog berupa foto + caption yang tersebar di story atau grup chat — tidak terstruktur, tanpa pencarian, dan jangkauannya terbatas pada lingkaran pertemanan penjual. Di sisi lain, banyak pelajar yang punya *skill* (desain, foto, les privat, servis) namun tidak memiliki wadah publikasi yang tepat.
 
 ### Solusi yang Ditawarkan
 
@@ -53,8 +53,8 @@ Buyorent menyatukan jual beli barang bekas sekaligus sewa jasa dalam satu platfo
 
 ### Tujuan Proyek
 
-- 🎯 **Tujuan Utama**: Katalog terpusat dan terstruktur untuk barang bekas & jasa mahasiswa
-- 📊 **Target Pengguna**: Pelajar SMA hingga mahasiswa dan anak muda
+- 🎯 **Tujuan Utama**: Katalog terpusat dan terstruktur untuk barang bekas & jasa pelajar
+- 📊 **Target Pengguna**: Pelajar (SMA/SMK sederajat) dan anak muda
 - 💡 **Value Proposition**: Jangkauan pasar lebih luas, pencarian cepat lewat search bar & filter, transaksi lebih aman dan terlacak tanpa payment gateway
 
 ---
@@ -65,7 +65,7 @@ Buyorent menyatukan jual beli barang bekas sekaligus sewa jasa dalam satu platfo
 
 | Fitur | Deskripsi | Keunggulan |
 |-------|-----------|------------|
-| *Search & Filter* | Cari nama item, filter kategori (barang/jasa), kondisi, lokasi (kota/kecamatan titik COD), dan rentang harga | Menemukan kebutuhan kuliah dalam hitungan detik |
+| *Search & Filter* | Cari nama item, filter kategori (barang/jasa), kondisi, lokasi (kota/kecamatan titik COD), dan rentang harga | Menemukan kebutuhan sekolah dalam hitungan detik |
 | *Pasang Iklan* | Form posting barang/jasa (nama, harga, foto, deskripsi) dengan draft autosave | Listing langsung tayang, draft tidak hilang saat pindah halaman |
 | *Detail Produk* | Halaman detail dengan foto, spesifikasi, kondisi, penjual, dan related items | Info lengkap sebelum memutuskan beli atau booking |
 | *Keranjang* | Pilih item + titik COD/catatan janji temu, ringkasan subtotal & ongkir | Mendukung COD titik wilayah Jakarta (gratis) dan ekspedisi reguler |
@@ -128,7 +128,7 @@ Type Check   : TypeScript (tsc --noEmit)
 | *Next.js App Router* | Server + client component, routing file-based, standar sesuai dokumen arsitektur |
 | *Tailwind CSS + cva* | Utility-first, variant tombol/badge rapi tanpa UI library berat |
 | *GSAP* | Animasi performa tinggi dengan kontrol timeline & cleanup per halaman |
-| *Supabase* | Auth, database, dan storage dalam satu layanan — cocok untuk proyek kuliah |
+| *Supabase* | Auth, database, dan storage dalam satu layanan — cocok untuk proyek pelajar |
 
 ### Dependencies Utama
 
@@ -158,18 +158,18 @@ Type Check   : TypeScript (tsc --noEmit)
 │         Next.js App Router + Tailwind + GSAP         │
 │                                                      │
 │  ┌─────────┐ ┌─────────┐ ┌──────────┐ ┌───────────┐  │
-│  │ Katalog │ │ Keranjang│ │ Checkout │ │   Admin   │  │
-│  │ & Detail│ │  & Cart  │ │  & Order │ │ Moderasi  │  │
+│  │ Katalog │ │Keranjang│ │ Checkout │ │   Admin   │  │
+│  │ & Detail│   & Cart  │ │  & Order │ │ Moderasi  │  │
 │  └────┬────┘ └────┬────┘ └────┬─────┘ └─────┬─────┘  │
 │       └───────────┴───────────┴─────────────┘        │
 │                       │                              │
-│            klien Supabase (@supabase/ssr)             │
+│            klien Supabase (@supabase/ssr)            │
 └──────────────────────────────────────────────────────┘
                        │  login/register + sesi cookie
                        ▼
 ┌──────────────────────────────────────────────────────┐
 │                    SUPABASE                          │
-│  Auth & middleware aktif • PostgreSQL • RLS • Storage │
+│ Auth & middleware aktif • PostgreSQL • RLS • Storage │
 │  (katalog, cart, users, orders — migrasi Tahap D)    │
 └──────────────────────────────────────────────────────┘
 ```
@@ -204,7 +204,7 @@ Type Check   : TypeScript (tsc --noEmit)
    │   ┌─────────────────┘      │
    │   │ N              1       │ N
 ┌──┴───┴───┐        ┌───────────┴┐
-│   cart   │        │ order_items │
+│   cart   │        │ order_items│
 ├──────────┤        ├────────────┤
 │ user_id  │        │ order_id   │
 │ item_id  │        │ item_id    │
@@ -379,7 +379,7 @@ npx tsc --noEmit # Type check
 
 ## 📌 Status Proyek
 
-**Fase**: Live di production (https://buyorent-omega.vercel.app, Vercel Hobby, auto-deploy on push ke `main`) sejak 2 Okt 2026. Fitur inti lengkap: auth, katalog + search + filter (termasuk **filter lokasi kota/kecamatan titik COD**), cart, checkout transfer manual, halaman pesanan, panel admin. Tabel `cod_points` (123 titik COD DKI Jakarta, jam operasional 07.00–21.00 WIB). Layout mobile 375px sudah responsif (accordion filter). Audit menyeluruh 3 Okt 2026 oleh 3 agen: 22 bug dilaporkan — **11 sudah beres/ditutup**, perbaikan kritis berjalan. Data/UI murni DKI Jakarta; istilah kampus sudah dihapus dari produk.
+**Fase**: Live di production (https://buyorent-omega.vercel.app, Vercel Hobby, auto-deploy on push ke `main`) sejak 2 Okt 2026. Fitur inti lengkap: auth, katalog + search + filter (termasuk **filter lokasi kota/kecamatan titik COD**), cart, checkout transfer manual, halaman pesanan, panel admin. Tabel `cod_points` (123 titik COD DKI Jakarta, jam operasional 07.00–21.00 WIB). Layout mobile 375px sudah responsif (accordion filter). Audit menyeluruh 3 Okt 2026 oleh 3 agen: 22 bug dilaporkan — **11 sudah beres/ditutup**, perbaikan kritis berjalan. Data/UI murni DKI Jakarta; target pasar **pelajar** — seluruh istilah kampus/mahasiswa dihapus dari produk.
 
 | Route | Halaman | Status |
 |-------|---------|--------|
