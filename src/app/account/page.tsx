@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ToastHost, toast } from "@/components/toast";
 import { getAccount, saveAccount, clearAccount, type AccountRecord } from "@/lib/users";
+import { KECAMATAN_COD } from "@/lib/cod-points";
 import { resetCart } from "@/lib/cart";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -31,7 +32,7 @@ export default function AccountPage() {
   const rootRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [account, setAccount] = useState<AccountRecord | null>(null);
-  const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", kecamatan: "" });
   const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function AccountPage() {
     getAccount().then((acc) => {
       if (!alive || !acc) return;
       setAccount(acc);
-      setForm({ name: acc.name, email: acc.email, phone: acc.phone });
+      setForm({ name: acc.name, email: acc.email, phone: acc.phone, kecamatan: acc.kecamatan ?? "" });
     });
     return () => {
       alive = false;
@@ -72,7 +73,7 @@ export default function AccountPage() {
       name: form.name.trim(),
       email: form.email.trim(),
       phone: form.phone.trim(),
-      kecamatan: account.kecamatan, // field kampus dihapus dari form (keputusan hapus fitur kampus)
+      kecamatan: form.kecamatan.trim(), // pilihan kecamatan profil (menggantikan field kampus lama)
     };
     const r = await saveAccount(updated);
     if (!r.ok) {
@@ -180,6 +181,24 @@ export default function AccountPage() {
                 {errors.phone && (
                   <span className="text-[11px] text-rose-600">{errors.phone}</span>
                 )}
+              </label>
+
+              <label className="flex flex-col gap-1.5">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+                  Wilayah / Kecamatan
+                </span>
+                <select
+                  className={inputClass}
+                  onChange={(e) => setForm({ ...form, kecamatan: e.target.value })}
+                  value={form.kecamatan}
+                >
+                  <option value="">Belum dipilih</option>
+                  {KECAMATAN_COD.map((k) => (
+                    <option key={k.nama} value={k.nama}>
+                      {k.nama} — {k.kota}
+                    </option>
+                  ))}
+                </select>
               </label>
             </div>
 
