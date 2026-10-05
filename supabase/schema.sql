@@ -157,6 +157,10 @@ create policy "items: insert milik sendiri" on public.items
   for insert with check (seller_id = auth.uid());
 create policy "items: update penjual atau admin" on public.items
   for update using (seller_id = auth.uid() or public.is_admin());
+-- tanpa policy DELETE ini, semua hapus listing lewat API gagal diam-diam (PostgREST balas
+-- 204 tanpa baris) — penjual & admin tak pernah bisa menghapus listing sendiri.
+create policy "items: hapus penjual atau admin" on public.items
+  for delete using (seller_id = auth.uid() or public.is_admin());
 
 create policy "cart: milik sendiri" on public.cart
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
