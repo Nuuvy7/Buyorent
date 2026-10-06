@@ -183,30 +183,171 @@ create policy "orders: update terkait" on public.orders
 create policy "orders: pembeli hapus" on public.orders
   for delete using (buyer_id = auth.uid() or public.is_admin());
 
--- guard integritas status: pembeli hanya boleh update kolom lain (payment_proof),
--- perubahan status = urusan penjual terkait / admin (satu-satunya jalan, semua
--- update lewat RLS langsung dari client)
-create or replace function public.guard_order_status()
+-- ===== SECURITY TRIGGERS (audit Ficus 5 Okt 2026: A1–A5) =====
+-- RLS tidak bisa membatasi PERUBAHAN KOLOM (USING/WITH CHECK hanya melihat nilai baris),
+-- jadi kolom sensitif dikunci di trigger SECURITY DEFINER — pola yang sama dengan
+-- guard_order_status lama. Patch terpisah: supabase/fix-hardening-ficus.sql.
+
+-- A1+A3: role/is_blocked/ktm hanya admin; email/id immutable
+create or replace function public.guard_users_mutation()
 returns trigger
 language plpgsql
 security definer
 set search_path = public
 as $$
 begin
-  if new.status is distinct from old.status
-     and not public.is_order_seller(old.id)
-     and not public.is_admin() then
-    raise exception 'status hanya bisa diubah penjual atau admin';
+  if tg_op = 'INSERT' then
+    return new;
+  end if;
+  if not public.is_admin() then
+    if new.role is distinct from old.role then
+      raise exception 'role hanya bisa diubah admin';
+    end if;
+    if new.is_blocked is distinct from old.is_blocked then
+      raise exception 'is_blocked hanya bisa diubah admin';
+    end if;
+    if new.ktm is distinct from old.ktm then
+      raise exception 'ktm hanya bisa diubah admin';
+    end if;
+  end if;
+  if new.email is distinct from old.email or new.id is distinct from old.id then
+    raise exception 'email/id tidak bisa diubah';
   end if;
   return new;
 end;
 $$;
 
-drop trigger if exists trg_guard_order_status on public.orders;
-create trigger trg_guard_order_status
+drop trigger if exists trg_guard_users_mutation on public.users;
+create trigger trg_guard_users_mutation
+  before update on public.users
+  for each row
+  execute function public.guard_users_mutation();
+
+-- A2: is_approved hanya admin; snapshot seller_* terkunci; seller_id immutable
+create or replace function public.guard_items_mutation()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if tg_op = 'INSERT' then
+    return new;
+  end if;
+  if new.seller_id is distinct from old.seller_id then
+    raise exception 'seller_id tidak bisa diubah';
+  end if;
+  if not public.is_admin() then
+    if new.is_approved is distinct from old.is_approved then
+      raise exception 'is_approved hanya bisa diubah admin';
+    end if;
+    if new.seller_name is distinct from old.seller_name
+       or new.seller_kecamatan is distinct from old.seller_kecamatan
+       or new.seller_ktm is distinct from old.seller_ktm then
+      raise exception 'snapshot penjual tidak bisa diubah penjual';
+    end if;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_guard_items_mutation on public.items;
+create trigger trg_guard_items_mutation
+  before update on public.items
+  for each row
+  execute function public.guard_items_mutation();
+
+-- A4: total/shipping/buyer/waktu immutable; status = penjual terkait/admin;
+-- address/phone pembeli hanya sebelum diproses
+create or replace function public.guard_orders_mutation()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if new.total_price is distinct from old.total_price
+     or new.shipping_fee is distinct from old.shipping_fee
+     or new.buyer_id is distinct from old.buyer_id
+     or new.created_at is distinct from old.created_at then
+    raise exception 'nilai total/buyer/waktu order tidak bisa diubah';
+  end if;
+  if new.status is distinct from old.status
+     and not public.is_order_seller(old.id)
+     and not public.is_admin() then
+    raise exception 'status hanya bisa diubah penjual atau admin';
+  end if;
+  if not public.is_admin() and not public.is_order_seller(old.id) then
+    if old.status <> 'pending'
+       and (new.address is distinct from old.address
+            or new.phone is distinct from old.phone) then
+      raise exception 'alamat/HP hanya bisa diubah sebelum order diproses';
+    end if;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_guard_orders_mutation on public.orders;
+create trigger trg_guard_orders_mutation
   before update on public.orders
   for each row
-  execute function public.guard_order_status();
+  execute function public.guard_orders_mutation();
+
+-- A4: order completed tidak bisa dihapus (kompensasi checkout = pending saja)
+create or replace function public.guard_orders_delete()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if old.status <> 'pending' and not public.is_admin() then
+    raise exception 'hanya order pending yang bisa dihapus';
+  end if;
+  return old;
+end;
+$$;
+
+drop trigger if exists trg_guard_orders_delete on public.orders;
+create trigger trg_guard_orders_delete
+  before delete on public.orders
+  for each row
+  execute function public.guard_orders_delete();
+
+-- A5: price & seller_id order_items dipaksa dari items (client tidak dipercaya)
+create or replace function public.guard_order_items_mutation()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_price numeric;
+  v_seller uuid;
+begin
+  select price, seller_id into v_price, v_seller
+  from public.items where id = new.item_id;
+  if v_price is null then
+    raise exception 'item tidak ditemukan';
+  end if;
+  new.price := v_price;
+  new.seller_id := v_seller;
+  if tg_op = 'UPDATE' then
+    if new.order_id is distinct from old.order_id
+       or new.item_id is distinct from old.item_id then
+      raise exception 'order/item tidak bisa diganti';
+    end if;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_guard_order_items_insert on public.order_items;
+create trigger trg_guard_order_items_insert
+  before insert or update on public.order_items
+  for each row
+  execute function public.guard_order_items_mutation();
 
 create policy "order_items: terkait order" on public.order_items
   for select using (
@@ -241,5 +382,12 @@ create policy "payment-proofs: owner baca" on storage.objects
     bucket_id = 'payment-proofs'
     and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin())
   );
-create policy "payment-proofs: user upload" on storage.objects
-  for insert with check (bucket_id = 'payment-proofs' and auth.role() = 'authenticated');
+drop policy if exists "payment-proofs: user upload" on storage.objects;
+drop policy if exists "payment-proofs: owner upload" on storage.objects;
+-- A6 (audit Ficus): tulis hanya ke folder sendiri — tanpa ini, user login bisa menulis
+-- bukti transfer ke folder user lain.
+create policy "payment-proofs: owner upload" on storage.objects
+  for insert with check (
+    bucket_id = 'payment-proofs'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
