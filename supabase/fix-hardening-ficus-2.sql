@@ -87,3 +87,16 @@ drop trigger if exists trg_guard_orders_mutation on public.orders;
 drop policy if exists "orders: pembeli hapus" on public.orders;
 create policy "orders: pembeli hapus" on public.orders
   for delete using (buyer_id = auth.uid() or public.is_admin());
+
+-- create trigger yang terpotong di batch sebelumnya (awk range salah)
+drop trigger if exists trg_guard_items_mutation on public.items;
+create trigger trg_guard_items_mutation
+  before update on public.items
+  for each row
+  execute function public.guard_items_mutation();
+
+drop trigger if exists trg_guard_orders_mutation on public.orders;
+create trigger trg_guard_orders_mutation
+  before update on public.orders
+  for each row
+  execute function public.guard_orders_mutation();
