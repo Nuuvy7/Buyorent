@@ -26,7 +26,7 @@ export function FilterSidebar({
         </span>
         <button
           onClick={onReset}
-          className="text-[11px] text-ink hover:underline flex items-center gap-1 font-bold"
+          className="text-[11px] text-ink hover:underline flex items-center gap-1 font-bold min-h-[44px] px-1"
           type="button"
         >
           <RotateCcw className="w-3 h-3" />

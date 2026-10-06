@@ -174,6 +174,9 @@ export default function CheckoutPage() {
     if (!/^(\+62|62|0)8[1-9]\d{6,11}$/.test(phone.replace(/[\s-]/g, "")))
       e.phone = "Nomor HP tidak valid — format 08xx / +628xx (dipakai penjual menghubungi kamu).";
     setErrors(e);
+    // fokus ke field error pertama — browser auto-scroll, pesan terlihat (M-5)
+    if (e.address) document.getElementById("co-address")?.focus();
+    else if (e.phone) document.getElementById("co-phone")?.focus();
     return Object.keys(e).length === 0;
   };
 

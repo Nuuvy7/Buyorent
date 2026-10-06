@@ -369,7 +369,7 @@ export default function CartPage() {
                     </span>
                   </label>
                   <button
-                    className="text-xs font-mono text-slate-500 hover:text-rose-600 transition-colors flex items-center gap-1.5 disabled:opacity-40 disabled:hover:text-slate-500"
+                    className="text-xs font-mono text-slate-500 hover:text-rose-600 transition-colors flex items-center gap-1.5 min-h-[44px] px-1 py-2 disabled:opacity-40 disabled:hover:text-slate-500"
                     disabled={sel.length === 0}
                     onClick={removeChecked}
                     type="button"

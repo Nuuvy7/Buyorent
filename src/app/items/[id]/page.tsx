@@ -258,7 +258,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
           <div ref={leftRef} className="lg:col-span-7 flex flex-col gap-6">
             <div className="relative bg-cyber-card/90 rounded-3xl p-4 border border-cyber-border shadow-sm overflow-hidden">
               {/* Floating badges */}
-              <div className="absolute top-7 left-7 z-10 flex flex-wrap gap-2">
+              <div className="absolute top-7 left-7 right-16 z-10 flex flex-wrap gap-2">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyber-bg/85 backdrop-blur-md font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400 border border-cyber-border">
                   <Camera className="w-3.5 h-3.5" />
                   Foto dari Penjual
@@ -552,24 +552,31 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
 
         {/* Tabs: specs / history */}
         <div className="w-full bg-cyber-card/90 rounded-3xl p-6 sm:p-10 border border-cyber-border shadow-sm">
-          <div className="border-b border-cyber-border flex items-center gap-6 overflow-x-auto mb-8">
-            {(
-              [
-                ["spec", isService ? "Spesifikasi Layanan" : "Spesifikasi Teknis"],
-                ["history", "Riwayat Pemakaian & Alasan Dijual"],
-              ] as const
-            ).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => setActiveTab(key)}
-                className={`pb-3 font-mono text-xs font-bold uppercase tracking-wider whitespace-nowrap border-b-2 transition-colors ${
-                  activeTab === key ? "text-ink border-accent" : "text-slate-500 hover:text-ink border-transparent"
-                }`}
-                type="button"
-              >
-                {label}
-              </button>
-            ))}
+          <div className="relative mb-8">
+            <div className="border-b border-cyber-border flex items-center gap-6 overflow-x-auto">
+              {(
+                [
+                  ["spec", isService ? "Spesifikasi Layanan" : "Spesifikasi Teknis"],
+                  ["history", "Riwayat Pemakaian & Alasan Dijual"],
+                ] as const
+              ).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveTab(key)}
+                  className={`pb-3 font-mono text-xs font-bold uppercase tracking-wider whitespace-nowrap border-b-2 transition-colors ${
+                    activeTab === key ? "text-ink border-accent" : "text-slate-500 hover:text-ink border-transparent"
+                  }`}
+                  type="button"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            {/* indikator scroll (M-6): fade kanan — ada isi yang belum terlihat */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-cyber-card to-transparent"
+            />
           </div>
 
           {activeTab === "spec" && (

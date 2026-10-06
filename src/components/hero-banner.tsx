@@ -64,17 +64,10 @@ export function HeroBanner({
             ease: "back.out(1.2)",
           },
           "-=0.3"
-        )
-        .from(
-          stickersRef.current?.children || [],
-          {
-            y: 10,
-            opacity: 0,
-            stagger: 0.08,
-            duration: 0.4,
-          },
-          "-=0.2"
         );
+      // ponytail: chip "FILTER CEPAT" sengaja TIDAK dianimasikan — gsap.from()
+      // pada stickersRef.children terbukti menggantung di opacity:0 (M-1); kalau
+      // mau entrance lagi, pakai animasi CSS keyframes di class-nya.
     }, containerRef);
 
     return () => ctx.revert();
@@ -178,7 +171,7 @@ export function HeroBanner({
           </span>
           <button
             onClick={() => setBudgetFilter("u50")}
-            className={`px-3 py-1 rounded-lg font-mono text-xs transition-all border ${
+            className={`px-3 py-1.5 min-h-8 rounded-lg font-mono text-xs transition-all border ${
               budgetFilter === "u50"
                 ? "bg-accent text-black border-accent font-bold shadow-glow"
                 : "bg-cyber-surface text-slate-600 border-cyber-border hover:border-slate-500"
@@ -189,7 +182,7 @@ export function HeroBanner({
           </button>
           <button
             onClick={() => setBudgetFilter("50-200")}
-            className={`px-3 py-1 rounded-lg font-mono text-xs transition-all border ${
+            className={`px-3 py-1.5 min-h-8 rounded-lg font-mono text-xs transition-all border ${
               budgetFilter === "50-200"
                 ? "bg-accent text-black border-accent font-bold shadow-glow"
                 : "bg-cyber-surface text-slate-600 border-cyber-border hover:border-slate-500"
@@ -200,7 +193,7 @@ export function HeroBanner({
           </button>
           <button
             onClick={() => setBudgetFilter("o200")}
-            className={`px-3 py-1 rounded-lg font-mono text-xs transition-all border ${
+            className={`px-3 py-1.5 min-h-8 rounded-lg font-mono text-xs transition-all border ${
               budgetFilter === "o200"
                 ? "bg-accent text-black border-accent font-bold shadow-glow"
                 : "bg-cyber-surface text-slate-600 border-cyber-border hover:border-slate-500"
