@@ -246,6 +246,15 @@ begin
        or new.seller_ktm is distinct from old.seller_ktm then
       raise exception 'snapshot penjual tidak bisa diubah penjual';
     end if;
+    -- F2 (re-audit): created_at mengendalikan sort katalog — kunci
+    if new.created_at is distinct from old.created_at then
+      raise exception 'created_at tidak bisa diubah';
+    end if;
+    -- F3 (re-audit): kategori menentukan barang/jasa & alur approval — kunci
+    if new.category_id is distinct from old.category_id
+       or new.sub_category is distinct from old.sub_category then
+      raise exception 'kategori tidak bisa diubah setelah tayang';
+    end if;
   end if;
   return new;
 end;
@@ -277,10 +286,17 @@ begin
      and not public.is_admin() then
     raise exception 'status hanya bisa diubah penjual atau admin';
   end if;
-  if not public.is_admin() and not public.is_order_seller(old.id) then
-    if old.status <> 'pending'
-       and (new.address is distinct from old.address
-            or new.phone is distinct from old.phone) then
+  -- R1 (re-audit): pengiriman = milik pembeli — penjual juga tidak boleh ubah;
+  -- pembeli hanya sebelum diproses; admin bebas.
+  if not public.is_admin() and old.buyer_id <> auth.uid() then
+    if new.address is distinct from old.address
+       or new.phone is distinct from old.phone then
+      raise exception 'alamat/HP hanya bisa diubah pembeli sebelum diproses';
+    end if;
+  end if;
+  if not public.is_admin() and old.buyer_id = auth.uid() and old.status <> 'pending' then
+    if new.address is distinct from old.address
+       or new.phone is distinct from old.phone then
       raise exception 'alamat/HP hanya bisa diubah sebelum order diproses';
     end if;
   end if;
