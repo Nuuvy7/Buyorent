@@ -212,6 +212,18 @@ Alur status pesanan:
 ## 10. Kontak dan Persetujuan
 
 **Dokumen ini disusun oleh**: Tim Buyorent  
+
+**Disetujui oleh:**
+
+| Nama | Peran | Tanggal |
+|------|-------|---------|
+| Muhamad Jundi Al Hafidz | Project Lead & Full Stack Developer | 29 September 2026 |
+| Zariel Waleed Hidayat | UI/UX Designer & Frontend Developer | 29 September 2026 |
+| Fauzunnajah Attamam | Backend Developer | 29 September 2026 |
+| Sultan Doven Hagi | Database Developer | 29 September 2026 |
+| Muhammad Salim Umar | Developer OPS | 29 September 2026 |
+| Wildan Haibatur Rohim | Assistant UI/UX Designer | 29 September 2026 |
+
 **Untuk persetujuan dan pertanyaan**, hubungi project lead atau product owner.
 
 ---

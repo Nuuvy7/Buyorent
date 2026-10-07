@@ -587,9 +587,12 @@ Semua persyaratan fungsional (FR-001 hingga FR-017) harus memiliki test case yan
 
 | Nama | Peran | Tanggal |
 |------|-------|---------|
-| *[Technical Lead]* | Technical Lead | |
-| *[Development Team]* | Development Team | |
-| *[QA Lead]* | QA Lead | |
+| Muhamad Jundi Al Hafidz | Project Lead & Full Stack Developer | 29 September 2026 |
+| Zariel Waleed Hidayat | UI/UX Designer & Frontend Developer | 29 September 2026 |
+| Fauzunnajah Attamam | Backend Developer | 29 September 2026 |
+| Sultan Doven Hagi | Database Developer | 29 September 2026 |
+| Muhammad Salim Umar | Developer OPS | 29 September 2026 |
+| Wildan Haibatur Rohim | Assistant UI/UX Designer | 29 September 2026 |
 
 **Dokumen ini harus direview dan diperbarui sesuai perubahan requirement selama pengembangan.**
 

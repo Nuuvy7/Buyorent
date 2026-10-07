@@ -288,11 +288,14 @@ flowchart TD
 
 **Disetujui oleh:**
 
-| Nama | Peran | Tanggal | Tanda Tangan |
-|------|-------|---------|--------------|
-| *[Nama Product Owner]* | Product Owner | | |
-| *[Nama Business Sponsor]* | Business Sponsor | | |
-| *[Nama Project Manager]* | Project Manager | | |
+| Nama | Peran | Tanggal |
+|------|-------|---------|
+| Muhamad Jundi Al Hafidz | Project Lead & Full Stack Developer | 29 September 2026 |
+| Zariel Waleed Hidayat | UI/UX Designer & Frontend Developer | 29 September 2026 |
+| Fauzunnajah Attamam | Backend Developer | 29 September 2026 |
+| Sultan Doven Hagi | Database Developer | 29 September 2026 |
+| Muhammad Salim Umar | Developer OPS | 29 September 2026 |
+| Wildan Haibatur Rohim | Assistant UI/UX Designer | 29 September 2026 |
 
 **Untuk pertanyaan atau klarifikasi**, hubungi business analyst atau project lead.
 
