@@ -111,7 +111,7 @@ export function Navbar() {
                   {initial}
                 </div>
                 <div className="flex flex-col text-left">
-                  <span className="text-xs font-bold text-slate-400 leading-tight">{displayName}</span>
+                  <span className="text-xs font-black text-ink leading-tight">{displayName}</span>
                   {account.ktm && (
                     <span className="text-[10px] font-mono text-signal flex items-center gap-0.5 leading-none">
                       <CheckCircle2 className="w-2.5 h-2.5" /> IDENTITAS_VERIFIED
@@ -164,7 +164,7 @@ export function Navbar() {
                 href="/account"
               >
                 <div className="w-6 h-6 rounded-lg bg-accent text-black font-black flex items-center justify-center shrink-0">{initial}</div>
-                <span className="text-slate-400 font-bold">{displayName}</span>
+                <span className="text-ink font-black">{displayName}</span>
                 {account.ktm && (
                   <span className="text-signal flex items-center gap-1 ml-auto">
                     <CheckCircle2 className="w-3 h-3" /> IDENTITAS_VERIFIED

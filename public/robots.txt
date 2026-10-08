@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /account
+Disallow: /checkout
+
+Sitemap: https://buyorent-omega.vercel.app/sitemap.xml

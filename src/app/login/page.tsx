@@ -93,7 +93,9 @@ export default function LoginPage() {
 
     void flushGuestCart(); // tulis buffer cart tamu ke server (Tahap D2)
     toast("Berhasil masuk — selamat datang kembali");
-    router.push("/");
+    const nextUrl = new URLSearchParams(window.location.search).get("next");
+    const safeNext = nextUrl && nextUrl.startsWith("/") && !nextUrl.startsWith("//") ? nextUrl : "/";
+    router.push(safeNext);
     router.refresh();
   }
 

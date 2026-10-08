@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 
 const inputClass =
-  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2.5 text-xs text-slate-400 placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
+  "w-full bg-cyber-card border border-cyber-border rounded-xl px-3 py-2.5 text-xs font-semibold text-ink placeholder:text-slate-500 focus:outline-none focus:border-accent transition-colors";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^(?:08|628)\d{8,11}$/;
@@ -136,7 +136,7 @@ export default function AccountPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="flex flex-col gap-1.5">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+                <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-ink">
                   Nama Lengkap
                 </span>
                 <input
@@ -152,7 +152,7 @@ export default function AccountPage() {
               </label>
 
               <label className="flex flex-col gap-1.5">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+                <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-ink">
                   Email Login
                 </span>
                 <input
@@ -168,7 +168,7 @@ export default function AccountPage() {
               </label>
 
               <label className="flex flex-col gap-1.5">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+                <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-ink">
                   No. HP / WA
                 </span>
                 <input
@@ -184,7 +184,7 @@ export default function AccountPage() {
               </label>
 
               <label className="flex flex-col gap-1.5">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+                <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-ink">
                   Wilayah / Kecamatan
                 </span>
                 <select
@@ -207,7 +207,7 @@ export default function AccountPage() {
                 <ShieldCheck className="w-3.5 h-3.5 text-signal" />
                 Email & password login dikelola Supabase Auth (menyusul).
               </p>
-              <Button className="font-mono" size="sm" type="submit" variant="default">
+              <Button className="font-mono font-bold tracking-wider" size="sm" type="submit" variant="default">
                 <Save className="w-3.5 h-3.5" /> Simpan Perubahan
               </Button>
             </div>
@@ -220,10 +220,10 @@ export default function AccountPage() {
                 {(account?.name || "A").charAt(0)}
               </div>
               <div>
-                <p className="text-sm font-bold text-ink">
+                <p className="text-base font-black text-ink">
                   {account?.name ?? "Memuat…"}
                 </p>
-                <p className="text-[11px] text-slate-500 break-all">{account?.email}</p>
+                <p className="text-xs font-semibold text-slate-300 break-all">{account?.email}</p>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-2">
                 <Badge variant={account?.role === "admin" ? "default" : "muted"}>
@@ -239,10 +239,10 @@ export default function AccountPage() {
               <div className="p-1 bg-cyber-surface border border-cyber-border rounded-2xl flex items-center gap-1">
                 {(["user", "admin"] as const).map((r) => (
                   <span
-                    className={`flex-1 px-3 py-2 rounded-xl font-mono text-[11px] font-bold uppercase tracking-wider text-center transition-all ${
+                    className={`flex-1 px-3 py-2 rounded-xl font-mono text-[11px] font-black uppercase tracking-wider text-center transition-all ${
                       account?.role === r
                         ? "bg-accent text-black shadow-glow"
-                        : "text-slate-500"
+                        : "text-slate-400 font-bold"
                     }`}
                     key={r}
                   >
@@ -250,7 +250,7 @@ export default function AccountPage() {
                   </span>
                 ))}
               </div>
-              <p className="text-[11px] text-slate-500 leading-relaxed">
+              <p className="text-xs text-slate-400 font-medium leading-relaxed">
                 Role menentukan akses panel: moderasi listing &amp; kelola pengguna hanya untuk
                 admin. Perubahan role diatur tim pengelola lewat database.
               </p>
@@ -263,7 +263,7 @@ export default function AccountPage() {
               )}
               <div className="pt-1 border-t border-cyber-border mt-1">
                 <button
-                  className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-cyber-surface border border-rose-500/40 text-rose-600 hover:bg-rose-500/10 hover:text-rose-700 font-mono text-[11px] uppercase tracking-wider transition-colors active:scale-[0.98]"
+                  className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-cyber-surface border border-rose-500/40 text-rose-600 hover:bg-rose-500/10 hover:text-rose-700 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors active:scale-[0.98]"
                   onClick={handleLogout}
                   type="button"
                 >

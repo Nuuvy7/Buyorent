@@ -19,7 +19,8 @@ const inputClass =
 export default function RegisterPage() {
   const rootRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const [form, setForm] = useState({ name: "", email: "", phone: "", password: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", password: "", hpBot: "" });
+  const [loadTime] = useState(() => Date.now());
   const [errors, setErrors] = useState<{ [k: string]: string }>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -54,6 +55,17 @@ export default function RegisterPage() {
     ev.preventDefault();
     setFormError(null);
     if (!validate()) return;
+    // rate limit signup: honeypot, waktu isi minimal, cooldown antar attempt
+    if (form.hpBot) return;
+    if (Date.now() - loadTime < 1500) {
+      setFormError("Terlalu cepat — coba lagi beberapa detik lagi.");
+      return;
+    }
+    const last = Number(localStorage.getItem("signup_last") || 0);
+    if (last && Date.now() - last < 15000) {
+      setFormError("Tunggu 15 detik sebelum mendaftar lagi.");
+      return;
+    }
     setLoading(true);
 
     const supabase = createClient();
@@ -63,6 +75,7 @@ export default function RegisterPage() {
       password: form.password,
       options: { data: { name: form.name.trim(), phone: form.phone.trim() } },
     });
+    localStorage.setItem("signup_last", String(Date.now())); // cooldown antar attempt
 
     if (err) {
       setLoading(false);
@@ -172,6 +185,17 @@ export default function RegisterPage() {
               <span className="text-ink font-bold">Syarat &amp; Ketentuan</span> penggunaan Buyorent.
             </span>
           </label>
+          {/* honeypot rate limit: bot yang isi field ini langsung di-drop */}
+          <input
+            aria-hidden="true"
+            autoComplete="off"
+            className="hidden"
+            name="website"
+            onChange={(e) => setForm({ ...form, hpBot: e.target.value })}
+            tabIndex={-1}
+            type="text"
+            value={form.hpBot}
+          />
           <Button type="submit" variant="cyan" className="w-full font-mono" disabled={loading || !canSubmit}>
             {loading ? "Memproses…" : <>Daftar <UserPlus className="w-4 h-4" /></>}
           </Button>

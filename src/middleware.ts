@@ -51,7 +51,7 @@ export async function middleware(request: NextRequest) {
     return res;
   };
 
-  if (needAuth && !user) return redirectTo("/login");
+  if (needAuth && !user) return redirectTo("/login", `?next=${encodeURIComponent(pathname)}`);
 
   if (user) {
     // Aturan bisnis 6: user diblokir admin tidak boleh masuk route auth.

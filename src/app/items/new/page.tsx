@@ -187,8 +187,11 @@ export default function PasangIklanPage() {
     const list = Array.from(files);
     const errs = list.filter((f) => f.size > 10 * 1024 * 1024);
     if (errs.length) setErrors((e) => ({ ...e, photo: "Foto maksimal 10MB per file." }));
+    const ALLOWED_MIME = ["image/jpeg", "image/png", "image/webp"];
+    const invalidType = list.filter((f) => !ALLOWED_MIME.includes(f.type.toLowerCase()));
+    if (invalidType.length) setErrors((e) => ({ ...e, photo: "Format harus JPEG, PNG, atau WebP (SVG ditolak)." }));
     const ok = list
-      .filter((f) => f.type.startsWith("image/") && f.size <= 10 * 1024 * 1024)
+      .filter((f) => ALLOWED_MIME.includes(f.type.toLowerCase()) && f.size <= 10 * 1024 * 1024)
       .slice(0, 5 - photos.length)
       .map((f) => ({ url: URL.createObjectURL(f), name: f.name, file: f }));
     setPhotos((p) => [...p, ...ok].slice(0, 5));
