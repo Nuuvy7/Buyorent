@@ -4,6 +4,9 @@ docs/
 AI_CONTEXT.md
 HANDOFF.md
 
+# Sekali pakai (jangan masuk repo)
+scripts/clean-mtest-storage.mjs
+
 # Blueprint (jangan masuk repo)
 *BLUEPRINT*.md
 *blueprint*.odt
